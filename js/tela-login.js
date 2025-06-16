@@ -41,12 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (senha === senhaArmazenada) {
-      alert("Login bem-sucedido! 🚀");
-      // Aqui você pode redirecionar ou mostrar outra tela
-      // Exemplo:
-      // window.location.href = "pagina-principal.html";
-    } else {
+   if (senha === senhaArmazenada) {
+  alert("Login bem-sucedido! 🚀");
+  setTimeout(() => {
+    window.location.href = "pages/tela-inicial.html";
+  }, 500); // meio segundo só pra dar tempo de ver o alerta
+}
+
+ else {
       alert("Senha incorreta!");
     }
   });
