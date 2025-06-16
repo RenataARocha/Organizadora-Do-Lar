@@ -1,0 +1,37 @@
+# Pastas do sistema Windows que não devem ir pro Git
+AppData/
+OneDrive/
+Contacts/
+Downloads/
+Favorites/
+Links/
+Saved Games/
+Searches/
+dio-lab-open-source/
+.vscode/
+.n8n/
+.quokka/
+.ssh/
+.cache/
+.config/
+.gitconfig
+.yarnrc
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Arquivos temporários e de histórico
+.bash_history
+.node_repl_history
+.python_history
+.vuerc
+.lesshst
+firebase-debug.log
+
+# Arquivos grandes ou específicos do sistema
+NTUSER.DAT*
+ntuser.dat.LOG*
+ntuser.ini

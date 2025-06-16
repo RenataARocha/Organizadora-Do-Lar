@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tela Inicial</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Manifesto PWA -->
+  <link rel="manifest" href="../pwa/manifest.json" />
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+  <!-- Tailwind Config Extra -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            script: ['Dancing Script', 'cursive'],
+            roboto: ['Roboto', 'sans-serif']
+          },
+        },
+      },
+    }
+  </script>
+</head>
+
+<body class="bg-rose-50 text-gray-800 font-roboto">
+  <div id="resultado"></div>
+
+  <div class="container mx-auto max-w-screen-md px-4 py-6 overflow-hidden">
+    <!-- Topo com imagem e saudação -->
+    <div class="text-center mb-6">
+      <img src="../assets/florzinha.png" alt="imagem-de-florzinha" class="mx-auto w-24 h-auto" />
+      <h1 class="text-3xl font-script text-pink-600 mt-4">Bem-vinda, Renata!</h1>
+    </div>
+
+    <!-- Navegação -->
+    <nav class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 mb-6 menu-principal">
+      <!-- Links fixos -->
+      <a href="formulario-tarefa.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Tarefa</a>
+      <a href="formulario-meta.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Meta</a>
+      <a href="formulario-consultas.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Consultas e Exames</a>
+      <a href="formulario-contas.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Contas a Pagar</a>
+      <a href="formulario-lista-compras.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Lista de Compras</a>
+      <a href="formulario-cardapio.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cardápio Semanal</a>
+      <a href="formulario-remedios.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle de Remédios</a>
+      <a href="formulario-financas.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle Financeiro</a>
+      <a href="formulario-limpeza.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Rotina de Limpeza</a>
+      <a href="formulario-skincare.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Skincare Diário</a>
+      <a href="formulario-cronograma-capilar.html" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cronograma Capilar</a>
+
+      <!-- Botões SPA -->
+      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="agenda">Agenda do Dia</button>
+      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="resumo">Resumo da Semana</button>
+      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="motivacao">Quadro de Motivação</button>
+      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="conquistas">Conquistas</button>
+      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="pomodoro">Timer Pomodoro</button>
+    </nav>
+
+    <!-- Telas SPA -->
+    <div id="telas-spa" class="space-y-4">
+      <section id="agenda" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
+        <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Agenda do Dia</h2>
+        <p class="text-black">Aqui você pode ver sua agenda do dia.</p>
+      </section>
+
+      <section id="resumo" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
+        <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Resumo da Semana</h2>
+        <p class="text-black">Aqui você vê um resumo das suas atividades da semana.</p>
+      </section>
+
+      <section id="motivacao" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
+        <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Quadro de Motivação</h2>
+        <p class="text-black">Espaço para seu quadro de motivação.</p>
+      </section>
+
+      <section id="conquistas" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
+        <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Conquistas</h2>
+        <p class="text-black">Mostre suas conquistas aqui.</p>
+      </section>
+
+      <section id="pomodoro" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
+        <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Timer Pomodoro</h2>
+        <p class="text-black">Use o timer para organizar seus estudos e tarefas.</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- Frase do Dia - fora da div container para ocupar toda a largura -->
+  <section class="w-full bg-slate-100 border-t border-b p-6 shadow-sm text-center">
+    <h2 class="text-xl text-yellow-700 mb-2" style="font-family: 'Dancing Script', cursive;">Frase do Dia 🌼</h2>
+    <p id="frase-do-dia" class="italic text-yellow-800"></p>
+  </section>
+
+  <div class="flex justify-center my-6">
+    <input id="datepicker" placeholder="Escolha uma data"
+      class="border border-pink-300 rounded px-3 py-2 text-pink-600 w-full max-w-sm" />
+  </div>
+
+  
+    <!-- JS -->
+  <script defer src="../js/tela-inicial.js"></script>
+</body>
+
+</html>
