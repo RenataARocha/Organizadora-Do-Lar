@@ -164,3 +164,62 @@ form.addEventListener('submit', (e) => {
 carregarTarefas();
 renderizarTarefas();
 mostrarSugestao();
+
+// ... seu código que você já tem aqui (form, renderizarTarefas, etc.)
+
+// Função para mostrar tarefas do dia na agenda
+function mostrarAgendaDoDia() {
+  const listaAgenda = document.getElementById("lista-agenda");
+  if (!listaAgenda) return;
+
+  const hoje = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+  const tarefasHoje = tarefas.filter(t => t.date === hoje);
+
+  listaAgenda.innerHTML = "";
+
+  if (tarefasHoje.length === 0) {
+    listaAgenda.innerHTML = "<p>🎈 Nada marcado para hoje!</p>";
+  } else {
+    tarefasHoje.forEach(tarefa => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${tarefa.title}</strong> - ${tarefa.description || ''} às ${tarefa.alarm || 'sem horário'}`;
+      listaAgenda.appendChild(li);
+    });
+  }
+}
+
+// Chama logo que carrega as tarefas para mostrar agenda
+mostrarAgendaDoDia();
+
+// Variável para controlar alarme disparado (não repetir no mesmo minuto)
+let alarmesDisparados = new Set();
+
+// Função para verificar alarme a cada minuto
+function verificarAlarme() {
+  const agora = new Date();
+  const hoje = agora.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+  const horaMinuto = agora.toTimeString().slice(0, 5); // 'HH:MM'
+
+  tarefas.forEach(tarefa => {
+    const idAlarme = tarefa.title + tarefa.date + tarefa.alarm;
+
+    if (tarefa.date === hoje && tarefa.alarm === horaMinuto && !alarmesDisparados.has(idAlarme)) {
+      alert(`⏰ Alarme: ${tarefa.title}`);
+      alarmesDisparados.add(idAlarme);
+      // Se quiser som, basta adicionar aqui:
+      // new Audio('alarme.mp3').play();
+    }
+  });
+}
+
+// Verifica alarme a cada minuto
+setInterval(verificarAlarme, 60000);
+
+// Botão sair
+const btnSair = document.getElementById("btn-sair");
+if (btnSair) {
+  btnSair.addEventListener("click", () => {
+    localStorage.removeItem("usuarioLogado");
+    window.location.href = "../index.html";
+  });
+}
