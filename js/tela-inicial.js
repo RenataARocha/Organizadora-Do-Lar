@@ -1,29 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // 🌼 Frase do dia
-  const frases = [
-    "Você é mais forte do que imagina 🌸",
-    "Cada dia é uma nova chance de recomeçar ☀️",
-    "Seja gentil consigo mesma 💕",
-    "Organizar o dia é o primeiro passo pra conquistar seus sonhos ✨",
-    "Pequenos passos também são progresso 🚶‍♀️",
-    "Você dá conta, sim! 🌷",
-    "Respira fundo… um passo de cada vez, você vai longe 🌿",
-    "Seu esforço de hoje é o brilho de amanhã 💫",
-    "Não precisa ser perfeito, só precisa ser feito 🧸",
-    "Você está exatamente onde precisa estar para começar 🌈",
-    "Até os dias nublados preparam lindos recomeços ☁️✨",
-    "Confia no processo, você está crescendo mesmo sem perceber 🌱",
-    "Cuide de você como cuida de quem ama 🧡",
-    "Hoje é um ótimo dia pra se orgulhar do que você já conquistou 🌷",
-    "Você já passou por tanta coisa… e segue firme! Isso é força 🦋",
-    "Se cansar, respira. Mas não desiste, tá? 🚶‍♀️💪"
-  ];
-
+  // 🌼 Frase do dia (igual você já tem)
+  const frases = [ /* suas frases aqui... */ ];
   const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
   const elementoFrase = document.getElementById("frase-do-dia");
-  if (elementoFrase) {
-    elementoFrase.textContent = fraseAleatoria;
-  }
+  if (elementoFrase) elementoFrase.textContent = fraseAleatoria;
 
   // 🧠 Alternância entre seções (abre/fecha ao clicar)
   const botoes = document.querySelectorAll('.menu-principal .btn');
@@ -35,17 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const tela = document.getElementById(telaId);
 
       if (tela.classList.contains('hidden')) {
-        // Fecha todas e abre a clicada
         telas.forEach(t => t.classList.add('hidden'));
         tela.classList.remove('hidden');
       } else {
-        // Fecha a clicada se já estiver aberta
         tela.classList.add('hidden');
       }
     });
   });
 
-  // 🔐 Botão de sair (logout)
+  // 🔐 Botão sair (logout)
   const btnSair = document.getElementById("btn-sair");
   if (btnSair) {
     btnSair.addEventListener("click", () => {
@@ -54,24 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 📅 Calendário com Pikaday
-  const datepicker = document.getElementById('datepicker');
-  const picker = new Pikaday({
-    field: datepicker,
-    format: 'DD/MM/YYYY',
-    i18n: {
-      previousMonth: 'Anterior',
-      nextMonth: 'Próximo',
-      months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-      weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-    },
-    onSelect: function() {
-      mostrarTarefasData(formatarDataISO(this.getDate()));
-    }
-  });
+  // Elementos da agenda
+  const listaAgendaDia = document.getElementById('lista-agenda-dia');
+  const inputBusca = document.getElementById('busca-tarefa');
+  const inputData = document.getElementById('filtro-data');
 
-  // Helper para formatar data para ISO yyyy-mm-dd
+  // Função para formatar data para ISO yyyy-mm-dd (para usar nas chaves do localStorage)
   function formatarDataISO(date) {
     const ano = date.getFullYear();
     const mes = String(date.getMonth() + 1).padStart(2, '0');
@@ -79,57 +45,67 @@ document.addEventListener('DOMContentLoaded', function () {
     return `${ano}-${mes}-${dia}`;
   }
 
-  // Container e lista da agenda
-  const listaAgendaContainer = document.getElementById('agenda-lista-container');
-  const listaAgenda = document.getElementById('lista-agenda');
-
-  // Função que carrega tarefas do localStorage para uma data e exibe na lista
-  function mostrarTarefasData(dataISO) {
-    // Pega tarefas salvas na chave 'tarefas-YYYY-MM-DD'
-    const tarefasSalvas = JSON.parse(localStorage.getItem(`tarefas-${dataISO}`)) || [];
-
-    if (tarefasSalvas.length > 0) {
-      listaAgendaContainer.style.display = 'block'; // mostra a lista
-      listaAgenda.innerHTML = ''; // limpa a lista antes
-
-      tarefasSalvas.forEach(tarefa => {
-        const li = document.createElement('li');
-        li.textContent = tarefa;
-        li.className = 'p-2 border-b border-pink-200';
-        listaAgenda.appendChild(li);
-      });
-    } else {
-      listaAgendaContainer.style.display = 'none'; // esconde lista se vazio
-      listaAgenda.innerHTML = '';
-    }
+  // Função para carregar tarefas de uma data (do localStorage)
+  function carregarTarefas(dataISO) {
+    return JSON.parse(localStorage.getItem(`tarefas-${dataISO}`)) || [];
   }
 
-  // Começa mostrando as tarefas de hoje (por padrão)
-  mostrarTarefasData(formatarDataISO(new Date()));
+  // Função para mostrar tarefas na lista, com ícone e filtro por texto
+  function mostrarTarefas(tarefas, filtro = '') {
+    listaAgendaDia.innerHTML = '';
 
-  // Eventos dos botões SPA (agenda, resumo, etc)
-  botoes.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const tela = botao.getAttribute('data-tela');
-      telas.forEach(t => t.classList.add('hidden'));
-      const telaSelecionada = document.getElementById(tela);
-      if (telaSelecionada) telaSelecionada.classList.remove('hidden');
+    const tarefasFiltradas = tarefas.filter(tarefa =>
+      tarefa.toLowerCase().includes(filtro.toLowerCase())
+    );
 
-      // Mostrar lista só se for a agenda
-      if (tela === 'agenda') {
-        listaAgendaContainer.style.display = 'block';
-      } else {
-        listaAgendaContainer.style.display = 'none';
-      }
+    if (tarefasFiltradas.length === 0) {
+      listaAgendaDia.innerHTML = '<li class="text-gray-500">Nenhuma tarefa encontrada.</li>';
+      return;
+    }
+
+    tarefasFiltradas.forEach(tarefa => {
+      const li = document.createElement('li');
+      li.className = 'flex items-center gap-2 p-2 bg-pink-50 rounded shadow-sm';
+
+      const icon = document.createElement('span');
+      icon.className = 'text-pink-400 text-lg';
+      icon.textContent = '🌸'; // ícone de florzinha
+
+      const texto = document.createElement('span');
+      texto.textContent = tarefa;
+
+      li.appendChild(icon);
+      li.appendChild(texto);
+      listaAgendaDia.appendChild(li);
     });
+  }
+
+  // Data selecionada atualmente (inicia com hoje)
+  let dataSelecionada = formatarDataISO(new Date());
+
+  // Carrega e mostra tarefas da data selecionada, aplicando filtro de busca
+  function atualizarLista() {
+    const tarefas = carregarTarefas(dataSelecionada);
+    const filtro = inputBusca.value.trim();
+    mostrarTarefas(tarefas, filtro);
+  }
+
+  // Eventos dos inputs
+  inputData.value = dataSelecionada; // coloca hoje no input date
+
+  inputData.addEventListener('change', () => {
+    if (inputData.value) {
+      dataSelecionada = inputData.value;
+      atualizarLista();
+    }
   });
+
+  inputBusca.addEventListener('input', () => {
+    atualizarLista();
+  });
+
+  // Carrega as tarefas iniciais de hoje
+  atualizarLista();
+
+  // Você pode adicionar aqui o resto do seu código que já tem
 });
-
-
-const hojeISO = '2025-06-17'; // data no formato ISO
-const minhasTarefas = [
-  'Comprar arroz',
-  'Lavar roupa',
-  'Estudar JavaScript',
-];
-localStorage.setItem(`tarefas-${hojeISO}`, JSON.stringify(minhasTarefas));
