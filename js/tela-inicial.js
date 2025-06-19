@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // 🌼 Frase do dia (igual você já tem)
-  const frases = [ /* suas frases aqui... */ ];
+  const frases = [ /* suas frases aqui... */];
   const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
   const elementoFrase = document.getElementById("frase-do-dia");
   if (elementoFrase) elementoFrase.textContent = fraseAleatoria;
@@ -109,3 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Você pode adicionar aqui o resto do seu código que já tem
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  new Pikaday({
+    field: document.getElementById('datepicker'),
+    format: 'DD/MM/YYYY',
+    i18n: {
+      previousMonth: 'Mês anterior',
+      nextMonth: 'Próximo mês',
+      months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+    },
+    firstDay: 1,
+  });
+});
+
