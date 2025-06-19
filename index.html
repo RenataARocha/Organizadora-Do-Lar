@@ -47,10 +47,18 @@
             class="w-full max-w-[390px] h-[43px] rounded-[10px] border border-pink-400 pl-2 text-base mt-[22px] focus:outline-none focus:ring-2 focus:ring-pink-300"
             placeholder="E-mail" inputmode="email" />
 
-          <!-- Input Senha -->
-          <input id="password" type="password" name="password" autocomplete="current-password"
-            class="w-full max-w-[390px] h-[43px] rounded-[10px] border border-pink-400 pl-2 text-base mt-[22px] focus:outline-none focus:ring-2 focus:ring-pink-300"
-            placeholder="Senha" />
+          <!-- Input Senha com ícone olho -->
+          <div class="relative w-full max-w-[390px] mt-[22px]">
+            <input id="password" type="password" name="password" autocomplete="current-password"
+              class="w-full h-[43px] rounded-[10px] border border-pink-400 pl-2 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-pink-300"
+              placeholder="Senha" />
+
+            <button type="button" id="togglePassword"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-pink-400 text-xl focus:outline-none">
+              <i class="fa-solid fa-eye" id="icon-eye"></i>
+            </button>
+          </div>
+
 
           <!-- Botão Entrar -->
           <button id="btn-entrar"

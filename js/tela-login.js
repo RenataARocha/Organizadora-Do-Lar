@@ -111,3 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnInstalar) btnInstalar.style.display = "none";
   }
 });
+
+
+const passwordInput = document.getElementById('password');
+const togglePassword = document.getElementById('togglePassword');
+const iconEye = document.getElementById('icon-eye');
+
+togglePassword.addEventListener('click', () => {
+  const isPassword = passwordInput.type === 'password';
+  passwordInput.type = isPassword ? 'text' : 'password';
+
+  // Alterna o ícone
+  iconEye.classList.toggle('fa-eye');
+  iconEye.classList.toggle('fa-eye-slash');
+});
