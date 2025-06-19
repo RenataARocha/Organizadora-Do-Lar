@@ -23,11 +23,11 @@ function carregarTarefas() {
 function renderizarTarefas() {
   listaTarefas.innerHTML = ''; // limpa a lista
 
-  if (tarefas.length === 0) {
-    mensagemVazia.style.display = 'block';
+   if (tarefas.length === 0) {
+    mensagemVazia.classList.remove('hidden');
     return;
   } else {
-    mensagemVazia.style.display = 'none';
+    mensagemVazia.classList.add('hidden');
   }
 
   tarefas.forEach((tarefa, index) => {
