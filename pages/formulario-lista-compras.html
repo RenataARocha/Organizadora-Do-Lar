@@ -11,10 +11,11 @@
   <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="manifest" href="../pwa/manifest.json" />
-  
+
 </head>
 
 <body class="bg-rose-50 font-sans text-gray-800 p-4">
@@ -28,7 +29,7 @@
 
   <form id="form-compras"
     class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
-    
+
     <div class="campo mb-6 flex flex-col">
       <label for="item-nome" class="text-base font-semibold mb-2 text-gray-700">Nome do item</label>
       <input type="text" id="item-nome" required
@@ -84,13 +85,14 @@
       Nenhum remédio adicionado ainda <span class="ml-2">🥺</span>
     </p>
 
-   
+
     <ul id="lista-compras"
       class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0">
     </ul>
   </div>
 
-  
+
+  <script src="../js/alarme.js"></script>
   <script src="../js/formulario-lista-compras.js"></script>
 </body>
 

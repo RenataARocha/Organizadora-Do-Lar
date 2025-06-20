@@ -33,14 +33,14 @@
   </div>
 
   <!-- FORMULÁRIO -->
-  <form class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
+  <form
+    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
 
     <div class="campo">
 
       <div class="mb-6 flex flex-col">
         <label for="comodo" class="mb-2 text-base font-semibold text-gray-700">Cômodo</label>
-        <select
-          id="comodo"
+        <select id="comodo"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="">Selecione</option>
           <option>Cozinha</option>
@@ -56,8 +56,7 @@
 
       <div class="mb-6 flex flex-col">
         <label for="tarefa" class="mb-2 text-base font-semibold text-gray-700">Tarefa</label>
-        <select
-          id="tarefa"
+        <select id="tarefa"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="">Selecione</option>
           <option>Varrer</option>
@@ -81,8 +80,7 @@
 
       <div class="mb-6 flex flex-col">
         <label for="frequencia" class="mb-2 text-base font-semibold text-gray-700">Frequência</label>
-        <select
-          id="frequencia"
+        <select id="frequencia"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option>Diária</option>
           <option>Semanal</option>
@@ -92,33 +90,25 @@
 
       <div class="mb-6 flex flex-col">
         <label for="dia" class="mb-2 text-base font-semibold text-gray-700">Dia da Limpeza</label>
-        <input
-          type="date"
-          id="dia"
+        <input type="date" id="dia"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
         <label for="inputHorarioConsulta" class="mb-2 text-base font-semibold text-gray-700">Horário</label>
-        <input
-          type="time"
-          id="inputHorarioConsulta"
+        <input type="time" id="inputHorarioConsulta"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
         <label for="lembrete-data" class="mb-2 text-base font-semibold text-gray-700">Data do Lembrete</label>
-        <input
-          type="date"
-          id="lembrete-data"
+        <input type="date" id="lembrete-data"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
         <label for="lembrete-hora" class="mb-2 text-base font-semibold text-gray-700">Hora do Lembrete</label>
-        <input
-          type="time"
-          id="lembrete-hora"
+        <input type="time" id="lembrete-hora"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
@@ -136,20 +126,20 @@
 
   <div class="relative max-w-[500px] mx-auto my-8">
 
- 
+
     <p id="mensagemVazia" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
           text-center text-gray-500 italic z-10 whitespace-nowrap">
       Nenhum remédio adicionado ainda <span class="ml-2">🥺</span>
     </p>
 
- 
+
     <ul id="lista-limpezas" class="bg-white p-4 rounded shadow-lg list-unstyled
              max-h-80 overflow-y-auto pr-2 relative z-0">
     </ul>
   </div>
 
-  
 
+  <script src="../js/alarme.js"></script>
   <script src="../js/formulario-limpeza.js"></script>
 </body>
 
