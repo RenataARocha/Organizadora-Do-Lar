@@ -117,25 +117,24 @@ document.addEventListener('DOMContentLoaded', function () {
     ? "/Organizadora-Do-Lar/pages/"
     : "pages/";
 
-  const links = {
-    "link-tarefa": "formulario-tarefa.html",
-    "link-meta": "formulario-meta.html",
-    "link-consultas": "formulario-consultas.html",
-    "link-contas": "formulario-contas.html",
-    "link-compras": "formulario-compras.html",
-    "link-cardapio": "formulario-cardapio.html",
-    "link-remedios": "formulario-remedios.html",
-    "link-financas": "formulario-financas.html",
-    "link-limpeza": "formulario-limpeza.html",
-    "link-skincare": "formulario-skincare.html",
-    "link-cronograma": "formulario-cronograma.html"
+   const links = {
+    "link-tarefa": "pages/formulario-tarefa.html",
+    "link-meta": "pages/formulario-meta.html",
+    "link-consultas": "pages/formulario-consultas.html",
+    "link-contas": "pages/formulario-contas.html",
+    "link-compras": "pages/formulario-compras.html",
+    "link-cardapio": "pages/formulario-cardapio.html",
+    "link-remedios": "pages/formulario-remedios.html",
+    "link-financas": "pages/formulario-financas.html",
+    "link-limpeza": "pages/formulario-limpeza.html",
+    "link-skincare": "pages/formulario-skincare.html",
+    "link-cronograma": "pages/formulario-cronograma.html"
   };
 
   for (const id in links) {
     const el = document.getElementById(id);
     if (el) {
-      el.href = base + links[id];
+      el.setAttribute("href", links[id]);
     }
   }
-
 });
