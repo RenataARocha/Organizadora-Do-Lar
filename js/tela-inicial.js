@@ -117,19 +117,20 @@ document.addEventListener('DOMContentLoaded', function () {
     ? "/Organizadora-Do-Lar/pages/"
     : "pages/";
 
-   const links = {
-  "link-tarefa": "formulario-tarefa.html",
-  "link-meta": "formulario-meta.html",
-  "link-consultas": "formulario-consultas.html",
-  "link-contas": "formulario-contas.html",
-  "link-compras": "formulario-compras.html",
-  "link-cardapio": "formulario-cardapio.html",
-  "link-remedios": "formulario-remedios.html",
-  "link-financas": "formulario-financas.html",
-  "link-limpeza": "formulario-limpeza.html",
-  "link-skincare": "formulario-skincare.html",
-  "link-cronograma": "formulario-cronograma-capilar.html"
+ const links = {
+  "link-tarefa": base + "formulario-tarefa.html",
+  "link-meta": base + "formulario-meta.html",
+  "link-consultas": base + "formulario-consultas.html",
+  "link-contas": base + "formulario-contas.html",
+  "link-compras": base + "formulario-compras.html",
+  "link-cardapio": base + "formulario-cardapio.html",
+  "link-remedios": base + "formulario-remedios.html",
+  "link-financas": base + "formulario-financas.html",
+  "link-limpeza": base + "formulario-limpeza.html",
+  "link-skincare": base + "formulario-skincare.html",
+  "link-cronograma": base + "formulario-cronograma-capilar.html"
 };
+
 
 
   for (const id in links) {
