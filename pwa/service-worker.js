@@ -1,10 +1,9 @@
-const CACHE_NAME = 'organizadora-cache-v1';
 const FILES_TO_CACHE = [
-  '/',                     // raiz, se o site abrir direto aqui
+  '/',                     
   '/pages/index.html',     
   '/pages/offline.html',
   '/pwa/manifest.json',
-  '/pages/formulario.css',       // se o css está na pasta pages
+  '/pages/formulario.css',
   '/pages/styles.css',
   '/pages/responsive.css',
   '/pages/script.js',
@@ -22,30 +21,12 @@ const FILES_TO_CACHE = [
   '/assets/icon-512.png'
 ];
 
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(FILES_TO_CACHE))
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null)
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-      .catch(() => caches.match('/offline.html'))
-  );
+FILES_TO_CACHE.forEach(async path => {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) console.error(`❌ Falhou: ${path} - Status ${res.status}`);
+    else console.log(`✅ OK: ${path}`);
+  } catch (err) {
+    console.error(`❌ Erro fatal: ${path}`, err);
+  }
 });

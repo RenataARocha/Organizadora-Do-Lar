@@ -1,3 +1,6 @@
+import { abrirBanco, salvarTarefa, listarTarefas } from './banco.js';
+
+
 // Pegando os elementos
 const form = document.getElementById('form-task');
 const listaTarefas = document.getElementById('lista-tarefas');
@@ -223,3 +226,11 @@ if (btnSair) {
     window.location.href = "../index.html";
   });
 }
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await abrirBanco();
+
+  const tarefas = await listarTarefas();
+  console.log(tarefas);
+});

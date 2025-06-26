@@ -51,28 +51,17 @@
     <!-- Navegação -->
     <nav class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 mb-6 menu-principal">
       <!-- Links fixos -->
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-tarefa.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Tarefa</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-meta.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Meta</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-consultas.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Consultas e Exames</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-contas.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Contas a Pagar</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-lista-compras.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Lista de Compras</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-cardapio.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cardápio Semanal</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-remedios.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle de Remédios</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-financas.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle Financeiro</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-limpeza.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Rotina de Limpeza</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-skincare.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Skincare Diário</a>
-      <a target="_blank" href="/Organizadora-Do-Lar/pages/formulario-cronograma-capilar.html"
-        class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cronograma Capilar</a>
+      <a id="link-tarefa" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Tarefa</a>
+      <a id="link-meta" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Adicionar Meta</a>
+      <a id="link-consultas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Consultas e Exames</a>
+      <a id="link-contas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Contas a Pagar</a>
+      <a id="link-compras" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Lista de Compras</a>
+      <a id="link-cardapio" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cardápio Semanal</a>
+      <a id="link-remedios" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle de Remédios</a>
+      <a id="link-financas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Controle Financeiro</a>
+      <a id="link-limpeza" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Rotina de Limpeza</a>
+      <a id="link-skincare" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Skincare Diário</a>
+      <a id="link-cronograma" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded">Cronograma Capilar</a>
 
       <!-- Botões SPA -->
       <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="agenda">Agenda do
@@ -107,7 +96,7 @@
       </ul>
     </section>
 
-    
+
 
     <section id="resumo" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
       <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Resumo da Semana</h2>
@@ -139,14 +128,10 @@
 
 
   <!-- Input de calendário no final da tela inicial -->
-<div class="flex justify-center items-center">
-  <input
-    type="date"
-    id="datepicker"
-    placeholder="Escolha uma data"
-    class="border border-pink-300 rounded px-3 py-2 mt-4 text-pink-600 w-full max-w-sm"
-  />
-</div>
+  <div class="flex justify-center items-center">
+    <input type="date" id="datepicker" placeholder="Escolha uma data"
+      class="border border-pink-300 rounded px-3 py-2 mt-4 text-pink-600 w-full max-w-sm" />
+  </div>
 
 
   <!-- Botão fixo no canto inferior direito -->

@@ -35,3 +35,9 @@ firebase-debug.log
 NTUSER.DAT*
 ntuser.dat.LOG*
 ntuser.ini
+
+# Pastas do Node e builds que não devem ir pro Git
+node_modules/
+android/
+www/
+nome-do-projeto/
