@@ -113,9 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
   atualizarLista();
 
   // 🌐 LINKS DINÂMICOS para as abas
-  const base = window.location.hostname.includes("github.io")
-    ? "/Organizadora-Do-Lar/pages/"
-    : "pages/";
+ const base = "pages/";
+
 
  const links = {
   "link-tarefa": base + "formulario-tarefa.html",
