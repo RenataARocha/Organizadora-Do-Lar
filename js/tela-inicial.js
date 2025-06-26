@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
   "link-meta": base + "formulario-meta.html",
   "link-consultas": base + "formulario-consultas.html",
   "link-contas": base + "formulario-contas.html",
-  "link-compras": base + "formulario-compras.html",
+  "link-compras": base + "formulario-lista-compras.html",
   "link-cardapio": base + "formulario-cardapio.html",
   "link-remedios": base + "formulario-remedios.html",
   "link-financas": base + "formulario-financas.html",
