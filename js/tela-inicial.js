@@ -133,9 +133,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   for (const id in links) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.setAttribute("href", links[id]);
-    }
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener("click", () => {
+      window.location.href = links[id];
+    });
   }
+}
+
 });
