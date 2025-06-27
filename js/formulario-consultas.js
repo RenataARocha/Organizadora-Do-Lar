@@ -1,3 +1,8 @@
+// Iniciar ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+  carregarConsultas();
+  gerarDicaSaude();
+  
 // Selecionando elementos
 const form = document.getElementById('form-consultas');
 const listaConsultas = document.getElementById('lista-consultas');
@@ -156,8 +161,5 @@ function gerarDicaSaude() {
   dicaSaude.textContent = dicas[indiceAleatorio];
 }
 
-// Iniciar ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-  carregarConsultas();
-  gerarDicaSaude();
+
 });

@@ -1,4 +1,10 @@
-// ---------- Dica Financeira do Dia ----------
+// Inicialização
+document.addEventListener("DOMContentLoaded", () => {
+  exibirDicaFinanceira();
+  atualizarCategorias(tipoSelect.value);
+  exibirFinancas();
+  
+  // ---------- Dica Financeira do Dia ----------
 const dicasFinanceiras = [
   "Anote todos os seus gastos, até os pequenos. Eles fazem diferença no fim do mês!",
   "Evite parcelar compras no cartão. Prefira pagar à vista com desconto!",
@@ -165,9 +171,5 @@ form.addEventListener("submit", (e) => {
   atualizarCategorias(tipo);
 });
 
-// Inicialização
-document.addEventListener("DOMContentLoaded", () => {
-  exibirDicaFinanceira();
-  atualizarCategorias(tipoSelect.value);
-  exibirFinancas();
+
 });

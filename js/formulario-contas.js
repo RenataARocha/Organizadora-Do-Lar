@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     mensagemVazia.style.display = "none";
 
-contas.forEach((conta, index) => {
-  const li = document.createElement("li");
-  li.classList.add(
-    "mb-4", "p-3", "rounded-lg", "shadow", 
-    "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
-  );
+    contas.forEach((conta, index) => {
+      const li = document.createElement("li");
+      li.classList.add(
+        "mb-4", "p-3", "rounded-lg", "shadow",
+        "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
+      );
 
-  li.innerHTML = `
+      li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
     <div class="flex-1 space-y-1 text-base font-semibold">
       <p>
@@ -37,7 +37,7 @@ contas.forEach((conta, index) => {
           <span class="text-pink-500">Descrição:</span>
           <span class="text-black italic">${conta.descricao}</span>
         </p>` : ''
-      }
+        }
       <p>
         <span class="text-pink-500">💰 Valor:</span>
         <span class="text-black">R$ ${Number(conta.valor).toFixed(2)}</span>
@@ -74,10 +74,10 @@ contas.forEach((conta, index) => {
       </span>
     </button>
   </div>
-`;
+ `;
 
 
-listaContas.appendChild(li);
+      listaContas.appendChild(li);
 
     });
   }
@@ -96,8 +96,8 @@ listaContas.appendChild(li);
       vencimento: document.getElementById("conta-vencimento").value,
       paga: document.getElementById("conta-paga").value,
       repetir: document.getElementById("conta-repetir").value,
-    lembreteData: document.querySelector("#conta-lembrete-data").value,
-  lembreteHora: document.querySelector("#conta-lembrete-hora").value
+      lembreteData: document.querySelector("#conta-lembrete-data").value,
+      lembreteHora: document.querySelector("#conta-lembrete-hora").value
     };
 
     contas.push(novaConta);

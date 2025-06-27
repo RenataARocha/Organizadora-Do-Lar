@@ -1,20 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // 🔗 Elementos da página
   const btnEntrar = document.getElementById("btn-entrar");
   const btnCriarConta = document.getElementById("btn-criar-conta");
   const btnInstalar = document.getElementById("btn-instalar");
+  const passwordInput = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  const iconEye = document.getElementById('icon-eye');
 
-  // 🔐 Verifica se já tem um usuário logado
+  // 🔐 Verifica se já tem usuário logado
   const usuarioLogado = localStorage.getItem("usuarioLogado");
   if (usuarioLogado) {
-    // Redireciona automaticamente se já estiver logado
     window.location.href = "pages/tela-inicial.html";
-    return; // impede que o resto do código execute
+    return;
   }
 
-  // Criar Conta
-  btnCriarConta.addEventListener("click", () => {
+  // 👁️ Alternar visibilidade da senha
+  if (togglePassword && passwordInput && iconEye) {
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+
+      iconEye.classList.toggle("fa-eye");
+      iconEye.classList.toggle("fa-eye-slash");
+    });
+  }
+
+  // ➕ Criar conta
+  btnCriarConta?.addEventListener("click", () => {
     const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("password").value.trim();
+    const senha = passwordInput.value.trim();
 
     if (!email || !senha) {
       alert("Preencha todos os campos para criar conta!");
@@ -28,14 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem(email, senha);
     alert("Conta criada com sucesso! Agora faça login.");
+
     document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
+    passwordInput.value = "";
   });
 
-  // Entrar/Login
-  btnEntrar.addEventListener("click", () => {
+  // 🔐 Login
+  btnEntrar?.addEventListener("click", () => {
     const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("password").value.trim();
+    const senha = passwordInput.value.trim();
 
     if (!email || !senha) {
       alert("Preencha todos os campos!");
@@ -51,11 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (senha === senhaArmazenada) {
       alert("Login bem-sucedido! 🚀");
-
-      // 💾 Salva que o usuário está logado
       localStorage.setItem("usuarioLogado", email);
 
-      // Redireciona
       setTimeout(() => {
         window.location.href = "pages/tela-inicial.html";
       }, 500);
@@ -64,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Service Worker para PWA
+  // 📲 Service Worker para PWA
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
@@ -74,54 +86,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Lógica para botão "Instalar App" PWA
+  // 📥 Instalação do App (PWA)
   let deferredPrompt;
-
   window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // bloqueia o prompt automático
+    e.preventDefault();
     deferredPrompt = e;
 
     if (btnInstalar) {
       btnInstalar.style.display = "block";
-
-      btnInstalar.addEventListener(
-        "click",
-        () => {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === "accepted") {
-              console.log("Usuário aceitou a instalação!");
-            } else {
-              console.log("Usuário rejeitou a instalação!");
-            }
-            deferredPrompt = null;
-            btnInstalar.style.display = "none";
-          });
-        },
-        { once: true }
-      );
+      btnInstalar.addEventListener("click", () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("Usuário aceitou a instalação!");
+          } else {
+            console.log("Usuário rejeitou a instalação.");
+          }
+          deferredPrompt = null;
+          btnInstalar.style.display = "none";
+        });
+      }, { once: true });
     }
   });
 
-  // Esconder botão se app já instalado
+  // Esconde botão se app já estiver instalado
   if (
     window.matchMedia("(display-mode: standalone)").matches ||
     window.navigator.standalone === true
   ) {
     if (btnInstalar) btnInstalar.style.display = "none";
   }
-});
-
-
-const passwordInput = document.getElementById('password');
-const togglePassword = document.getElementById('togglePassword');
-const iconEye = document.getElementById('icon-eye');
-
-togglePassword.addEventListener('click', () => {
-  const isPassword = passwordInput.type === 'password';
-  passwordInput.type = isPassword ? 'text' : 'password';
-
-  // Alterna o ícone
-  iconEye.classList.toggle('fa-eye');
-  iconEye.classList.toggle('fa-eye-slash');
 });
