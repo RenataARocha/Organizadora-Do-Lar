@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // 🌼 Frase do dia
-  const frases = [ /* suas frases aqui... */ ];
+  const frases = [ /* suas frases aqui... */];
   const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
   const elementoFrase = document.getElementById("frase-do-dia");
   if (elementoFrase) elementoFrase.textContent = fraseAleatoria;
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
     i18n: {
       previousMonth: 'Mês anterior',
       nextMonth: 'Próximo mês',
-      months: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-      weekdays: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-      weekdaysShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']
+      months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
     },
     firstDay: 1,
   });
@@ -112,33 +112,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   atualizarLista();
 
+ 
+
   // 🌐 LINKS DINÂMICOS para as abas
- const base = "pages/";
+const base = window.location.pathname.includes("pages") ? "" : "pages/";
 
-
- const links = {
-  "link-tarefa": base + "formulario-tarefa.html",
-  "link-meta": base + "formulario-meta.html",
-  "link-consultas": base + "formulario-consultas.html",
-  "link-contas": base + "formulario-contas.html",
-  "link-compras": base + "formulario-lista-compras.html",
-  "link-cardapio": base + "formulario-cardapio.html",
-  "link-remedios": base + "formulario-remedios.html",
-  "link-financas": base + "formulario-financas.html",
-  "link-limpeza": base + "formulario-limpeza.html",
-  "link-skincare": base + "formulario-skincare.html",
-  "link-cronograma": base + "formulario-cronograma-capilar.html"
+const links = {
+  "link-tarefa": "formulario-tarefa.html",
+  "link-meta": "formulario-meta.html",
+  "link-consultas": "formulario-consultas.html",
+  "link-contas": "formulario-contas.html",
+  "link-compras": "formulario-lista-compras.html",
+  "link-cardapio": "formulario-cardapio.html",
+  "link-remedios": "formulario-remedios.html",
+  "link-financas": "formulario-financas.html",
+  "link-limpeza": "formulario-limpeza.html",
+  "link-skincare": "formulario-skincare.html",
+  "link-cronograma": "formulario-cronograma-capilar.html"
 };
 
-
-
-  for (const id in links) {
+for (const id in links) {
   const el = document.getElementById(id);
   if (el) {
     el.addEventListener("click", () => {
-      window.location.href = links[id];
+      window.location.href = base + links[id];
     });
   }
 }
+
 
 });
