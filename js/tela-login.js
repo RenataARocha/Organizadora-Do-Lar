@@ -8,11 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const iconEye = document.getElementById('icon-eye');
 
   // 🔐 Verifica se já tem usuário logado
-  const usuarioLogado = localStorage.getItem("usuarioLogado");
-  if (usuarioLogado) {
-    window.location.href = "pages/tela-inicial.html";
-    return;
-  }
+ if (senha === senhaArmazenada) {
+  alert("Login bem-sucedido! 🚀");
+  localStorage.setItem("usuarioLogado", email);
+
+  setTimeout(() => {
+    window.location.href = "/pages/tela-inicial.html"; 
+  }, 500);
+} else {
+  alert("Senha incorreta!");
+}
 
   // 👁️ Alternar visibilidade da senha
   if (togglePassword && passwordInput && iconEye) {
