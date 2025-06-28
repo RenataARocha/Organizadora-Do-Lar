@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Login bem-sucedido! 🚀");
       localStorage.setItem("usuarioLogado", email);
       setTimeout(() => {
-        window.location.href = "pages/tela-inicial.html";
+        window.location.href = base + "tela-inicial.html";
       }, 500);
     } else {
       alert("Senha incorreta!");

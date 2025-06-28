@@ -116,15 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
 
   // 🌐 LINKS DINÂMICOS para as abas
- let base = "";
-
-if (window.location.hostname.includes("github.io")) {
-  base = "/Organizadora-Do-Lar/pages/";
-} else if (window.location.protocol === "file:") {
-  base = "./";
-} else {
-  base = "./";
-}
+let base = "pages/";
 
 
 
