@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizadora do Lar</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <!-- Manifesto do app PWA -->
+  <link rel="manifest" href="pwa/manifest.json" />
+
+
+  <!-- Cor da barra do celular -->
+  <meta name="theme-color" content="#f6cce5" />
+  <base href="">
+
+</head>
+
+<body class="theme-rosa bg-rose-50 font-sans text-gray-800 min-h-screen flex items-center justify-center">
+  <div id="resultado"></div>
+
+  <div class="container max-w-xl mx-auto px-4">
+
+    <!-- Tela de Login -->
+    <div id="container" class="text-center">
+      <h1 class="text-3xl font-bold mb-4"></h1>
+
+      <!-- Container -->
+      <div class="max-w-xl bg-white rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg">
+        <img src="assets/florzinha.png" alt="imagem-de-florzinha" class="w-10 h-10" />
+
+        <section id="tela-login" class="flex flex-col items-center justify-center  px-4">
+          <h2 class="text-3xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">
+            Organizadora do Lar
+          </h2>
+
+          <!-- Input E-mail -->
+          <input id="email"
+            class="w-full max-w-[390px] h-[43px] rounded-[10px] border border-pink-400 pl-2 text-base mt-[22px] focus:outline-none focus:ring-2 focus:ring-pink-300"
+            placeholder="E-mail" inputmode="email" />
+
+          <!-- Input Senha com ícone olho -->
+          <div class="relative w-full max-w-[390px] mt-[22px]">
+            <input id="password" type="password" name="password" autocomplete="current-password"
+              class="w-full h-[43px] rounded-[10px] border border-pink-400 pl-2 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-pink-300"
+              placeholder="Senha" />
+
+            <button type="button" id="togglePassword"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-pink-400 text-xl focus:outline-none">
+              <i class="fa-solid fa-eye" id="icon-eye"></i>
+            </button>
+          </div>
+
+          <!-- Botão Entrar -->
+          <button id="btn-entrar"
+            class="relative w-full max-w-[390px] h-[43px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+            Entrar
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+              &#xf004;
+            </span>
+          </button>
+
+          <!-- Botão Criar Conta -->
+          <button id="btn-criar-conta"
+            class="relative w-full max-w-[390px] h-[43px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+            Criar Conta
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+              &#xf004;
+            </span>
+          </button>
+
+          <!-- Botão Instalar App (inicialmente escondido) -->
+          <button id="btn-instalar" style="display:none;"
+            class="relative w-full max-w-[390px] h-[43px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+            📲 Instalar App
+          </button>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="js/banco.js"></script>
+  <script src="js/alarme.js"></script>
+  <script defer src="../js/tela-login.js"></script>
+
+</body>
+
+</html>

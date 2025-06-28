@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova Tarefa</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="../pwa/manifest.json" />
+
+</head>
+
+<body class="bg-rose-50 font-sans text-gray-800 p-4">
+
+  <div id="resultado"></div>
+
+  <!-- HTML dentro da seção de tarefas -->
+  <div class="bg-slate-100 p-4 rounded shadow mb-4">
+    <h2 class="text-lg font-bold mb-2" style="font-family: 'Dancing Script', cursive;">
+      Sugestão de Tarefa ✅
+    </h2>
+    <p id="sugestao-tarefa" class="text-sm text-gray-600">Carregando sugestão...</p>
+  </div>
+
+  <!-- Formulário de Tarefas -->
+  <form id="form-task"
+    class="mb-6 bg-white p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans bg-[var(--fundo-form)]">
+
+    <div class="campo">
+      <label class="text-base font-semibold" for="task-title">Título da tarefa</label>
+      <input type="text" id="task-title" name="task-title"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+
+    <div class="campo">
+      <label class="text-base font-semibold" for="task-description">Descrição</label>
+      <textarea id="task-description" name="task-description" rows="3"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200 placeholder:text-gray-400"
+        placeholder="Descreva a tarefa aqui..."></textarea>
+    </div>
+
+    <div class="campo mb-4">
+      <label for="task-topic" class="block text-base font-semibold text-gray-700 mb-1">Categoria</label>
+      <select id="task-topic" name="task-topic"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="lar">Lar</option>
+        <option value="estudo">Estudo</option>
+        <option value="trabalho">Trabalho</option>
+        <option value="pessoal">Pessoal</option>
+      </select>
+    </div>
+
+    <div class="campo mb-4">
+      <label for="task-priority" class="block text-base font-semibold text-gray-700 mb-1">Prioridade</label>
+      <select id="task-priority" name="task-priority"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="low">Baixa</option>
+        <option value="medium" selected>Média</option>
+        <option value="high">Alta</option>
+      </select>
+    </div>
+
+    <div class="campo mb-4">
+      <label for="task-date" class="block text-base font-semibold text-gray-700 mb-1">Data</label>
+      <input type="date" id="task-date" name="task-date"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+
+    <div class="campo mb-4">
+      <label for="task-recurrence" class="block text-base font-semibold text-gray-700 mb-1">Recorrência</label>
+      <select id="task-recurrence" name="task-recurrence"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="none" selected>Sem recorrência</option>
+        <option value="daily">Diária</option>
+        <option value="weekly">Semanal</option>
+        <option value="monthly">Mensal</option>
+      </select>
+    </div>
+
+    <div class="campo campo-alarme mb-4">
+      <label for="task-alarm" class="block text-base font-semibold text-gray-700 mb-1">Alarme</label>
+      <input type="time" id="task-alarm" name="task-alarm"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+
+    <button id="add-task" type="submit"
+      class="relative w-full max-w-[500px] h-[47px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+      Adicionar Tarefa
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+        &#xf004;
+      </span>
+    </button>
+
+  </form>
+
+
+  <div class="relative max-w-[500px] mx-auto my-8">
+
+
+    <p id="mensagemVazia" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+          text-center text-gray-500 italic z-10 whitespace-nowrap">
+      Nenhum remédio adicionado ainda <span class="ml-2">🥺</span>
+    </p>
+
+
+    <ul id="lista-tarefas" class="bg-white p-4 rounded shadow-lg list-unstyled
+             max-h-80 overflow-y-auto pr-2 relative z-0">
+    </ul>
+  </div>
+
+
+  <script src="../js/alarme.js"></script>
+  <script type="module" src="../js/formulario-tarefa.js"></script>
+
+</body>
+
+</html>
