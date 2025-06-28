@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   localStorage.setItem("usuarioLogado", email);
 
   setTimeout(() => {
-    window.location.href = "/pages/tela-inicial.html"; // <-- MUDANÇA AQUI: Adicionada a barra inicial '/'
+    window.location.href = "pages/tela-inicial.html"; 
   }, 500);
 } else {
   alert("Senha incorreta!");

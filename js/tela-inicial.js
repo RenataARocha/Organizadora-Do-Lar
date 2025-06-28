@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnSair) {
     btnSair.addEventListener("click", () => {
       localStorage.removeItem("usuarioLogado");
-      window.location.href = "/index.html";
+      window.location.href = "../index.html";
     });
   }
 
@@ -113,17 +113,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   atualizarLista();
 
-  // 🌐 LINKS DINÂMICOS para as abas
+  
+
   // 🌐 LINKS DINÂMICOS para as abas
   let base = "";
 
 
   if (window.location.hostname.includes("github.io")) {
-    base = "/Organizadora-Do-Lar/pages/";
-  } else {
-
-    base = "/pages/";
-  }
+  base = "/Organizadora-Do-Lar/pages/"; 
+} else if (window.location.protocol === "file:") {
+  base = "pages/"; 
+} else {
+  base = "pages/"; 
+}
 
   const links = {
     "link-tarefa": "formulario-tarefa.html",
