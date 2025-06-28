@@ -64,16 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    
     if (senha === senhaArmazenada) {
-      alert("Login bem-sucedido! 🚀");
-      localStorage.setItem("usuarioLogado", email);
+  alert("Login bem-sucedido! 🚀");
+  localStorage.setItem("usuarioLogado", email);
 
-      setTimeout(() => {
-        window.location.href = "pages/tela-inicial.html";
-      }, 500);
-    } else {
-      alert("Senha incorreta!");
-    }
+  setTimeout(() => {
+    window.location.href = "/pages/tela-inicial.html"; // <-- MUDANÇA AQUI: Adicionada a barra inicial '/'
+  }, 500);
+} else {
+  alert("Senha incorreta!");
+}
   });
 
   // 📲 Service Worker para PWA

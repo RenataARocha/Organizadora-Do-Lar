@@ -23,12 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+
   // 🔐 Botão sair
   const btnSair = document.getElementById("btn-sair");
   if (btnSair) {
     btnSair.addEventListener("click", () => {
       localStorage.removeItem("usuarioLogado");
-      window.location.href = "../index.html";
+      window.location.href = "/index.html";
     });
   }
 
@@ -113,14 +114,15 @@ document.addEventListener('DOMContentLoaded', function () {
   atualizarLista();
 
   // 🌐 LINKS DINÂMICOS para as abas
+  // 🌐 LINKS DINÂMICOS para as abas
   let base = "";
+
 
   if (window.location.hostname.includes("github.io")) {
     base = "/Organizadora-Do-Lar/pages/";
-  } else if (window.location.protocol === "file:") {
-    base = "pages/"; // Executando no app Android com Capacitor
   } else {
-    base = "pages/";
+
+    base = "/pages/";
   }
 
   const links = {
@@ -141,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener("click", () => {
+
         window.location.href = base + links[id];
       });
     }
