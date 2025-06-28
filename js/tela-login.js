@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 🔗 Elementos da página
   const btnEntrar = document.getElementById("btn-entrar");
   const btnCriarConta = document.getElementById("btn-criar-conta");
   const btnInstalar = document.getElementById("btn-instalar");
@@ -7,24 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePassword = document.getElementById('togglePassword');
   const iconEye = document.getElementById('icon-eye');
 
-  // 🔐 Verifica se já tem usuário logado
- if (senha === senhaArmazenada) {
-  alert("Login bem-sucedido! 🚀");
-  localStorage.setItem("usuarioLogado", email);
-
-  setTimeout(() => {
-    window.location.href = "/pages/tela-inicial.html"; 
-  }, 500);
-} else {
-  alert("Senha incorreta!");
-}
-
   // 👁️ Alternar visibilidade da senha
   if (togglePassword && passwordInput && iconEye) {
     togglePassword.addEventListener("click", () => {
       const isPassword = passwordInput.type === "password";
       passwordInput.type = isPassword ? "text" : "password";
-
       iconEye.classList.toggle("fa-eye");
       iconEye.classList.toggle("fa-eye-slash");
     });
@@ -69,20 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    
     if (senha === senhaArmazenada) {
-  alert("Login bem-sucedido! 🚀");
-  localStorage.setItem("usuarioLogado", email);
-
-  setTimeout(() => {
-    window.location.href = "pages/tela-inicial.html"; 
-  }, 500);
-} else {
-  alert("Senha incorreta!");
-}
+      alert("Login bem-sucedido! 🚀");
+      localStorage.setItem("usuarioLogado", email);
+      setTimeout(() => {
+        window.location.href = "pages/tela-inicial.html";
+      }, 500);
+    } else {
+      alert("Senha incorreta!");
+    }
   });
 
-  // 📲 Service Worker para PWA
+  // 📲 Service Worker
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
@@ -92,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 📥 Instalação do App (PWA)
+  // 📥 Instalação do App
   let deferredPrompt;
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
