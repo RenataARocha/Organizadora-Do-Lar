@@ -1,5 +1,5 @@
 {
   "appId": "com.renata.organizadora",
   "appName": "Organizadora do Lar",
-  "webDir": "www"
+  "webDir": "organizador-web/dist"
 }
