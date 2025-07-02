@@ -4,5 +4,18 @@
     "@capacitor/android": "^7.4.0",
     "@capacitor/cli": "^7.4.0",
     "@capacitor/core": "^7.4.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "tailwindcss-cli": "^0.1.2",
+    "vite": "^7.0.0"
+  },
+  "scripts": {
+    "build:vite": "vite build",
+    "copy:pages": "xcopy pages dist\\pages /E /I /Y",
+    "build:tailwind": "tailwindcss-cli -i ./src/input.css -o ./web/css/style.css --minify",
+    "build": "npm run build:vite && npm run copy:pages && npm run build:tailwind"
   }
 }

@@ -1,5 +1,6 @@
 {
-  "appId": "com.renata.organizadora",
-  "appName": "Organizadora do Lar",
-  "webDir": "organizador-web/dist"
+  "appId": "com.renatarocha.organizador",
+  "appName": "Organizador do Lar",
+  "webDir": "web",
+  "bundledWebRuntime": false
 }
