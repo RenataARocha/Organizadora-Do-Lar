@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-compras');
   const listaCompras = document.getElementById('lista-compras');
@@ -124,4 +125,9 @@ listaCompras.appendChild(li);
   });
 
   atualizarLista();
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cardapio');
   const listaCardapio = document.getElementById('lista-cardapio');
@@ -165,4 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   mostrarDica();
   carregarCardapios();
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-meta');
@@ -132,4 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // INICIALIZA NA CARGA DA PÁGINA
   carregarMetas();
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

@@ -1,4 +1,5 @@
 import { abrirBanco, salvarTarefa, listarTarefas } from './banco.js';
+import { voltarParaHome } from './funcoes-globais.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await abrirBanco();
@@ -91,8 +92,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     listaAgenda.innerHTML = tarefasHoje.length === 0
       ? "<p>🎈 Nada marcado para hoje!</p>"
       : tarefasHoje.map(tarefa =>
-          `<li><strong>${tarefa.title}</strong> - ${tarefa.description || ''} às ${tarefa.alarm || 'sem horário'}</li>`
-        ).join('');
+        `<li><strong>${tarefa.title}</strong> - ${tarefa.description || ''} às ${tarefa.alarm || 'sem horário'}</li>`
+      ).join('');
   }
 
   // ⏰ VERIFICAR ALARME
@@ -159,4 +160,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 👀 Banco de dados (teste)
   const tarefasBanco = await listarTarefas();
   console.log('📦 Tarefas no banco:', tarefasBanco);
+
+
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
+
 });

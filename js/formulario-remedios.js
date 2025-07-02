@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener("DOMContentLoaded", () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.querySelector("form");
@@ -127,4 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarDica();
   setInterval(atualizarDica, 10000); // a cada 10s, nova dica
   atualizarListaRemedios();
+
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

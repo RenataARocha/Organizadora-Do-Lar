@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener("DOMContentLoaded", () => {
   // Referências dos elementos do DOM
   const form = document.querySelector("form");
@@ -161,5 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (dicaElemento) {
     dicaElemento.textContent =
       dicasLimpeza[Math.floor(Math.random() * dicasLimpeza.length)];
+  }
+
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
   }
 });

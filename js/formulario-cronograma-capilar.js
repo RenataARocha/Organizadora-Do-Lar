@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', () => {
   // Seleciona os elementos do DOM
   const form = document.getElementById('form-cronograma');
@@ -173,4 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Chama as funções iniciais quando o DOM estiver pronto
   atualizarLista();
   mostrarDicaCapilar();
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

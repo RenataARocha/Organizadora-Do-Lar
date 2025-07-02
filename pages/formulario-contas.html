@@ -6,14 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contas a Pagar</title>
 
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
- <link rel="manifest" href="../pwa/manifest.json" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="manifest" href="../pwa/manifest.json" />
 
 </head>
 
@@ -27,7 +29,8 @@
   </div>
 
   <!-- Formulário de Contas a Pagar -->
-  <form id="form-contas" class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
+  <form id="form-contas"
+    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
 
     <div class="campo mb-6 flex flex-col">
       <label for="conta-nome" class="text-base font-semibold mb-2 text-gray-700">Nome da conta</label>
@@ -103,6 +106,17 @@
              max-h-80 overflow-y-auto pr-2 relative z-0">
     </ul>
   </div>
+
+
+  <button id="btn-voltar"
+    class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+    ← Voltar
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+      &#xf104;
+    </span>
+  </button>
+
 
 
   <script src="../js/alarme.js"></script>

@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("form-contas");
   const listaContas = document.getElementById("lista-contas");
@@ -141,4 +142,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Inicialização
   renderizarContas();
   gerarDicaFinanceira();
+
+  const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
 });

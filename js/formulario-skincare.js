@@ -1,3 +1,4 @@
+import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-skincare');
@@ -154,3 +155,8 @@ function mostrarDica() {
 }
 
 window.addEventListener('load', mostrarDica);
+
+const botaoVoltar = document.getElementById('btn-voltar');
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
