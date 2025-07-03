@@ -4,34 +4,24 @@ import { voltarParaHome } from './funcoes-globais.js';
 document.addEventListener('DOMContentLoaded', async () => {
   await abrirBanco();
 
-  // 🔗 ELEMENTOS DA INTERFACE
+  // ELEMENTOS
   const form = document.getElementById('form-task');
   const listaTarefas = document.getElementById('lista-tarefas');
   const mensagemVazia = document.getElementById('mensagemVazia');
   const sugestaoTarefa = document.getElementById('sugestao-tarefa');
   const btnSair = document.getElementById("btn-sair");
+  const botaoVoltar = document.getElementById('btn-voltar');
+  const listaAgenda = document.getElementById("lista-agenda");
 
   let tarefas = [];
 
-  // 🔄 LOCALSTORAGE
-  function salvarTarefas() {
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
-  }
-
-  function carregarTarefas() {
-    const dados = localStorage.getItem('tarefas');
-    if (dados) tarefas = JSON.parse(dados);
-  }
-
-  // 📝 RENDERIZA LISTA DE TAREFAS
+  // MOSTRAR TAREFAS NA TELA
   function renderizarTarefas() {
     listaTarefas.innerHTML = '';
-
     if (tarefas.length === 0) {
       mensagemVazia.style.display = 'block';
       return;
     }
-
     mensagemVazia.style.display = 'none';
 
     tarefas.forEach((tarefa, index) => {
@@ -53,22 +43,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                   data-index="${index}" title="Remover tarefa">Remover</button>
         </div>
       `;
-
       listaTarefas.appendChild(li);
     });
 
-    // 🔥 Eventos de remoção
+    // REMOVER TAREFA
     document.querySelectorAll('.btn-remover').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const idx = e.currentTarget.getAttribute('data-index');
         tarefas.splice(idx, 1);
-        salvarTarefas();
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
         renderizarTarefas();
+        mostrarAgendaDoDia();
       });
     });
   }
 
-  // 🎁 DICA ALEATÓRIA
+  // SUGESTÃO
   function mostrarSugestao() {
     const sugestoes = [
       'Lavar a louça', 'Estudar JavaScript', 'Organizar o armário', 'Fazer caminhada',
@@ -81,9 +71,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     sugestaoTarefa.textContent = sugestoes[indice];
   }
 
-  // 📆 AGENDA DO DIA
+  // AGENDA DO DIA
   function mostrarAgendaDoDia() {
-    const listaAgenda = document.getElementById("lista-agenda");
     if (!listaAgenda) return;
 
     const hoje = new Date().toISOString().split('T')[0];
@@ -91,34 +80,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     listaAgenda.innerHTML = tarefasHoje.length === 0
       ? "<p>🎈 Nada marcado para hoje!</p>"
-      : tarefasHoje.map(tarefa =>
-        `<li><strong>${tarefa.title}</strong> - ${tarefa.description || ''} às ${tarefa.alarm || 'sem horário'}</li>`
+      : tarefasHoje.map(t =>
+        `<li><strong>${t.title}</strong> - ${t.description || ''} às ${t.alarm || 'sem horário'}</li>`
       ).join('');
   }
 
-  // ⏰ VERIFICAR ALARME
+  // VERIFICAR ALARMES
   let alarmesDisparados = new Set();
-
   function verificarAlarme() {
     const agora = new Date();
     const hoje = agora.toISOString().split('T')[0];
     const horaMinuto = agora.toTimeString().slice(0, 5);
 
     tarefas.forEach(tarefa => {
-      const idAlarme = tarefa.title + tarefa.date + tarefa.alarm;
-
-      if (tarefa.date === hoje && tarefa.alarm === horaMinuto && !alarmesDisparados.has(idAlarme)) {
+      const idAlarme = `${tarefa.title}-${tarefa.date}-${tarefa.alarm}`;
+      if (
+        tarefa.date === hoje &&
+        tarefa.alarm === horaMinuto &&
+        !alarmesDisparados.has(idAlarme)
+      ) {
         alert(`⏰ Alarme: ${tarefa.title}`);
         alarmesDisparados.add(idAlarme);
-        // new Audio('alarme.mp3').play(); // Som de alarme, se quiser
       }
+
+      alert(`⏰ Alarme: ${tarefa.title}`);
+      tocarSom(); // 🔈 toca a musiquinha fofa
+
     });
   }
-
   setInterval(verificarAlarme, 60000);
 
-  // ➕ SUBMIT DO FORMULÁRIO
-  form.addEventListener('submit', (e) => {
+  // FORMULÁRIO
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const tarefa = {
@@ -136,14 +129,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    tarefas.push(tarefa);
-    salvarTarefas();
+    await salvarTarefa(tarefa);
+    tarefas.push(tarefa); // Adiciona na lista local
+    localStorage.setItem('tarefas', JSON.stringify(tarefas)); // Backup local
     renderizarTarefas();
     mostrarAgendaDoDia();
     form.reset();
   });
 
-  // 🔐 BOTÃO SAIR
+  // BOTÃO SAIR
   if (btnSair) {
     btnSair.addEventListener("click", () => {
       localStorage.removeItem("usuarioLogado");
@@ -151,21 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 🚀 INICIALIZAÇÃO
-  carregarTarefas();
-  renderizarTarefas();
-  mostrarSugestao();
-  mostrarAgendaDoDia();
-
-  // 👀 Banco de dados (teste)
-  const tarefasBanco = await listarTarefas();
-  console.log('📦 Tarefas no banco:', tarefasBanco);
-
-
-
-  const botaoVoltar = document.getElementById('btn-voltar');
+  // BOTÃO VOLTAR
   if (botaoVoltar) {
     botaoVoltar.addEventListener('click', voltarParaHome);
   }
 
+  // INICIALIZAÇÃO
+  tarefas = await listarTarefas();
+  localStorage.setItem('tarefas', JSON.stringify(tarefas)); // Backup local
+  renderizarTarefas();
+  mostrarSugestao();
+  mostrarAgendaDoDia();
 });

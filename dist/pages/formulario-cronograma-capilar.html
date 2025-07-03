@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,12 +14,15 @@
   <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet" />
 
   <link rel="manifest" href="../pwa/manifest.json" />
 
-  
+
 </head>
+
 <body class="bg-rose-50 font-sans text-gray-800 p-4">
   <div id="resultado"></div>
 
@@ -29,16 +33,13 @@
   </div>
 
   <!-- Formulário Cronograma Capilar -->
-  <form id="form-cronograma" class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
+  <form id="form-cronograma"
+    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
     <div class="campo">
       <div class="mb-6 flex flex-col">
         <label for="etapa-cronograma" class="mb-2 text-base font-semibold text-gray-700">Etapa do Cronograma</label>
-        <select
-          id="etapa-cronograma"
-          name="etapa-cronograma"
-          required
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        >
+        <select id="etapa-cronograma" name="etapa-cronograma" required
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="" disabled selected>Selecione a etapa</option>
           <option value="hidratação">Hidratação</option>
           <option value="nutrição">Nutrição</option>
@@ -48,21 +49,15 @@
 
       <div class="mb-6 flex flex-col">
         <label for="observacao-etapa" class="mb-2 text-base font-semibold text-gray-700">Observações</label>
-        <textarea
-          id="observacao-etapa"
-          name="observacao-etapa"
-          rows="3"
+        <textarea id="observacao-etapa" name="observacao-etapa" rows="3"
           placeholder="Ex: Usei máscara XYZ, cabelo ficou macio..."
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        ></textarea>
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
       </div>
 
       <div class="mb-6 flex flex-col">
         <label for="tipo-produto" class="mb-2 text-base font-semibold text-gray-700">Tipo de Produto</label>
-        <select
-          id="tipo-produto"
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        >
+        <select id="tipo-produto"
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="máscara">Máscara</option>
           <option value="creme">Creme</option>
           <option value="óleo">Óleo</option>
@@ -72,32 +67,20 @@
 
       <div class="mb-6 flex flex-col">
         <label for="data-etapa" class="mb-2 text-base font-semibold text-gray-700">Data</label>
-        <input
-          type="date"
-          id="data-etapa"
-          required
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        />
+        <input type="date" id="data-etapa" required
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
         <label for="data-lembrete" class="mb-2 text-base font-semibold text-gray-700">Data do Lembrete</label>
-        <input
-          type="date"
-          id="data-lembrete"
-          name="data-lembrete"
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        />
+        <input type="date" id="data-lembrete" name="data-lembrete"
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-2 flex flex-col">
         <label for="hora-lembrete" class="mb-2 text-base font-semibold text-gray-700">Hora do Lembrete</label>
-        <input
-          type="time"
-          id="hora-lembrete"
-          name="hora-lembrete"
-          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
-        />
+        <input type="time" id="hora-lembrete" name="hora-lembrete"
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
     </div>
 
@@ -123,8 +106,21 @@
     </ul>
   </div>
 
-  
+
+
+ <button id="btn-voltar"
+    class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-300 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+    ← Voltar
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+      &#xf104;
+    </span>
+  </button>
+
+
+
   <script src="../js/alarme.js"></script>
   <script type="module" src="../js/formulario-cronograma-capilar.js"></script>
 </body>
+
 </html>
