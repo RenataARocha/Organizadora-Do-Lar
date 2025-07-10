@@ -41,6 +41,16 @@
 <body class="bg-rose-50 text-gray-800 font-roboto">
   <div id="resultado"></div>
 
+  <div class="fundo-dots"></div>
+  <div class="fundo-florzinha">
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+  </div>
+
   <div class="container mx-auto max-w-screen-md px-4 py-6 overflow-hidden">
     <!-- Topo com imagem e saudação -->
     <div class="text-center mb-6">
@@ -51,17 +61,27 @@
     <!-- Navegação -->
     <nav class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 mb-6 menu-principal">
       <!-- Links fixos -->
-      <a id="link-tarefa" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Adicionar Tarefa</a>
+      <a id="link-tarefa" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Adicionar
+        Tarefa</a>
       <a id="link-meta" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Adicionar Meta</a>
-      <a id="link-consultas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Consultas e Exames</a>
-      <a id="link-contas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Contas a Pagar</a>
-      <a id="link-compras" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Lista de Compras</a>
-      <a id="link-cardapio" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cardápio Semanal</a>
-      <a id="link-remedios" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle de Remédios</a>
-      <a id="link-financas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle Financeiro</a>
-      <a id="link-limpeza" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Rotina de Limpeza</a>
-      <a id="link-skincare" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Skincare Diário</a>
-      <a id="link-cronograma" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cronograma Capilar</a>
+      <a id="link-consultas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Consultas e
+        Exames</a>
+      <a id="link-contas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Contas a
+        Pagar</a>
+      <a id="link-compras" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Lista de
+        Compras</a>
+      <a id="link-cardapio" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cardápio
+        Semanal</a>
+      <a id="link-remedios" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle de
+        Remédios</a>
+      <a id="link-financas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle
+        Financeiro</a>
+      <a id="link-limpeza" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Rotina de
+        Limpeza</a>
+      <a id="link-skincare" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Skincare
+        Diário</a>
+      <a id="link-cronograma" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cronograma
+        Capilar</a>
 
       <!-- Botões SPA -->
       <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="agenda">Agenda do
@@ -142,6 +162,7 @@
 
   <!-- JS -->
   <script defer src="../js/tela-inicial.js"></script>
+  <script src="../js/fundo-decorativo.js"></script>
 </body>
 
 </html>
