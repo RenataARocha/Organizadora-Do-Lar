@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoriaSelect = document.getElementById("categoria");
   const form = document.querySelector("form");
   const lista = document.getElementById("lista-finacas");
-  const mensagemVazia = document.getElementById("mesagemVazia"); // Corrige o nome se tiver errado
+  const mensagemVazia = document.getElementById("mensagemVazia"); // Corrige o nome se tiver errado
   const botaoVoltar = document.getElementById("btn-voltar");
 
   let financas = JSON.parse(localStorage.getItem("financas")) || [];
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tipo = tipoSelect.value;
     const categoria = categoriaSelect.value;
-    const valor = form.querySelector("input[type='number']").value.trim();
+    const valor = document.getElementById("valor").value.trim();
     const data = form.querySelector("#financeiro-data").value;
     const observacoes = form.querySelector("textarea").value.trim();
     const lembreteData = form.querySelector("#financeiro-reminder-date").value;

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-meta');
   const listaMetas = document.getElementById('lista-metas');
   const metaInspiradora = document.getElementById('meta-inspiradora');
-  const mensagemVazia = document.getElementById('mensagem-vazia'); // Só coloque se tiver esse elemento no seu HTML
+  const mensagemVazia = document.getElementById('mensagemVazia'); // Só coloque se tiver esse elemento no seu HTML
 
   // 💡 FRASES INSPIRADORAS
   const metasInspiradoras = [
