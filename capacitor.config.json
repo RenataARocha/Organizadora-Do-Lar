@@ -1,6 +1,6 @@
 {
   "appId": "com.renatarocha.organizador",
   "appName": "Organizador do Lar",
-  "webDir": "web",
+  "webDir": "public",
   "bundledWebRuntime": false
 }

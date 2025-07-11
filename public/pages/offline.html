@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Offline - Organizadora do Lar</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="bg-rose-50 font-sans text-pink-700 min-h-screen flex flex-col items-center justify-center p-6 text-center">
+
+  <div class="fundo-dots"></div>
+  <div class="fundo-florzinha">
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+    <div class="florzinha"></div>
+  </div>
+
+
+  <!-- Florzinha -->
+  <section class="max-w-xl bg-white rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg">
+    <img src="../assets/florzinha.png" alt="imagem-de-florzinha" class="mx-auto w-24 h-auto" />
+    <!-- Título -->
+    <h1 class="text-4xl text-pink-400 font-bold mb-4" style="font-family: 'Dancing Script', cursive;">
+      Organizadora do Lar
+    </h1>
+
+    <!-- Mensagem de Offline -->
+    <p class="text-lg text-black max-w-md mx-auto">
+      Ops! Você está offline.
+    </p>
+
+    <p class="text-base mb-6 max-w-md mx-auto">
+      Parece que não há conexão com a internet no momento. Mas não se preocupe, sua Organizadora do Lar continuará
+      funcionando com o que está salvo.
+    </p>
+
+    <!-- Botão Recarregar -->
+    <button onclick="location.reload()"
+      class="bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-lg px-8 py-3 shadow-md transition transform active:translate-y-1 flex items-center justify-center mx-auto">
+      Tentar recarregar
+      <span class="ml-2" style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf021;</span>
+    </button>
+
+  </section>
+
+  <!-- JS -->
+  <script defer src="../js/offline.js"></script>
+  <script src="../js/fundo-decorativo.js"></script>
+</body>
+
+</html>

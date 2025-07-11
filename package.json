@@ -1,10 +1,13 @@
 {
   "dependencies": {
+    "@awesome-cordova-plugins/local-notifications": "^8.0.2",
     "@capacitor-community/sqlite": "^7.0.0",
     "@capacitor/android": "^7.4.0",
     "@capacitor/cli": "^7.4.0",
     "@capacitor/core": "^7.4.0",
-    "@capacitor/local-notifications": "^7.0.1"
+    "@capacitor/local-notifications": "^7.0.1",
+    "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-local-notification": "^1.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
