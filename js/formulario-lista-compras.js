@@ -23,29 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
   li.dataset.index = index;
 
   li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-    <div class="flex-1 space-y-1 text-base font-semibold">
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">Nome:</span>
-        <span class="text-black">${item.nome}</span>
+        <span class="text-pink-500">📦 Nome:</span> ${item.nome}
       </p>
       <p>
-        <span class="text-pink-500">Categoria:</span>
-        <span class="text-black">${item.categoria}</span>
+        <span class="text-pink-500">📂 Categoria:</span> ${item.categoria}
       </p>
       <p>
-        <span class="text-pink-500">Quantidade:</span>
-        <span class="text-black">${item.quantidade}</span>
+        <span class="text-pink-500">🔢 Quantidade:</span> ${item.quantidade}
       </p>
       <p>
-        <span class="text-pink-500">Prioridade:</span>
-        <span class="text-black">${item.prioridade}</span>
+        <span class="text-pink-500">⚡ Prioridade:</span> ${item.prioridade}
       </p>
       <p>
-        <span class="text-pink-500">Data:</span>
-        <span class="text-black">${item.data || 'Não definida'}</span>
+        <span class="text-pink-500">📅 Data:</span> ${item.data || 'Não definida'}
       </p>
     </div>
+
     <button 
       class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1" 
       data-index="${index}" 
@@ -60,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
   </div>
 `;
+
 
 listaCompras.appendChild(li);
 

@@ -43,57 +43,49 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
       li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-          <div class="flex-1 space-y-1 text-base font-semibold">
-            <p>
-              <span class="text-pink-500">Nome:</span>
-              <span class="text-black">${consulta.nome}</span>
-              <span class="text-pink-500 ml-2">(${consulta.tipo})</span>
-            </p>
-            <p>
-              <span class="text-pink-500">📋 Especialidade:</span>
-              <span class="text-black">${consulta.descricao || 'N/A'}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">📅 Data:</span>
-              <span class="text-black">${consulta.data}</span>
-              <span class="text-pink-500 ml-2">às</span>
-              <span class="text-black">${consulta.horario || 'N/A'}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">📍 Local:</span>
-              <span class="text-black">${consulta.local || 'N/A'}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">📝 Observações:</span>
-              <span class="text-black">${consulta.observacoes || 'N/A'}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">🔁 Repetir:</span>
-              <span class="text-black">${consulta.repeticao}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">🔔 Lembrete:</span>
-              <span class="text-black">${consulta.lembreteData || 'N/A'}</span>
-              <span class="text-pink-500 ml-2">às</span>
-              <span class="text-black">${consulta.lembreteHora || 'N/A'}</span>
-            </p>
-          </div>
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      <p>
+        <span class="text-pink-500">👩‍⚕️ Nome:</span> ${consulta.nome} 
+        <span class="text-pink-500 ml-4">(${consulta.tipo})</span>
+      </p>
+      <p>
+        <span class="text-pink-500">📋 Especialidade:</span> ${consulta.descricao || 'N/A'}
+      </p>
+      <p>
+        <span class="text-pink-500">📅 Data:</span> ${consulta.data} 
+        <span class="text-pink-500 ml-2">às</span> ${consulta.horario || 'N/A'}
+      </p>
+      <p>
+        <span class="text-pink-500">📍 Local:</span> ${consulta.local || 'N/A'}
+      </p>
+      <p>
+        <span class="text-pink-500">📝 Observações:</span> ${consulta.observacoes || 'N/A'}
+      </p>
+      <p>
+        <span class="text-pink-500">🔁 Repetir:</span> ${consulta.repeticao}
+      </p>
+      <p>
+        <span class="text-pink-500">🔔 Lembrete:</span> ${consulta.lembreteData || 'N/A'} 
+        <span class="text-pink-500 ml-2">às</span> ${consulta.lembreteHora || 'N/A'}
+      </p>
+    </div>
 
-          <button 
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}" 
-            title="Remover consulta"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-              &#xf004;
-            </span>
-          </button>
-        </div>
-      `;
+    <button 
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
+      title="Remover consulta"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+        &#xf004;
+      </span>
+    </button>
+  </div>
+`;
+
 
       listaConsultas.appendChild(li);
     });

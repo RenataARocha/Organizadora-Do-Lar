@@ -76,53 +76,52 @@ document.addEventListener("DOMContentLoaded", () => {
       const item = document.createElement("li");
       item.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
-      item.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-          <div class="flex-1 space-y-1 text-base font-semibold">
-            <p>
-              <span class="text-pink-500">Tipo:</span>
-              <span class="text-black">${financa.tipo}</span>
-              <span class="text-pink-500 ml-2">Categoria:</span>
-              <span class="text-black">${financa.categoria}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Valor:</span>
-              <span class="text-black">R$ ${Number(financa.valor).toFixed(2)}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Data:</span>
-              <span class="text-black">${financa.data}</span>
-            </p>
-            ${financa.observacoes ? `
-              <p>
-                <span class="text-pink-500">Obs:</span>
-                <span class="text-black">${financa.observacoes}</span>
-              </p>` : ""
-            }
-            ${(financa.lembreteData || financa.lembreteHora) ? `
-              <p>
-                <span class="text-pink-500">🔔 Lembrete:</span>
-                <span class="text-black">
-                  ${financa.lembreteData ? new Date(financa.lembreteData).toLocaleDateString('pt-BR') : ''} 
-                  ${financa.lembreteHora || ''}
-                </span>
-              </p>` : ""
-            }
-          </div>
-          <button
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}"
-            title="Remover tarefa"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-              &#xf004;
-            </span>
-          </button>
-        </div>
-      `;
+     item.innerHTML = `
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      <p>
+        <span class="text-pink-500">💼 Tipo:</span> ${financa.tipo} 
+        <span class="text-pink-500 ml-4">📂 Categoria:</span> ${financa.categoria}
+      </p>
+      <p>
+        <span class="text-pink-500">💰 Valor:</span> R$ ${Number(financa.valor).toFixed(2)}
+      </p>
+      <p>
+        <span class="text-pink-500">📅 Data:</span> ${financa.data}
+      </p>
+
+      ${financa.observacoes ? `
+        <p>
+          <span class="text-pink-500">📝 Obs:</span> ${financa.observacoes}
+        </p>
+      ` : ''}
+
+      ${(financa.lembreteData || financa.lembreteHora) ? `
+        <p>
+          <span class="text-pink-500">🔔 Lembrete:</span> 
+          <span class="text-black">
+            ${financa.lembreteData ? new Date(financa.lembreteData).toLocaleDateString('pt-BR') : ''} 
+            ${financa.lembreteHora || ''}
+          </span>
+        </p>
+      ` : ''}
+    </div>
+
+    <button
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}"
+      title="Remover tarefa"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+        &#xf004;
+      </span>
+    </button>
+  </div>
+`;
+
 
       lista.appendChild(item);
     });

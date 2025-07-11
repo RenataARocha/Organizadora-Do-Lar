@@ -52,38 +52,34 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+     
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-    <div class="flex-1 space-y-1 text-base font-semibold">
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">Dia:</span>
-        <span class="text-black">${cardapio.dia}</span>
+        <span class="text-pink-500">📅 Dia:</span> ${cardapio.dia} 
         ${cardapio.data ? `<span class="text-black"> - (${cardapio.data})</span>` : ''}
       </p>
       <p>
-        <span class="text-pink-500">Café:</span>
-        <span class="text-black">${cardapio.cafe}</span>
+        <span class="text-pink-500">☕ Café:</span> ${cardapio.cafe}
       </p>
       <p>
-        <span class="text-pink-500">Almoço:</span>
-        <span class="text-black">${cardapio.almoco}</span>
+        <span class="text-pink-500">🍽️ Almoço:</span> ${cardapio.almoco}
       </p>
       <p>
-        <span class="text-pink-500">Lanche:</span>
-        <span class="text-black">${cardapio.lanche}</span>
+        <span class="text-pink-500">🍪 Lanche:</span> ${cardapio.lanche}
       </p>
       <p>
-        <span class="text-pink-500">Jantar:</span>
-        <span class="text-black">${cardapio.jantar}</span>
+        <span class="text-pink-500">🍲 Jantar:</span> ${cardapio.jantar}
       </p>
       <p>
-        <span class="text-pink-500">Recorrência:</span>
-        <span class="text-black">${cardapio.recorrencia}</span>
+        <span class="text-pink-500">🔁 Recorrência:</span> ${cardapio.recorrencia}
       </p>
-      ${cardapio.alarme
-          ? `<p><span class="text-pink-500">⏰ Alarme:</span> <span class="text-black">${cardapio.alarme}</span></p>`
-          : ''
-        }
+      ${cardapio.alarme ? `
+        <p>
+          <span class="text-pink-500">⏰ Alarme:</span> ${cardapio.alarme}
+        </p>
+      ` : ''}
     </div>
 
     <button 
@@ -100,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
   </div>
 `;
+
 
       listaCardapio.appendChild(li);
 

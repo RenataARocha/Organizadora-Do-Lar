@@ -31,51 +31,47 @@ document.addEventListener("DOMContentLoaded", () => {
         "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-          <div class="flex-1 space-y-1 text-base font-semibold">
-            <p>
-              <span class="text-pink-500">Cômodo:</span>
-              <span class="text-black">${tarefa.comodo}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Tarefa:</span>
-              <span class="text-black">${tarefa.tarefa}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Frequência:</span>
-              <span class="text-black">${tarefa.frequencia}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Dia da Limpeza:</span>
-              <span class="text-black">${tarefa.dia || "-"}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">Horário:</span>
-              <span class="text-black">${tarefa.horario || "-"}</span>
-            </p>
-            <p>
-              <span class="text-pink-500">🔔 Lembrete:</span>
-              <span class="text-black">${tarefa.lembreteData || "-"}</span>
-              <span class="text-pink-500 ml-2">às</span>
-              <span class="text-black">${tarefa.lembreteHora || "-"}</span>
-            </p>
-          </div>
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      <p>
+        <span class="text-pink-500">🏠 Cômodo:</span> ${tarefa.comodo}
+      </p>
+      <p>
+        <span class="text-pink-500">🧹 Tarefa:</span> ${tarefa.tarefa}
+      </p>
+      <p>
+        <span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}
+      </p>
+      <p>
+        <span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.dia || "-"}
+      </p>
+      <p>
+        <span class="text-pink-500">⏰ Horário:</span> ${tarefa.horario || "-"}
+      </p>
+      <p>
+        <span class="text-pink-500">🔔 Lembrete:</span> 
+        <span class="text-black">${tarefa.lembreteData || "-"}</span> 
+        <span class="text-pink-500 ml-2">às</span> 
+        <span class="text-black">${tarefa.lembreteHora || "-"}</span>
+      </p>
+    </div>
 
-          <button
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}"
-            title="Remover tarefa"
-            type="button"
-          >
-            Remover
-            <span
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;"
-              >&#xf004;</span
-            >
-          </button>
-        </div>
-      `;
+    <button
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}"
+      title="Remover tarefa"
+      type="button"
+    >
+      Remover
+      <span
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;"
+        >&#xf004;</span
+      >
+    </button>
+  </div>
+`;
+
 
       listaLimpezas.appendChild(li);
     });

@@ -26,40 +26,37 @@ document.addEventListener("DOMContentLoaded", function () {
         "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
       );
 
-      li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-    <div class="flex-1 space-y-1 text-base font-semibold">
+     li.innerHTML = `
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">Nome:</span>
-        <span class="text-black">${conta.nome}</span>
+        <span class="text-pink-500">🏷️ Nome:</span> ${conta.nome}
       </p>
+
       ${conta.descricao ? `
         <p>
-          <span class="text-pink-500">Descrição:</span>
+          <span class="text-pink-500">📝 Descrição:</span> 
           <span class="text-black italic">${conta.descricao}</span>
-        </p>` : ''
-        }
+        </p>
+      ` : ''}
+
       <p>
-        <span class="text-pink-500">💰 Valor:</span>
-        <span class="text-black">R$ ${Number(conta.valor).toFixed(2)}</span>
+        <span class="text-pink-500">💰 Valor:</span> R$ ${Number(conta.valor).toFixed(2)}
       </p>
       <p>
-        <span class="text-pink-500">📅 Vencimento:</span>
-        <span class="text-black">${conta.vencimento}</span>
+        <span class="text-pink-500">📅 Vencimento:</span> ${conta.vencimento}
       </p>
       <p>
-        <span class="text-pink-500">✅ Paga:</span>
-        <span class="text-black">${conta.paga === "sim" ? "Sim" : "Não"}</span>
+        <span class="text-pink-500">✅ Paga:</span> ${conta.paga === "sim" ? "Sim" : "Não"}
       </p>
       <p>
-        <span class="text-pink-500">🔁 Repetir:</span>
-        <span class="text-black">${conta.repetir}</span>
+        <span class="text-pink-500">🔁 Repetir:</span> ${conta.repetir}
       </p>
       ${(conta.lembreteData || conta.lembreteHora) ? `
-      <p>
-        <span class="text-pink-500">🔔 Lembrete:</span>
-        <span class="text-black">${conta.lembreteData || ''} ${conta.lembreteHora || ''}</span>
-      </p>` : ''}
+        <p>
+          <span class="text-pink-500">🔔 Lembrete:</span> ${conta.lembreteData || ''} ${conta.lembreteHora || ''}
+        </p>
+      ` : ''}
     </div>
 
     <button 
@@ -75,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </span>
     </button>
   </div>
- `;
+`;
 
 
       listaContas.appendChild(li);

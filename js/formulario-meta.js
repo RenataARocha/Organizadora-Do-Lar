@@ -54,27 +54,37 @@ document.addEventListener('DOMContentLoaded', () => {
       item.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
       item.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50">
-          <div class="flex-1 space-y-1 text-base font-semibold">
-            <p><strong class="text-pink-500">${meta.titulo}</strong></p>
-            <p class="text-black">${meta.descricao}</p>
-            <p><span class="text-pink-500">Categoria:</span> <span class="text-black">${meta.categoria}</span></p>
-            <p><span class="text-pink-500">Prazo:</span> <span class="text-black">${meta.prazo || 'Não definido'}</span></p>
-            <p><span class="text-pink-500">Prioridade:</span> <span class="text-black">${meta.prioridade}</span></p>
-            <p><span class="text-pink-500">🔔 Lembrete:</span> <span class="text-black">${meta.lembrete}</span></p>
-          </div>
-          <button 
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden"
-            data-index="${index}" 
-            title="Remover meta"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-          </button>
-        </div>
-      `;
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      <p><strong class="text-pink-500">${meta.titulo}</strong></p>
+      <p>${meta.descricao}</p>
+      <p>
+        <span class="text-pink-500">📂 Categoria:</span> ${meta.categoria}
+      </p>
+      <p>
+        <span class="text-pink-500">⏳ Prazo:</span> ${meta.prazo || 'Não definido'}
+      </p>
+      <p>
+        <span class="text-pink-500">⚡ Prioridade:</span> ${meta.prioridade}
+      </p>
+      ${meta.lembrete ? `
+        <p><span class="text-pink-500">🔔 Lembrete:</span> ${meta.lembrete}</p>
+      ` : ''}
+    </div>
+
+    <button 
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
+      title="Remover meta"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+    </button>
+  </div>
+`;
+
 
       const botaoRemover = item.querySelector('button');
       botaoRemover.addEventListener('click', () => {
