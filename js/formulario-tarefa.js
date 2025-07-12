@@ -12,8 +12,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnSair = document.getElementById("btn-sair");
   const botaoVoltar = document.getElementById('btn-voltar');
   const listaAgenda = document.getElementById("lista-agenda");
+  const selectRecurrence = form['task-recurrence-type'];
+  const diasSemanaInputs = form.querySelectorAll('input[name="dias-semana"]');
 
   let tarefas = [];
+
+  // FUNÇÃO para ativar/desativar os checkboxes dos dias conforme a recorrência
+  function ajustarDiasSemana() {
+    const tipo = selectRecurrence.value;
+    if (tipo === 'weekly' || tipo === 'custom') {
+      diasSemanaInputs.forEach(input => input.disabled = false);
+    } else {
+      diasSemanaInputs.forEach(input => {
+        input.checked = false;
+        input.disabled = true;
+      });
+    }
+  }
+
+  // Chama no carregamento inicial
+  ajustarDiasSemana();
+
+  // Atualiza quando o usuário muda o tipo de recorrência
+  selectRecurrence.addEventListener('change', ajustarDiasSemana);
 
   // MOSTRAR TAREFAS NA TELA
   function renderizarTarefas() {
@@ -28,6 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+      // Mostrar os dias da semana selecionados formatados
+      const diasSelecionados = (tarefa.diasSemana && tarefa.diasSemana.length > 0)
+        ? tarefa.diasSemana.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ')
+        : 'Nenhum selecionado';
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-xl shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
@@ -37,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <p><span class="text-pink-500">📝 Descrição:</span> ${tarefa.description || 'Sem descrição'}</p>
       <p><span class="text-pink-500">📅 Data:</span> ${tarefa.date || 'Não definida'}</p>
       <p><span class="text-pink-500">🔁 Recorrência:</span> ${tarefa.recurrence}</p>
+      <p><span class="text-pink-500">📆 Dias da semana:</span> ${diasSelecionados}</p>
       <p><span class="text-pink-500">⏰ Alarme:</span> ${tarefa.alarm || 'Sem alarme'}</p>
     </div>
 
@@ -123,13 +150,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Pega dias selecionados no checkbox
+    const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked'))
+      .map(input => input.value);
+
     const tarefa = {
       title: form['task-title'].value.trim(),
       description: form['task-description'].value.trim(),
       topic: form['task-topic'].value,
       priority: form['task-priority'].value,
       date: form['task-date'].value,
-      recurrence: form['task-recurrence'].value,
+      recurrence: form['task-recurrence-type'].value,
+      diasSemana: diasSelecionados,
       alarm: form['task-alarm'].value
     };
 
@@ -145,6 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderizarTarefas();
     mostrarAgendaDoDia();
     form.reset();
+    ajustarDiasSemana(); // atualiza estado dos checkboxes depois do reset
   });
 
   // BOTÃO SAIR

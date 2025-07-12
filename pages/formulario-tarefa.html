@@ -87,21 +87,90 @@
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
+
+    <!-- Horário do alarme -->
+    <div class="campo campo-alarme mb-4">
+      <label for="task-alarm" class="block text-base font-semibold text-gray-700 mb-1">Horário do Alarme</label>
+      <input type="time" id="task-alarm" name="task-alarm"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+
     <div class="campo mb-4">
-      <label for="task-recurrence" class="block text-base font-semibold text-gray-700 mb-1">Recorrência</label>
-      <select id="task-recurrence" name="task-recurrence"
+      <label for="task-recurrence-type" class="block text-base font-semibold text-gray-700 mb-1">Tipo de
+        Recorrência</label>
+      <select id="task-recurrence-type" name="task-recurrence-type"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option value="none" selected>Sem recorrência</option>
         <option value="daily">Diária</option>
         <option value="weekly">Semanal</option>
         <option value="monthly">Mensal</option>
+        <option value="custom">Personalizada</option>
       </select>
     </div>
 
-    <div class="campo campo-alarme mb-4">
-      <label for="task-alarm" class="block text-base font-semibold text-gray-700 mb-1">Alarme</label>
-      <input type="time" id="task-alarm" name="task-alarm"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+
+    <!-- Dias da semana SEMPRE visível para escolha -->
+    <div id="days-of-week-container" class="mb-4 p-4 border-2 border-pink-300 rounded-lg bg-stone-50 max-w-[500px]">
+      <label class="block text-base font-semibold text-gray-700 mb-2">Escolha os dias da semana</label>
+      <div class="grid grid-cols-4 gap-4">
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="segunda"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Seg</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="terca"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Ter</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="quarta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Qua</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="quinta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Qui</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="sexta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Sex</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="sabado"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Sáb</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="domingo"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Dom</span>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- Data de início -->
+    <div class="campo mb-4">
+      <label for="data-inicio" class="block text-base font-semibold text-gray-700 mb-1">Data de Início</label>
+      <input type="date" id="data-inicio" name="data-inicio"
+        class="w-full max-w-[500px] px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+
+    <!-- Data de término -->
+    <div class="campo mb-4">
+      <label for="data-fim" class="block text-base font-semibold text-gray-700 mb-1">Data de Término (opcional)</label>
+      <input type="date" id="data-fim" name="data-fim"
+        class="w-full max-w-[500px] px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <button id="add-task" type="submit"
@@ -114,7 +183,7 @@
     </button>
   </form>
 
-  </form>
+
 
 
   <div class="relative max-w-[500px] mx-auto my-8">
