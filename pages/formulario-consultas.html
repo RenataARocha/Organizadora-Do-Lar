@@ -51,6 +51,18 @@
       <textarea id="consulta-descricao" name="consulta-descricao" rows="3"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
     </div>
+    
+    <div class="campo mb-6 flex flex-col">
+      <label for="inputObservacoes" class="text-base font-semibold mb-2 text-gray-700">Observações</label>
+      <textarea id="inputObservacoes" rows="3"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
+    </div>
+
+    <div class="campo mb-6 flex flex-col">
+      <label for="inputLocalConsulta" class="text-base font-semibold mb-2 text-gray-700">Local</label>
+      <input type="text" id="inputLocalConsulta"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="selectTipoConsulta" class="text-base font-semibold mb-2 text-gray-700">Tipo</label>
@@ -72,18 +84,6 @@
       <label for="inputHorarioConsulta" class="text-base font-semibold mb-2 text-gray-700">Horário</label>
       <input type="time" id="inputHorarioConsulta"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
-    </div>
-
-    <div class="campo mb-6 flex flex-col">
-      <label for="inputLocalConsulta" class="text-base font-semibold mb-2 text-gray-700">Local</label>
-      <input type="text" id="inputLocalConsulta"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
-    </div>
-
-    <div class="campo mb-6 flex flex-col">
-      <label for="inputObservacoes" class="text-base font-semibold mb-2 text-gray-700">Observações</label>
-      <textarea id="inputObservacoes" rows="3"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
     </div>
 
     <div class="campo mb-6 flex flex-col">
@@ -131,7 +131,7 @@
     </ul>
   </div>
 
- <button id="btn-voltar"
+  <button id="btn-voltar"
     class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
     ← Voltar
     <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
