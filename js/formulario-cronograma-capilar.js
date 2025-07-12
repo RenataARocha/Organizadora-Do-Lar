@@ -117,35 +117,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Evento submit do formulário
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const novaEtapa = {
-      etapa: selectEtapa.value.trim(),
-      observacoes: textareaObs.value.trim(),
-      produto: selectProduto.value,
-      data: inputData.value,
-      reminderDate: inputReminderDate.value,
-      reminderTime: inputReminderTime.value,
-    };
+  const novaEtapa = {
+    etapa: selectEtapa.value.trim(),
+    observacoes: textareaObs.value.trim(),
+    produto: selectProduto.value,
+    date: inputData.value, // Atenção aqui, precisa ser 'date'
+    reminderDate: inputReminderDate.value,
+    reminderTime: inputReminderTime.value,
+    title: `Etapa: ${selectEtapa.value.trim()}` // E o título da etapa
+  };
 
-    if (!novaEtapa.etapa) {
-      alert('Por favor, selecione a etapa do cronograma.');
-      return;
-    }
-    if (!novaEtapa.data) {
-      alert('Por favor, selecione a data da etapa.');
-      return;
-    }
+  if (!novaEtapa.etapa) {
+    alert('Por favor, selecione a etapa do cronograma.');
+    return;
+  }
+  if (!novaEtapa.date) { // Aqui verifica o campo certo
+    alert('Por favor, selecione a data da etapa.');
+    return;
+  }
 
-    const etapas = carregarEtapas();
-    etapas.push(novaEtapa);
-    salvarEtapas(etapas);
-    atualizarLista();
+  const etapas = carregarEtapas();
+  etapas.push(novaEtapa);
+  salvarEtapas(etapas);
+  atualizarLista();
 
-    form.reset();
-    selectEtapa.selectedIndex = 0;
-    selectProduto.selectedIndex = 0;
-  });
+  form.reset();
+  selectEtapa.selectedIndex = 0;
+  selectProduto.selectedIndex = 0;
+});
+
 
   // Mostrar dica capilar aleatória
   const dicasCapilares = [

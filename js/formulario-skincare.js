@@ -1,9 +1,11 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-skincare');
   const lista = document.getElementById('lista-skincare');
   const mensagemVazia = document.getElementById('mensagemVazia');
+  const botaoVoltar = document.getElementById('btn-voltar');
 
   // 💾 PEGA DO LOCALSTORAGE
   let skincare = JSON.parse(localStorage.getItem('skincare')) || [];
@@ -13,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     lista.innerHTML = '';
 
     if (skincare.length === 0) {
-      mensagemVazia.style.display = 'block';
+      mensagemVazia.classList.remove('hidden');
       return;
     }
 
-    mensagemVazia.style.display = 'none';
+    mensagemVazia.classList.add('hidden');
 
     skincare.forEach((etapa, index) => {
       const li = document.createElement('li');
@@ -33,14 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <p><span class="text-pink-500">📝 Descrição:</span> ${etapa.descricao}</p>
       <p><span class="text-pink-500">📅 Data:</span> ${etapa.data}</p>
 
-      ${etapa.horario ? `
-        <p><span class="text-pink-500">⏱️ Horário:</span> ${etapa.horario}</p>` : ''}
+      ${etapa.horario ? `<p><span class="text-pink-500">⏱️ Horário:</span> ${etapa.horario}</p>` : ''}
 
-      ${(etapa.lembreteData || etapa.lembreteHora) ? `
-        <p><span class="text-pink-500">🔔 Lembrete:</span> ${etapa.lembreteData || ''} ${etapa.lembreteHora || ''}</p>` : ''}
+      ${(etapa.lembreteData || etapa.lembreteHora) ? `<p><span class="text-pink-500">🔔 Lembrete:</span> ${etapa.lembreteData || ''} ${etapa.lembreteHora || ''}</p>` : ''}
 
-      ${etapa.alarme ? `
-        <p><span class="text-pink-500">⏰ Alarme:</span> <span class="text-red-600">${etapa.alarme}</span></p>` : ''}
+      ${etapa.alarme ? `<p><span class="text-pink-500">⏰ Alarme:</span> <span class="text-red-600">${etapa.alarme}</span></p>` : ''}
     </div>
 
     <button 
@@ -54,8 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
     </button>
   </div>
-`;
-
+      `;
 
       lista.appendChild(li);
     });
@@ -116,11 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarSkincare();
   });
 
-  // 🚀 INICIALIZAÇÃO
+  // Botão voltar
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener('click', voltarParaHome);
+  }
+
+  // Inicializa renderização
   renderizarSkincare();
 });
 
-// 💡 DICAS INSPIRADORAS DE SKINCARE
+// 💡 DICAS INSPIRADORAS DE SKINCARE (fica aqui fora)
 const dicasSkincare = [
   "Cuidar da pele é um ato de amor próprio 💆‍♀️",
   "Não esqueça do protetor solar, mesmo em dias nublados ☁️☀️",
@@ -141,8 +144,3 @@ function mostrarDica() {
 }
 
 window.addEventListener('load', mostrarDica);
-
-const botaoVoltar = document.getElementById('btn-voltar');
-  if (botaoVoltar) {
-    botaoVoltar.addEventListener('click', voltarParaHome);
-  }

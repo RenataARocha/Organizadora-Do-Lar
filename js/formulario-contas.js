@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
       );
 
-     li.innerHTML = `
+      li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
@@ -91,12 +91,14 @@ document.addEventListener("DOMContentLoaded", function () {
       nome: document.getElementById("conta-nome").value,
       descricao: document.getElementById("conta-descricao").value,
       valor: document.getElementById("conta-valor").value,
-      vencimento: document.getElementById("conta-vencimento").value,
+      date: document.getElementById("conta-vencimento").value, // <== mudou para 'date'
       paga: document.getElementById("conta-paga").value,
       repetir: document.getElementById("conta-repetir").value,
       lembreteData: document.querySelector("#conta-lembrete-data").value,
-      lembreteHora: document.querySelector("#conta-lembrete-hora").value
+      lembreteHora: document.querySelector("#conta-lembrete-hora").value,
+      title: `Conta: ${document.getElementById("conta-nome").value}` // <== adiciona title
     };
+
 
     contas.push(novaConta);
     salvarContas();

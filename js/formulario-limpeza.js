@@ -1,4 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener("DOMContentLoaded", () => {
   // Referências dos elementos do DOM
   const form = document.querySelector("form");
@@ -7,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Função para carregar tarefas do localStorage e mostrar na tela
   function carregarLista() {
-    const tarefasJSON = localStorage.getItem("tarefasLimpeza");
+    const tarefasJSON = localStorage.getItem("limpeza");
     if (!tarefasJSON) {
       listaLimpezas.innerHTML = "";
       mensagemVazia.style.display = "block";
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}
       </p>
       <p>
-        <span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.dia || "-"}
+        <span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.date || "-"}
       </p>
       <p>
         <span class="text-pink-500">⏰ Horário:</span> ${tarefa.horario || "-"}
@@ -72,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 `;
 
-
       listaLimpezas.appendChild(li);
     });
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Função para salvar tarefas no localStorage
   function salvarLista(tarefas) {
-    localStorage.setItem("tarefasLimpeza", JSON.stringify(tarefas));
+    localStorage.setItem("limpeza", JSON.stringify(tarefas));
   }
 
   // Validação simples do formulário
@@ -98,6 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Por favor, selecione a frequência.");
       return false;
     }
+    if (!dados.date) {
+      alert("Por favor, selecione a data da limpeza.");
+      return false;
+    }
     return true;
   }
 
@@ -105,18 +109,30 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    // Pega os valores dos inputs
+    const comodo = form.querySelector("#comodo").value.trim();
+    const tarefa = form.querySelector("#tarefa").value.trim();
+    const frequencia = form.querySelector("#frequencia").value;
+    const date = form.querySelector("#dia").value; // Data no formato YYYY-MM-DD
+    const horario = form.querySelector("#inputHorarioConsulta").value;
+    const lembreteData = form.querySelector("#lembrete-data").value;
+    const lembreteHora = form.querySelector("#lembrete-hora").value;
+
+    // Cria o objeto da tarefa com os campos obrigatórios para o calendário
     const dados = {
-      comodo: form.querySelector("#comodo").value.trim(),
-      tarefa: form.querySelector("#tarefa").value.trim(),
-      frequencia: form.querySelector("#frequencia").value,
-      dia: form.querySelector("#dia").value,
-      horario: form.querySelector("#inputHorarioConsulta").value,
-      lembreteData: form.querySelector("#lembrete-data").value,
-      lembreteHora: form.querySelector("#lembrete-hora").value,
+      comodo,
+      tarefa,
+      frequencia,
+      date,
+      horario,
+      lembreteData,
+      lembreteHora,
+      title: `Limpeza: ${tarefa} (${comodo})`
     };
 
     if (!validarFormulario(dados)) return;
 
+    // Carrega a lista, adiciona a nova tarefa e salva
     const tarefas = carregarLista();
     tarefas.push(dados);
     salvarLista(tarefas);
@@ -160,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dicasLimpeza[Math.floor(Math.random() * dicasLimpeza.length)];
   }
 
-
+  // Botão voltar pra home
   const botaoVoltar = document.getElementById('btn-voltar');
   if (botaoVoltar) {
     botaoVoltar.addEventListener('click', voltarParaHome);

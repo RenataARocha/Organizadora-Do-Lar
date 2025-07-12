@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-     
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
@@ -139,7 +139,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const recorrencia = document.getElementById('task-recurrence').value;
     const alarme = document.getElementById('task-alarm').value;
 
-    const dados = { dia, cafe, almoco, lanche, jantar, data, recorrencia, alarme };
+    const dados = {
+      dia,
+      cafe,
+      almoco,
+      lanche,
+      jantar,
+      date: data, // 
+      recorrencia,
+      alarme,
+      title: `🍽️ Cardápio de ${dia}`
+    };
 
     salvarCardapio(dados);
     carregarCardapios();

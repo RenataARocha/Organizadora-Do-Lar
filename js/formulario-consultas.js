@@ -115,13 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
       nome: document.getElementById('consulta-nome').value,
       descricao: document.getElementById('consulta-descricao').value,
       tipo: document.getElementById('selectTipoConsulta').value,
-      data: document.getElementById('inputDataConsulta').value,
+      date: document.getElementById('inputDataConsulta').value,
       horario: document.getElementById('inputHorarioConsulta').value,
       local: document.getElementById('inputLocalConsulta').value,
       observacoes: document.getElementById('inputObservacoes').value,
       repeticao: document.getElementById('consulta-repeticao').value,
       lembreteData: document.getElementById('consulta-reminder-date').value,
       lembreteHora: document.getElementById('consulta-reminder-time').value,
+      title: `Consulta: ${document.getElementById('consulta-nome').value}`,
+
     };
 
     salvarConsulta(novaConsulta);

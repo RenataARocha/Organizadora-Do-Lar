@@ -144,26 +144,28 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirFinancas();
   }
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+ form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    const tipo = tipoSelect.value;
-    const categoria = categoriaSelect.value;
-    const valor = document.getElementById("valor").value.trim();
-    const data = form.querySelector("#financeiro-data").value;
-    const observacoes = form.querySelector("textarea").value.trim();
-    const lembreteData = form.querySelector("#financeiro-reminder-date").value;
-    const lembreteHora = form.querySelector("#financeiro-reminder-time").value;
+  const tipo = tipoSelect.value;
+  const categoria = categoriaSelect.value;
+  const valor = document.getElementById("valor").value.trim();
+  const date = form.querySelector("#financeiro-data").value; // <-- aqui renomeado
+  const observacoes = form.querySelector("textarea").value.trim();
+  const lembreteData = form.querySelector("#financeiro-reminder-date").value;
+  const lembreteHora = form.querySelector("#financeiro-reminder-time").value;
 
-    if (!categoria || !valor || !data) {
-      alert("Preencha todos os campos obrigatórios!");
-      return;
-    }
+  if (!categoria || !valor || !date) {  // e aqui também a validação mudou para 'date'
+    alert("Preencha todos os campos obrigatórios!");
+    return;
+  }
 
-    financas.push({ tipo, categoria, valor, data, observacoes, lembreteData, lembreteHora });
-    salvarFinancas();
-    exibirFinancas();
-    form.reset();
-    atualizarCategorias(tipo);
-  });
+  financas.push({ tipo, categoria, valor, date, observacoes, lembreteData, lembreteHora }); // <-- aqui no objeto
+
+  salvarFinancas();
+  exibirFinancas();
+  form.reset();
+  atualizarCategorias(tipo);
+});
+
 });

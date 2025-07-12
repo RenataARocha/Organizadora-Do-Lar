@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     </div>
 
     <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden"
+      class="btn-remover relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden"
       data-index="${index}"
       title="Remover tarefa"
       type="button"
@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     </button>
   </div>
 `;
-
 
       listaTarefas.appendChild(li);
     });
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // SUGESTÃO
+  // SUGESTÃO DE TAREFA ALEATÓRIA
   function mostrarSugestao() {
     const sugestoes = [
       'Lavar a louça', 'Estudar JavaScript', 'Organizar o armário', 'Fazer caminhada',
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     sugestaoTarefa.textContent = sugestoes[indice];
   }
 
-  // AGENDA DO DIA
+  // AGENDA DO DIA — mostra tarefas da data atual
   function mostrarAgendaDoDia() {
     if (!listaAgenda) return;
 
@@ -98,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       ).join('');
   }
 
-  // VERIFICAR ALARMES
+  // VERIFICA ALARME PRA NÃO DISPARAR ALERT INFINITO
   let alarmesDisparados = new Set();
   function verificarAlarme() {
     const agora = new Date();
@@ -114,16 +113,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       ) {
         alert(`⏰ Alarme: ${tarefa.title}`);
         alarmesDisparados.add(idAlarme);
+        tocarSom(); // sua função que toca som, mantenha ela
       }
-
-      alert(`⏰ Alarme: ${tarefa.title}`);
-      tocarSom(); // 🔈 toca a musiquinha fofa
-
     });
   }
   setInterval(verificarAlarme, 60000);
 
-  // FORMULÁRIO
+  // ENVIO DO FORMULÁRIO
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -143,8 +139,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     await salvarTarefa(tarefa);
-    tarefas.push(tarefa); // Adiciona na lista local
-    localStorage.setItem('tarefas', JSON.stringify(tarefas)); // Backup local
+    tarefas.push(tarefa);
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
     renderizarTarefas();
     mostrarAgendaDoDia();
     form.reset();
@@ -163,9 +160,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     botaoVoltar.addEventListener('click', voltarParaHome);
   }
 
-  // INICIALIZAÇÃO
+  // INICIALIZAÇÃO: carrega tarefas, sugere tarefa e mostra agenda
   tarefas = await listarTarefas();
-  localStorage.setItem('tarefas', JSON.stringify(tarefas)); // Backup local
+  localStorage.setItem('tarefas', JSON.stringify(tarefas));
   renderizarTarefas();
   mostrarSugestao();
   mostrarAgendaDoDia();

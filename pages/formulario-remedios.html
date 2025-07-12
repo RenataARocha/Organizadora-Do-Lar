@@ -13,8 +13,6 @@
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="manifest" href="../pwa/manifest.json" />
-
-
 </head>
 
 <body class="bg-rose-50 font-sans text-gray-800 p-4">
@@ -40,39 +38,47 @@
 
   <form
     class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
+    
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Nome do remédio</label>
-      <input type="text"
+      <input type="text" id="remedio-nome"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Dosagem</label>
-      <input type="text"
+      <input type="text" id="remedio-dosagem"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Frequência</label>
-      <input type="text" placeholder="Ex: 1x ao dia"
+      <input type="text" placeholder="Ex: 1x ao dia" id="remedio-frequencia"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Horário</label>
-      <input type="time"
+      <input type="time" id="remedio-horario"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+    </div>
+    
+    <!-- NOVO CAMPO DATA -->
+    <div class="campo mb-6 flex flex-col">
+      <label class="text-base font-semibold mb-2 text-gray-700">Data do Remédio</label>
+      <input type="date" id="remedio-data"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Duração do tratamento</label>
-      <input type="text" placeholder="Ex: 7 dias"
+      <input type="text" placeholder="Ex: 7 dias" id="remedio-duracao"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Observações</label>
-      <textarea rows="3"
+      <textarea rows="3" id="remedio-observacoes"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
     </div>
 
@@ -98,12 +104,10 @@
       Nenhum remédio adicionado ainda <span class="ml-2">🥺</span>
     </p>
 
-
     <ul id="lista-remedios"
       class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0">
     </ul>
   </div>
-
 
   <button id="btn-voltar"
     class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
@@ -113,9 +117,6 @@
       &#xf004;
     </span>
   </button>
-
-
-
 
   <script src="../js/alarme.js"></script>
   <script type="module" src="../js/formulario-remedios.js"></script>

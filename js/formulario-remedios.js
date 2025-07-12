@@ -1,4 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener("DOMContentLoaded", () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.querySelector("form");
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const li = document.createElement("li");
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
-     li.innerHTML = `
+      li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
@@ -70,6 +71,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       ${remedio.horario ? `
         <p><span class="text-pink-500">⏰ Horário:</span> ${remedio.horario}</p>
+      ` : ''}
+
+      ${remedio.date ? `
+        <p><span class="text-pink-500">📅 Data:</span> ${remedio.date}</p>
       ` : ''}
 
       ${remedio.duracao ? `
@@ -98,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 `;
 
-
       lista.appendChild(li);
     });
 
@@ -126,16 +130,21 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const inputs = form.querySelectorAll("input, textarea");
-    const [nome, dosagem, frequencia, horario, duracao, observacoes] = Array.from(inputs).map(input => input.value.trim());
+    const nome = document.getElementById("remedio-nome").value.trim();
+    const dosagem = document.getElementById("remedio-dosagem").value.trim();
+    const frequencia = document.getElementById("remedio-frequencia").value.trim();
+    const horario = document.getElementById("remedio-horario").value.trim();
+    const date = document.getElementById("remedio-data").value.trim();
+    const duracao = document.getElementById("remedio-duracao").value.trim();
+    const observacoes = document.getElementById("remedio-observacoes").value.trim();
     const alarme = form.querySelector("#task-alarm")?.value || "";
 
-    if (!nome || !dosagem || !frequencia || !horario || !duracao) {
+    if (!nome || !dosagem || !frequencia || !horario || !date || !duracao) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    const remedio = { nome, dosagem, frequencia, horario, duracao, observacoes, alarme };
+    const remedio = { nome, dosagem, frequencia, horario, date, duracao, observacoes, alarme };
     const remedios = pegarRemediosStorage();
     remedios.push(remedio);
 
@@ -148,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarDica();
   setInterval(atualizarDica, 10000); // a cada 10s, nova dica
   atualizarListaRemedios();
-
 
   const botaoVoltar = document.getElementById('btn-voltar');
   if (botaoVoltar) {

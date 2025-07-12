@@ -1,10 +1,11 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-meta');
   const listaMetas = document.getElementById('lista-metas');
   const metaInspiradora = document.getElementById('meta-inspiradora');
-  const mensagemVazia = document.getElementById('mensagemVazia'); // Só coloque se tiver esse elemento no seu HTML
+  const mensagemVazia = document.getElementById('mensagemVazia'); // Opcional, se existir no HTML
 
   // 💡 FRASES INSPIRADORAS
   const metasInspiradoras = [
@@ -46,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (mensagemVazia) mensagemVazia.style.display = 'none'; // Esconde a frase
     }
 
-    // Se tem metas, mostra frase inspiradora aleatória
     metaInspiradora.textContent = metasInspiradoras[Math.floor(Math.random() * metasInspiradoras.length)];
 
     metas.forEach((meta, index) => {
@@ -54,52 +54,46 @@ document.addEventListener('DOMContentLoaded', () => {
       item.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
       item.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p><strong class="text-pink-500">${meta.titulo}</strong></p>
-      <p>${meta.descricao}</p>
-      <p>
-        <span class="text-pink-500">📂 Categoria:</span> ${meta.categoria}
-      </p>
-      <p>
-        <span class="text-pink-500">⏳ Prazo:</span> ${meta.prazo || 'Não definido'}
-      </p>
-      <p>
-        <span class="text-pink-500">⚡ Prioridade:</span> ${meta.prioridade}
-      </p>
-      ${meta.lembrete ? `
-        <p><span class="text-pink-500">🔔 Lembrete:</span> ${meta.lembrete}</p>
-      ` : ''}
-    </div>
+        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+          <div class="flex-1 space-y-2 text-base font-semibold text-black">
+            <p><strong class="text-pink-500">${meta.titulo}</strong></p>
+            <p>${meta.descricao}</p>
+            <p>
+              <span class="text-pink-500">📂 Categoria:</span> ${meta.categoria}
+            </p>
+            <p>
+              <span class="text-pink-500">⏳ Prazo:</span> ${meta.date || 'Não definido'}
+            </p>
+            <p>
+              <span class="text-pink-500">⚡ Prioridade:</span> ${meta.prioridade}
+            </p>
+            ${meta.lembrete ? `<p><span class="text-pink-500">🔔 Lembrete:</span> ${meta.lembrete}</p>` : ''}
+          </div>
 
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover meta"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-    </button>
-  </div>
-`;
-
+          <button 
+            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1"
+            data-index="${index}" 
+            title="Remover meta"
+            type="button"
+          >
+            Remover
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+          </button>
+        </div>
+      `;
 
       const botaoRemover = item.querySelector('button');
-      botaoRemover.addEventListener('click', () => {
-        removerMeta(index);
-      });
+      botaoRemover.addEventListener('click', () => removerMeta(index));
 
       listaMetas.appendChild(item);
     });
   }
 
-  // 📦 FUNÇÕES AUXILIARES DE LOCALSTORAGE
+  // 📦 LOCALSTORAGE
   function pegarMetasStorage() {
     return JSON.parse(localStorage.getItem('metas')) || [];
   }
-
   function salvarMetasStorage(metas) {
     localStorage.setItem('metas', JSON.stringify(metas));
   }
@@ -115,14 +109,31 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    const titulo = document.getElementById('meta-title').value.trim();
+    const descricao = document.getElementById('meta-description').value.trim();
+    const categoria = document.getElementById('meta-category').value;
+    const date = document.getElementById('meta-deadline').value; // Campo pra prazo, formato YYYY-MM-DD
+    const prioridade = document.getElementById('meta-priority').value;
+    const lembrete = gerarTextoLembrete();
+
+    if (!titulo) {
+      alert('Por favor, preencha o título da meta.');
+      return;
+    }
+    if (!date) {
+      alert('Por favor, selecione o prazo da meta.');
+      return;
+    }
+
     const novaMeta = {
       id: Date.now(),
-      titulo: document.getElementById('meta-title').value,
-      descricao: document.getElementById('meta-description').value,
-      categoria: document.getElementById('meta-category').value,
-      prazo: document.getElementById('meta-deadline').value,
-      prioridade: document.getElementById('meta-priority').value,
-      lembrete: gerarTextoLembrete()
+      titulo,
+      descricao,
+      categoria,
+      date,
+      prioridade,
+      lembrete,
+      title: `Meta: ${titulo}`
     };
 
     const metas = pegarMetasStorage();
