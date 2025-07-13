@@ -44,70 +44,131 @@
   </div>
 
   <!-- Formulário Skincare -->
-  <form id="form-skincare"
-    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
+  <form id="form-skincare" class="mb-6 bg-white p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
     <div class="campo">
 
       <div class="mb-6 flex flex-col">
-        <label for="consulta-nome" class="mb-2 text-base font-semibold text-gray-700">Etapa do Skincare</label>
-        <select id="consulta-nome" name="consulta-nome" required
+        <label for="consulta-etapa" class="mb-2 text-base font-semibold text-gray-700">Etapa do Skincare</label>
+        <select id="consulta-etapa" name="consulta-etapa" required
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="" disabled selected>Selecione a etapa</option>
           <option value="limpeza">Limpeza</option>
-          <option value="tonificação">Tonificação</option>
-          <option value="hidratação">Hidratação</option>
-          <option value="proteção solar">Proteção Solar</option>
-          <option value="esfoliação">Esfoliação</option>
+          <option value="tonificacao">Tonificação</option>
+          <option value="hidratacao">Hidratação</option>
+          <option value="protecao-solar">Proteção Solar</option>
+          <option value="esfoliacao">Esfoliação</option>
           <option value="tratamento">Tratamento (acne, manchas...)</option>
         </select>
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="consulta-descricao" class="mb-2 text-base font-semibold text-gray-700">Observações</label>
-        <textarea id="consulta-descricao" name="consulta-descricao" rows="3"
+        <label for="consulta-observacoes" class="mb-2 text-base font-semibold text-gray-700">Observações</label>
+        <textarea id="consulta-observacoes" name="consulta-observacoes" rows="3"
           placeholder="Ex: Usei sabonete facial XYZ, pele ficou oleosa..."
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="selectTipoConsulta" class="mb-2 text-base font-semibold text-gray-700">Tipo de Produto</label>
-        <select id="selectTipoConsulta"
+        <label for="consulta-tipo-produto" class="mb-2 text-base font-semibold text-gray-700">Tipo de Produto</label>
+        <select id="consulta-tipo-produto" name="consulta-tipo-produto"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
           <option value="gel">Gel</option>
           <option value="espuma">Espuma</option>
           <option value="creme">Creme</option>
-          <option value="sérum">Sérum</option>
+          <option value="serum">Sérum</option>
           <option value="outro">Outro</option>
         </select>
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="inputDataConsulta" class="mb-2 text-base font-semibold text-gray-700">Data</label>
-        <input type="date" id="inputDataConsulta" required
+        <label for="consulta-data" class="mb-2 text-base font-semibold text-gray-700">Data</label>
+        <input type="date" id="consulta-data" name="consulta-data" required
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="inputHorarioConsulta" class="mb-2 text-base font-semibold text-gray-700">Horário</label>
-        <input type="time" id="inputHorarioConsulta"
+        <label for="consulta-recorrencia" class="mb-2 text-base font-semibold text-gray-700">Recorrência</label>
+        <select id="consulta-recorrencia" name="consulta-recorrencia"
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+          <option value="nenhuma">Nenhuma</option>
+          <option value="diaria">Diária</option>
+          <option value="semanal">Semanal</option>
+          <option value="quinzenal">Quinzenal</option>
+          <option value="mensal">Mensal</option>
+        </select>
+      </div>
+
+      <!-- Dias da semana SEMPRE visível para escolha -->
+      <div id="days-of-week-container" class="mb-4 p-4 border-2 border-pink-300 rounded-lg bg-stone-50 max-w-[500px]">
+        <label class="block text-base font-semibold text-gray-700 mb-2">Escolha os dias da semana</label>
+        <div class="grid grid-cols-4 gap-4">
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="segunda"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Seg</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="terca"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Ter</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="quarta"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Qua</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="quinta"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Qui</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="sexta"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Sex</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="sabado"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Sáb</span>
+          </label>
+
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" name="dias-semana" value="domingo"
+              class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+            <span class="ml-2 text-gray-700 select-none">Dom</span>
+          </label>
+
+        </div>
+      </div>
+
+      <div class="mb-6 flex flex-col">
+        <label for="consulta-horario" class="mb-2 text-base font-semibold text-gray-700">Horário</label>
+        <input type="time" id="consulta-horario" name="consulta-horario"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="consulta-reminder-date" class="mb-2 text-base font-semibold text-gray-700">Data do Lembrete</label>
-        <input type="date" id="consulta-reminder-date" name="consulta-reminder-date"
+        <label for="consulta-lembrete-data" class="mb-2 text-base font-semibold text-gray-700">Data do Lembrete</label>
+        <input type="date" id="consulta-lembrete-data" name="consulta-lembrete-data"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-6 flex flex-col">
-        <label for="consulta-reminder-time" class="mb-2 text-base font-semibold text-gray-700">Hora do Lembrete</label>
-        <input type="time" id="consulta-reminder-time" name="consulta-reminder-time"
+        <label for="consulta-lembrete-hora" class="mb-2 text-base font-semibold text-gray-700">Hora do Lembrete</label>
+        <input type="time" id="consulta-lembrete-hora" name="consulta-lembrete-hora"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
       <div class="mb-2 flex flex-col">
-        <label for="task-alarm" class="mb-2 text-base font-semibold text-gray-700">Alarme</label>
-        <input type="time" id="task-alarm" name="task-alarm"
+        <label for="consulta-alarme" class="mb-2 text-base font-semibold text-gray-700">Alarme</label>
+        <input type="time" id="consulta-alarme" name="consulta-alarme"
           class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
       </div>
 
@@ -122,6 +183,7 @@
       </span>
     </button>
   </form>
+
 
   <div class="relative max-w-[500px] mx-auto my-8">
     <p id="mensagemVazia" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
