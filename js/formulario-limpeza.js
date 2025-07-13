@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const listaLimpezas = document.getElementById("lista-limpezas");
   const mensagemVazia = document.getElementById("mensagemVazia");
 
-  // Função para carregar tarefas do localStorage e mostrar na tela
   function carregarLista() {
     const tarefasJSON = localStorage.getItem("limpeza");
     if (!tarefasJSON) {
@@ -34,23 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-        <span class="text-pink-500">🏠 Cômodo:</span> ${tarefa.comodo}
-      </p>
-      <p>
-        <span class="text-pink-500">🧹 Tarefa:</span> ${tarefa.tarefa}
-      </p>
-      <p>
-        <span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}
-      </p>
-      <p>
-        <span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.date || "-"}
-      </p>
-      <p>
-        <span class="text-pink-500">⏰ Horário:</span> ${tarefa.horario || "-"}
-      </p>
-      <p>
-        <span class="text-pink-500">🔔 Lembrete:</span> 
+      <p><span class="text-pink-500">🏠 Cômodo:</span> ${tarefa.comodo}</p>
+      <p><span class="text-pink-500">🧹 Tarefa:</span> ${tarefa.tarefa}</p>
+      <p><span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}</p>
+      <p><span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.date || "-"}</p>
+      <p><span class="text-pink-500">⏰ Horário:</span> ${tarefa.horario || "-"}</p>
+      <p><span class="text-pink-500">🔔 Lembrete:</span> 
         <span class="text-black">${tarefa.lembreteData || "-"}</span> 
         <span class="text-pink-500 ml-2">às</span> 
         <span class="text-black">${tarefa.lembreteHora || "-"}</span>
@@ -79,12 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return tarefas;
   }
 
-  // Função para salvar tarefas no localStorage
   function salvarLista(tarefas) {
     localStorage.setItem("limpeza", JSON.stringify(tarefas));
   }
 
-  // Validação simples do formulário
   function validarFormulario(dados) {
     if (!dados.comodo) {
       alert("Por favor, selecione um cômodo.");
@@ -105,20 +91,43 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  // Evento submit do formulário
+  // Função para adicionar dias, semanas ou meses a uma data
+  function adicionarTempo(dataStr, frequencia) {
+    const data = new Date(dataStr);
+
+    switch (frequencia.toLowerCase()) {
+      case "diária":
+        data.setDate(data.getDate() + 1);
+        break;
+      case "semanal":
+        data.setDate(data.getDate() + 7);
+        break;
+      case "quinzenal":
+        data.setDate(data.getDate() + 15);
+        break;
+      case "mensal":
+        data.setMonth(data.getMonth() + 1);
+        break;
+      default:
+        // Não altera a data se frequência inválida
+        break;
+    }
+
+    // Formata para YYYY-MM-DD para inputs de data
+    return data.toISOString().slice(0, 10);
+  }
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Pega os valores dos inputs
     const comodo = form.querySelector("#comodo").value.trim();
     const tarefa = form.querySelector("#tarefa").value.trim();
     const frequencia = form.querySelector("#frequencia").value;
-    const date = form.querySelector("#dia").value; // Data no formato YYYY-MM-DD
+    const date = form.querySelector("#dia").value;
     const horario = form.querySelector("#inputHorarioConsulta").value;
-    const lembreteData = form.querySelector("#lembrete-data").value;
+    let lembreteData = form.querySelector("#lembrete-data").value;
     const lembreteHora = form.querySelector("#lembrete-hora").value;
 
-    // Cria o objeto da tarefa com os campos obrigatórios para o calendário
     const dados = {
       comodo,
       tarefa,
@@ -127,12 +136,25 @@ document.addEventListener("DOMContentLoaded", () => {
       horario,
       lembreteData,
       lembreteHora,
-      title: `Limpeza: ${tarefa} (${comodo})`
+      title: `Limpeza: ${tarefa} (${comodo})`,
     };
 
     if (!validarFormulario(dados)) return;
 
-    // Carrega a lista, adiciona a nova tarefa e salva
+    // Se não tiver data de lembrete, usa a data da limpeza
+    if (!lembreteData) {
+      lembreteData = date;
+      dados.lembreteData = lembreteData;
+    }
+
+    // Ajusta a data da próxima limpeza conforme a frequência para armazenamento
+    // Aqui você pode salvar a data atual e a próxima data calculada, caso queira exibir ou usar para futuras notificações
+    dados.proximaData = adicionarTempo(date, frequencia);
+
+    // Também ajusta a data do lembrete para acompanhar a próxima limpeza
+    dados.proximoLembreteData = adicionarTempo(dados.lembreteData, frequencia);
+
+    // Carrega, adiciona e salva
     const tarefas = carregarLista();
     tarefas.push(dados);
     salvarLista(tarefas);
@@ -141,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarLista();
   });
 
-  // Evento para excluir tarefas ao clicar no botão da lixeira
   listaLimpezas.addEventListener("click", (e) => {
     if (e.target.closest("button")) {
       const btn = e.target.closest("button");
@@ -153,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Carrega a lista assim que a página é carregada
   carregarLista();
 
   // Dicas de limpeza aleatórias
@@ -176,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
       dicasLimpeza[Math.floor(Math.random() * dicasLimpeza.length)];
   }
 
-  // Botão voltar pra home
   const botaoVoltar = document.getElementById('btn-voltar');
   if (botaoVoltar) {
     botaoVoltar.addEventListener('click', voltarParaHome);
