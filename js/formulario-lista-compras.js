@@ -36,9 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>
               <span class="text-pink-500">⚡ Prioridade:</span> ${item.prioridade}
             </p>
-            <p>
-              <span class="text-pink-500">📅 Data:</span> ${item.date || 'Não definida'}
-            </p>
           </div>
 
           <button 
@@ -103,30 +100,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoria = document.getElementById('item-categoria').value;
     const quantidade = Number(document.getElementById('item-qtd').value) || 1;
     const prioridade = document.getElementById('item-prioridade').value;
-    const date = document.getElementById('item-data').value; // data no formato YYYY-MM-DD
 
     if (!nome) {
       alert('Por favor, preencha o nome do item.');
       return;
     }
-    if (!date) {
-      alert('Por favor, selecione a data da compra.');
-      return;
+
+    // Verificar se o item já existe (mesmo nome e categoria)
+    const itemExistenteIndex = compras.findIndex(item => 
+      item.nome.toLowerCase() === nome.toLowerCase() &&
+      item.categoria === categoria
+    );
+
+    if (itemExistenteIndex !== -1) {
+      // Se já existe, soma a quantidade
+      compras[itemExistenteIndex].quantidade += quantidade;
+    } else {
+      // Se não existe, adiciona novo item
+      const novoItem = { 
+        nome, 
+        categoria, 
+        quantidade, 
+        prioridade, 
+        title: `Compra: ${nome}`
+      };
+      compras.push(novoItem);
     }
 
-    // Cria o objeto com o campo date e title para compatibilidade com o calendário
-    const novoItem = { 
-      nome, 
-      categoria, 
-      quantidade, 
-      prioridade, 
-      date,
-      title: `Compra: ${nome}`
-    };
-
-    compras.push(novoItem);
     localStorage.setItem('compras', JSON.stringify(compras));
-
     form.reset();
     atualizarLista();
   });
