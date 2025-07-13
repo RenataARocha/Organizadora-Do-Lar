@@ -44,61 +44,50 @@
   </div>
 
   <!-- Formulário de Finanças -->
-  <form
-    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
-
+  <form id="form-financeiro" class="mb-6 bg-white p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto font-sans">
     <div class="campo mb-6 flex flex-col">
       <label for="tipo" class="font-semibold mb-2 text-gray-700">Tipo</label>
       <select id="tipo"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option value="Receita">Receita</option>
         <option value="Despesa">Despesa</option>
       </select>
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label for="categoria" class="text-base font-semibold mb-2 text-gray-700">Categoria</label>
+      <label for="categoria" class="font-semibold mb-2 text-gray-700">Categoria</label>
       <select id="categoria"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
-        <!-- Opções via JS -->
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="Salário">Salário</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Saúde">Saúde</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Outros">Outros</option>
       </select>
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Valor (R$)</label>
+      <label for="valor" class="font-semibold mb-2 text-gray-700">Valor (R$)</label>
       <input type="number" id="valor" step="0.01"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Data</label>
+      <label for="data" class="font-semibold mb-2 text-gray-700">Data</label>
       <input type="date" id="financeiro-data"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Observações</label>
-      <textarea rows="2"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
-    </div>
-
-    <div class="campo campo-lembrete mb-6 flex flex-col">
-      <label for="financeiro-reminder-date" class="text-base font-semibold mb-2 text-gray-700">Data do lembrete</label>
-      <input type="date" id="financeiro-reminder-date" name="financeiro-reminder-date"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
-    </div>
-
-    <div class="campo campo-lembrete mb-6 flex flex-col">
-      <label for="financeiro-reminder-time" class="text-base font-semibold mb-2 text-gray-700">Hora do lembrete</label>
-      <input type="time" id="financeiro-reminder-time" name="financeiro-reminder-time"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+      <label for="observacoes" class="font-semibold mb-2 text-gray-700">Observações</label>
+      <textarea id="observacoes" rows="2"
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
     </div>
 
     <button type="submit"
-      class="relative w-full max-w-[500px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+      class="w-full h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] cursor-pointer shadow-md transition duration-300 ease-in-out active:translate-y-1">
       Salvar
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
     </button>
   </form>
 
@@ -115,6 +104,13 @@
     </ul>
   </div>
 
+  <div id="resumo-financeiro"
+    class="resumo-financeiro max-w-[500px] mx-auto p-4 rounded-lg bg-stone-50 shadow mt-6 font-sans">
+    <p><strong>Receita Total:</strong> R$ <span id="total-receitas">0.00</span></p>
+    <p><strong>Despesa Total:</strong> R$ <span id="total-despesas">0.00</span></p>
+    <p><strong>Saldo:</strong> R$ <span id="saldo">0.00</span></p>
+  </div>
+
 
   <button id="btn-voltar"
     class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
@@ -124,8 +120,6 @@
       &#xf004;
     </span>
   </button>
-
-
 
 
   <script src="../js/alarme.js"></script>
