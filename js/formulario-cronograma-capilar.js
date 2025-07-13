@@ -1,6 +1,6 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Seleciona os elementos do DOM
   const form = document.getElementById('form-cronograma');
   const listaEtapas = document.getElementById('lista-cronogramas');
   const mensagemVazia = document.getElementById('mensagem-vazia');
@@ -9,29 +9,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const textareaObs = document.getElementById('observacao-etapa');
   const selectProduto = document.getElementById('tipo-produto');
   const inputData = document.getElementById('data-etapa');
+  const selectRecorrencia = document.getElementById('consulta-recorrencia');
+  const diasSemanaCheckboxes = document.querySelectorAll('input[name="dias-semana"]');
   const inputReminderDate = document.getElementById('data-lembrete');
   const inputReminderTime = document.getElementById('hora-lembrete');
+  const inputAlarme = document.getElementById('consulta-alarme');
 
   const STORAGE_KEY = 'cronogramaCapilarEtapas';
 
-  // Carregar etapas do localStorage
   function carregarEtapas() {
     const etapasJSON = localStorage.getItem(STORAGE_KEY);
     return etapasJSON ? JSON.parse(etapasJSON) : [];
   }
 
-  // Salvar etapas no localStorage
   function salvarEtapas(etapas) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(etapas));
   }
 
-  // Função utilitária para deixar a primeira letra maiúscula
   function capitalize(str) {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Criar o item da lista para cada etapa
+  // Converte array de dias para texto com primeira letra maiúscula e vírgula
+  function diasParaTexto(dias) {
+    if (!dias || dias.length === 0) return '-';
+    return dias.map(d => capitalize(d)).join(', ');
+  }
+
   function criarItemEtapa(etapa, index) {
     const li = document.createElement('li');
     li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
@@ -54,11 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="text-pink-500">📅 Data:</span> ${etapa.data}
       </p>
 
+      <p class="text-sm">
+        <span class="text-pink-500">🔄 Recorrência:</span> ${capitalize(etapa.recorrencia || '-')}
+      </p>
+
+      <p class="text-sm">
+        <span class="text-pink-500">📆 Dias da Semana:</span> ${diasParaTexto(etapa.diasSelecionados)}
+      </p>
+
       ${(etapa.reminderDate || etapa.reminderTime) ? `
         <p class="text-sm">
           <span class="text-pink-500">🔔 Lembrete:</span> ${etapa.reminderDate || ''} ${etapa.reminderTime || ''}
         </p>
       ` : ''}
+
+      <p class="text-sm">
+        <span class="text-pink-500">⏰ Alarme:</span> ${etapa.alarme || '-'}
+      </p>
     </div>
 
     <button 
@@ -76,11 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 `;
 
-
     return li;
   }
 
-  // Atualizar lista na tela
   function atualizarLista() {
     const etapas = carregarEtapas();
 
@@ -98,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
       listaEtapas.appendChild(li);
     });
 
-    // Evento para remover etapa
     listaEtapas.querySelectorAll('button.btn-remover').forEach(botao => {
       botao.addEventListener('click', (e) => {
         const idx = e.currentTarget.getAttribute('data-index');
@@ -107,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Remove a etapa pelo índice
   function removerEtapa(index) {
     const etapas = carregarEtapas();
     etapas.splice(index, 1);
@@ -115,66 +128,66 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarLista();
   }
 
-  // Evento submit do formulário
+  // Controle dos checkboxes dias da semana de acordo com a recorrência
+  function atualizarDiasSemana() {
+  const valor = selectRecorrencia.value;
+
+  if (valor === 'nenhuma') {
+    diasSemanaCheckboxes.forEach(chk => {
+      chk.checked = false;
+      chk.disabled = true;
+      chk.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
+    });
+  } else {
+    diasSemanaCheckboxes.forEach(chk => {
+      chk.disabled = false;
+      chk.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
+    });
+  }
+}
+
+
+  selectRecorrencia.addEventListener('change', atualizarDiasSemana);
+  atualizarDiasSemana(); // inicializa no carregamento
+
   form.addEventListener('submit', (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const novaEtapa = {
-    etapa: selectEtapa.value.trim(),
-    observacoes: textareaObs.value.trim(),
-    produto: selectProduto.value,
-    date: inputData.value, // Atenção aqui, precisa ser 'date'
-    reminderDate: inputReminderDate.value,
-    reminderTime: inputReminderTime.value,
-    title: `Etapa: ${selectEtapa.value.trim()}` // E o título da etapa
-  };
+    const novaEtapa = {
+      etapa: selectEtapa.value.trim(),
+      observacoes: textareaObs.value.trim(),
+      produto: selectProduto.value,
+      data: inputData.value,
+      recorrencia: selectRecorrencia.value,
+      diasSelecionados: Array.from(diasSemanaCheckboxes).filter(chk => chk.checked).map(chk => chk.value),
+      reminderDate: inputReminderDate.value,
+      reminderTime: inputReminderTime.value,
+      alarme: inputAlarme.value,
+      title: `Etapa: ${selectEtapa.value.trim()}`
+    };
 
-  if (!novaEtapa.etapa) {
-    alert('Por favor, selecione a etapa do cronograma.');
-    return;
-  }
-  if (!novaEtapa.date) { // Aqui verifica o campo certo
-    alert('Por favor, selecione a data da etapa.');
-    return;
-  }
-
-  const etapas = carregarEtapas();
-  etapas.push(novaEtapa);
-  salvarEtapas(etapas);
-  atualizarLista();
-
-  form.reset();
-  selectEtapa.selectedIndex = 0;
-  selectProduto.selectedIndex = 0;
-});
-
-
-  // Mostrar dica capilar aleatória
-  const dicasCapilares = [
-    "Lave o cabelo com água morna para evitar ressecamento.",
-    "Use um shampoo adequado para o seu tipo de cabelo.",
-    "Não lave o cabelo todos os dias para preservar a oleosidade natural.",
-    "Aplique condicionador somente nas pontas para evitar raiz oleosa.",
-    "Faça hidratação semanal para manter os fios saudáveis e brilhantes.",
-    "Evite usar secador e chapinha em excesso para não danificar os fios.",
-    "Proteja o cabelo do sol usando produtos com filtro UV.",
-    "Penteie os cabelos com cuidado para evitar quebra.",
-    "Corte as pontas regularmente para evitar pontas duplas.",
-    "Alimente-se bem: uma dieta balanceada reflete na saúde capilar."
-  ];
-
-  function mostrarDicaCapilar() {
-    const indiceAleatorio = Math.floor(Math.random() * dicasCapilares.length);
-    const dicaSelecionada = dicasCapilares[indiceAleatorio];
-    const elementoDica = document.getElementById('dica-capilar');
-    if (elementoDica) {
-      elementoDica.textContent = dicaSelecionada;
+    if (!novaEtapa.etapa) {
+      alert('Por favor, selecione a etapa do cronograma.');
+      return;
     }
-  }
+    if (!novaEtapa.data) {
+      alert('Por favor, selecione a data da etapa.');
+      return;
+    }
 
-  // Chama as funções iniciais quando o DOM estiver pronto
+    const etapas = carregarEtapas();
+    etapas.push(novaEtapa);
+    salvarEtapas(etapas);
+    atualizarLista();
+
+    form.reset();
+    selectEtapa.selectedIndex = 0;
+    selectProduto.selectedIndex = 0;
+    selectRecorrencia.selectedIndex = 0;
+    atualizarDiasSemana();
+  });
+
   atualizarLista();
-  mostrarDicaCapilar();
 
   const botaoVoltar = document.getElementById('btn-voltar');
   if (botaoVoltar) {
