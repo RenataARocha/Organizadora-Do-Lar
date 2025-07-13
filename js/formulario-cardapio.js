@@ -1,4 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cardapio');
   const listaCardapio = document.getElementById('lista-cardapio');
@@ -52,54 +53,34 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-        <span class="text-pink-500">📅 Dia:</span> ${cardapio.dia} 
-        ${cardapio.data ? `<span class="text-black"> - (${cardapio.data})</span>` : ''}
-      </p>
-      <p>
-        <span class="text-pink-500">☕ Café:</span> ${cardapio.cafe}
-      </p>
-      <p>
-        <span class="text-pink-500">🍽️ Almoço:</span> ${cardapio.almoco}
-      </p>
-      <p>
-        <span class="text-pink-500">🍪 Lanche:</span> ${cardapio.lanche}
-      </p>
-      <p>
-        <span class="text-pink-500">🍲 Jantar:</span> ${cardapio.jantar}
-      </p>
-      <p>
-        <span class="text-pink-500">🔁 Recorrência:</span> ${cardapio.recorrencia}
-      </p>
-      ${cardapio.alarme ? `
-        <p>
-          <span class="text-pink-500">⏰ Alarme:</span> ${cardapio.alarme}
-        </p>
-      ` : ''}
-    </div>
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          <p><span class="text-pink-500">📅 Data:</span> ${cardapio.data || 'Não definida'}</p>
+          <p><span class="text-pink-500">🗓️ Dias da Semana:</span> ${cardapio.diasSemana ? cardapio.diasSemana.join(', ') : 'Nenhum selecionado'}</p>
+          <p><span class="text-pink-500">☕ Café:</span> ${cardapio.cafe}</p>
+          <p><span class="text-pink-500">🍽️ Almoço:</span> ${cardapio.almoco}</p>
+          <p><span class="text-pink-500">🍪 Lanche:</span> ${cardapio.lanche}</p>
+          <p><span class="text-pink-500">🍲 Jantar:</span> ${cardapio.jantar}</p>
+          <p><span class="text-pink-500">🔁 Recorrência:</span> ${cardapio.recorrencia}</p>
+        </div>
 
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover cardápio"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-        &#xf004;
-      </span>
-    </button>
-  </div>
-`;
-
+        <button 
+          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+          data-index="${index}" 
+          title="Remover cardápio"
+          type="button"
+        >
+          Remover
+          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+            &#xf004;
+          </span>
+        </button>
+      </div>
+      `;
 
       listaCardapio.appendChild(li);
-
     });
   }
 
@@ -109,61 +90,50 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('cardapios', JSON.stringify(cardapios));
   }
 
-  function ativarAlarme(horario, texto) {
-    const [hora, minuto] = horario.split(':').map(Number);
-    const agora = new Date();
-    const alarme = new Date();
-
-    alarme.setHours(hora, minuto, 0, 0);
-    if (alarme < agora) {
-      alarme.setDate(alarme.getDate() + 1); // vai pro dia seguinte
-    }
-
-    const tempoRestante = alarme.getTime() - agora.getTime();
-
-    setTimeout(() => {
-      alert(`🔔 Alarme do Cardápio: ${texto}`);
-    }, tempoRestante);
-  }
-
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const dia = document.getElementById('dia-semana').value;
-    const cafe = document.getElementById('cafe').value;
-    const almoco = document.getElementById('almoco').value;
-    const lanche = document.getElementById('lanche').value;
-    const jantar = document.getElementById('jantar').value;
+    // pegar os dias da semana selecionados (checkboxes)
+    const diasSelecionados = Array.from(document.querySelectorAll('input[name="dias-semana"]:checked'))
+      .map(checkbox => checkbox.value);
 
     const data = document.getElementById('task-date').value;
+    const cafe = document.getElementById('cafe').value.trim();
+    const almoco = document.getElementById('almoco').value.trim();
+    const lanche = document.getElementById('lanche').value.trim();
+    const jantar = document.getElementById('jantar').value.trim();
     const recorrencia = document.getElementById('task-recurrence').value;
-    const alarme = document.getElementById('task-alarm').value;
+
+    if (!cafe && !almoco && !lanche && !jantar) {
+      alert('Por favor, preencha pelo menos uma refeição.');
+      return;
+    }
+
+    if (recorrencia === 'weekly' && diasSelecionados.length === 0) {
+      alert('Selecione pelo menos um dia da semana para recorrência semanal.');
+      return;
+    }
 
     const dados = {
-      dia,
+      data,
+      diasSemana: diasSelecionados,
       cafe,
       almoco,
       lanche,
       jantar,
-      date: data, // 
       recorrencia,
-      alarme,
-      title: `🍽️ Cardápio de ${dia}`
+      title: `🍽️ Cardápio`
     };
 
     salvarCardapio(dados);
     carregarCardapios();
 
-    if (alarme) {
-      ativarAlarme(alarme, `Cardápio de ${dia}`);
-    }
-
     form.reset();
   });
 
   listaCardapio.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-      const index = e.target.dataset.index;
+    if (e.target.closest('.btn-remover')) {
+      const index = e.target.closest('.btn-remover').dataset.index;
       const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
       cardapios.splice(index, 1);
       localStorage.setItem('cardapios', JSON.stringify(cardapios));
