@@ -65,6 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <p>
         <span class="text-pink-500">⚖️ Dosagem:</span> ${remedio.dosagem}
       </p>
+      ${remedio.diasSemana && remedio.diasSemana.length > 0 ? `
+  <p><span class="text-pink-500">📅 Dias:</span> ${remedio.diasSemana.map(dia => dia.charAt(0).toUpperCase() + dia.slice(1)).join(", ")}</p>
+` : ''}
+
       <p>
         <span class="text-pink-500">⏳ Frequência:</span> ${remedio.frequencia}
       </p>
@@ -139,12 +143,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const observacoes = document.getElementById("remedio-observacoes").value.trim();
     const alarme = form.querySelector("#task-alarm")?.value || "";
 
+    // Capturar os dias da semana marcados
+    const checkboxes = document.querySelectorAll('input[name="dias-semana"]:checked');
+    const diasSelecionados = Array.from(checkboxes).map(cb => cb.value);
+
     if (!nome || !dosagem || !frequencia || !horario || !date || !duracao) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
-    const remedio = { nome, dosagem, frequencia, horario, date, duracao, observacoes, alarme };
+    if (diasSelecionados.length === 0) {
+      alert("Por favor, selecione ao menos um dia da semana.");
+      return;
+    }
+
+    const remedio = {
+      nome,
+      dosagem,
+      frequencia,
+      horario,
+      date,
+      duracao,
+      observacoes,
+      alarme,
+      diasSemana: diasSelecionados  // salva o array com os dias marcados
+    };
     const remedios = pegarRemediosStorage();
     remedios.push(remedio);
 
@@ -153,9 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarListaRemedios();
   });
 
-  // 🚀 INICIALIZAÇÃO
   atualizarDica();
-  setInterval(atualizarDica, 10000); // a cada 10s, nova dica
+  setInterval(atualizarDica, 10000);
   atualizarListaRemedios();
 
   const botaoVoltar = document.getElementById('btn-voltar');

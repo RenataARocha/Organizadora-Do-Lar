@@ -76,6 +76,56 @@
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
+    <!-- Dias da semana SEMPRE visível para escolha -->
+    <div id="days-of-week-container" class="mb-4 p-4 border-2 border-pink-300 rounded-lg bg-stone-50 max-w-[500px]">
+      <label class="block text-base font-semibold text-gray-700 mb-2">Escolha os dias da semana</label>
+      <div class="grid grid-cols-4 gap-4">
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="segunda"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Seg</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="terca"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Ter</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="quarta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Qua</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="quinta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Qui</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="sexta"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Sex</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="sabado"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Sáb</span>
+        </label>
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" name="dias-semana" value="domingo"
+            class="form-checkbox text-pink-400 rounded transition duration-150 ease-in-out" />
+          <span class="ml-2 text-gray-700 select-none">Dom</span>
+        </label>
+
+      </div>
+    </div>
+    
     <div class="campo mb-6 flex flex-col">
       <label class="text-base font-semibold mb-2 text-gray-700">Observações</label>
       <textarea rows="3" id="remedio-observacoes"
