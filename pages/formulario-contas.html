@@ -66,13 +66,12 @@
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
-    <div class="campo mb-6 flex flex-col">
-      <label for="conta-paga" class="text-base font-semibold mb-2 text-gray-700">Já foi paga?</label>
-      <select id="conta-paga" name="conta-paga"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
-        <option value="nao">Não</option>
-        <option value="sim">Sim</option>
-      </select>
+    <div class="campo mb-6 flex items-center gap-3">
+      <input type="checkbox" id="conta-paga" name="conta-paga"
+        class="w-5 h-5 accent-pink-500 bg-stone-50 border-2 border-pink-300 rounded focus:ring-pink-200 focus:ring-2 transition-all" />
+      <label for="conta-paga" class="text-base font-semibold text-gray-700 cursor-pointer select-none">
+        Já foi paga?
+      </label>
     </div>
 
     <div class="campo mb-6 flex flex-col">
@@ -80,6 +79,7 @@
       <select id="conta-repetir" name="conta-repetir"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option value="nao">Não repetir</option>
+        <option value="semanal">Semanal</option>
         <option value="mensal">Mensal</option>
         <option value="anual">Anual</option>
       </select>
@@ -118,7 +118,7 @@
   </div>
 
 
- <button id="btn-voltar"
+  <button id="btn-voltar"
     class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
     ← Voltar
     <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"

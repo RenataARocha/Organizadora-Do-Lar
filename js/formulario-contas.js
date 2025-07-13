@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
       descricao: document.getElementById("conta-descricao").value,
       valor: document.getElementById("conta-valor").value,
       date: document.getElementById("conta-vencimento").value, // <== mudou para 'date'
-      paga: document.getElementById("conta-paga").value,
+      paga: document.getElementById("conta-paga").checked ? "sim" : "nao",
       repetir: document.getElementById("conta-repetir").value,
       lembreteData: document.querySelector("#conta-lembrete-data").value,
       lembreteHora: document.querySelector("#conta-lembrete-hora").value,
