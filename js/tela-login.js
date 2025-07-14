@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  // 👤 Redireciona automaticamente se já estiver logado
+  const usuarioLogado = localStorage.getItem("usuarioLogado");
+  if (usuarioLogado) {
+    window.location.href = "pages/tela-inicial.html";
+    return;
+  }
+
   const btnEntrar = document.getElementById("btn-entrar");
   const btnCriarConta = document.getElementById("btn-criar-conta");
   const btnInstalar = document.getElementById("btn-instalar");
