@@ -2,8 +2,8 @@ import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
- initLembretes('skincare', 'lista-skincare', 'mensagemVazia');
- 
+  initLembretes('skincare', 'lista-skincare', 'mensagemVazia');
+
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-skincare');
   const lista = document.getElementById('lista-skincare');
@@ -95,19 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const valor = selectRecorrencia.value;
 
     if (valor === 'nenhuma') {
-  // Desabilita e desmarca todos os dias da semana
-  diasSemanaCheckboxes.forEach(checkbox => {
-    checkbox.checked = false;
-    checkbox.disabled = true;
-    checkbox.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
-  });
-} else {
-  // Habilita os checkboxes para permitir seleção
-  diasSemanaCheckboxes.forEach(checkbox => {
-    checkbox.disabled = false;
-    checkbox.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
-  });
-}
+      // Desabilita e desmarca todos os dias da semana
+      diasSemanaCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.disabled = true;
+        checkbox.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
+      });
+    } else {
+      // Habilita os checkboxes para permitir seleção
+      diasSemanaCheckboxes.forEach(checkbox => {
+        checkbox.disabled = false;
+        checkbox.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
+      });
+    }
   }
 
   // Atualiza os dias da semana ao mudar a recorrência
@@ -151,8 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
       horario,
       lembreteData,
       lembreteHora,
-      alarme
+      alarme,
+      title: `Skincare: ${nome || 'Sem título'}`
     };
+
 
     skincare.push(novaEtapa);
     salvarSkincare();

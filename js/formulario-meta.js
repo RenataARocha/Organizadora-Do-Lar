@@ -105,19 +105,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function gerarTextoLembrete() {
     const data = document.getElementById('meta-reminder-date').value;
     const hora = document.getElementById('meta-reminder-time').value;
-    return data && hora ? `${data} às ${hora}` : 'Sem lembrete';
+    return data && hora ? `${data} às ${hora}` : '';
   }
 
-  // ✨ ADICIONAR NOVA META
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const titulo = document.getElementById('meta-title').value.trim();
     const descricao = document.getElementById('meta-description').value.trim();
     const categoria = document.getElementById('meta-category').value;
-    const date = document.getElementById('meta-deadline').value; // Campo pra prazo, formato YYYY-MM-DD
+    const date = document.getElementById('meta-deadline').value;
     const prioridade = document.getElementById('meta-priority').value;
-    const lembrete = gerarTextoLembrete();
+
+    // Aqui você precisa pegar o reminderDate e reminderTime direto do DOM, porque antes estava usando variáveis que não existem
+    const reminderDate = document.getElementById('meta-reminder-date').value;
+    const reminderTime = document.getElementById('meta-reminder-time').value;
+    const lembrete = reminderDate && reminderTime ? `${reminderDate} às ${reminderTime}` : '';
 
     if (!titulo) {
       alert('Por favor, preencha o título da meta.');
@@ -137,10 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
       prioridade,
       reminderDate,
       reminderTime,
-      lembrete: reminderDate && reminderTime ? `${reminderDate} às ${reminderTime}` : '',
+      lembrete,
       title: `Meta: ${titulo}`
     };
-
 
     const metas = pegarMetasStorage();
     metas.push(novaMeta);
@@ -150,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarMetas();
   });
 
-  // ❌ REMOVER META
   function removerMeta(index) {
     const metas = pegarMetasStorage();
     metas.splice(index, 1);
@@ -158,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarMetas();
   }
 
-  // INICIALIZA NA CARGA DA PÁGINA
   carregarMetas();
 
   const botaoVoltar = document.getElementById('btn-voltar');
