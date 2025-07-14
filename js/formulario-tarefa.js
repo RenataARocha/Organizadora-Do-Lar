@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // FUNÇÃO para ativar/desativar os checkboxes dos dias conforme a recorrência
   function ajustarDiasSemana() {
     const tipo = selectRecurrence.value;
-    if (tipo === 'weekly' || tipo === 'custom') {
+    if (tipo === 'weekly' || tipo === 'custom' || tipo === 'daily') {
       diasSemanaInputs.forEach(input => input.disabled = false);
     } else {
       diasSemanaInputs.forEach(input => {
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.disabled = true;
       });
     }
+
   }
 
   // Chama no carregamento inicial
