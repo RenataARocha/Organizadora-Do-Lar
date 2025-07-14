@@ -154,55 +154,55 @@ document.addEventListener('DOMContentLoaded', () => {
   atualizarDiasSemana(); // inicializa no carregamento
 
   form.addEventListener('submit', (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const novaEtapa = {
-    etapa: selectEtapa.value.trim(),
-    observacoes: textareaObs.value.trim(),
-    produto: selectProduto.value,
-    data: inputData.value,
-    recorrencia: selectRecorrencia.value,
-    diasSelecionados: Array.from(diasSemanaCheckboxes).filter(chk => chk.checked).map(chk => chk.value),
-    reminderDate: inputReminderDate.value,
-    reminderTime: inputReminderTime.value,
-    alarme: inputAlarme.value,
-    title: `Etapa: ${selectEtapa.value.trim()}`
-  };
+    const novaEtapa = {
+      etapa: selectEtapa.value.trim(),
+      observacoes: textareaObs.value.trim(),
+      produto: selectProduto.value,
+      data: inputData.value,
+      recorrencia: selectRecorrencia.value,
+      diasSelecionados: Array.from(diasSemanaCheckboxes).filter(chk => chk.checked).map(chk => chk.value),
+      lembreteData: inputReminderDate.value,
+      lembreteHora: inputReminderTime.value,
+      alarme: inputAlarme.value,
+      title: `Etapa: ${selectEtapa.value.trim()}`
+    };
 
-  if (!novaEtapa.etapa) {
-    alert('Por favor, selecione a etapa do cronograma.');
-    return;
-  }
-  if (!novaEtapa.data) {
-    alert('Por favor, selecione a data da etapa.');
-    return;
-  }
+    if (!novaEtapa.etapa) {
+      alert('Por favor, selecione a etapa do cronograma.');
+      return;
+    }
+    if (!novaEtapa.data) {
+      alert('Por favor, selecione a data da etapa.');
+      return;
+    }
 
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
 
-  // Corrige a criação da data para evitar erro com timezone
-  const partes = novaEtapa.data.split('-');
-  const dataEtapa = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-  dataEtapa.setHours(0, 0, 0, 0);
+    // Corrige a criação da data para evitar erro com timezone
+    const partes = novaEtapa.data.split('-');
+    const dataEtapa = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+    dataEtapa.setHours(0, 0, 0, 0);
 
-  if (dataEtapa < hoje) {
-    alert('Data da etapa não pode ser anterior a hoje.');
-    return;
-  }
+    if (dataEtapa < hoje) {
+      alert('Data da etapa não pode ser anterior a hoje.');
+      return;
+    }
 
-  // restante do código para salvar, resetar form, atualizar lista
-  const etapas = carregarEtapas();
-  etapas.push(novaEtapa);
-  salvarEtapas(etapas);
-  atualizarLista();
+    // restante do código para salvar, resetar form, atualizar lista
+    const etapas = carregarEtapas();
+    etapas.push(novaEtapa);
+    salvarEtapas(etapas);
+    atualizarLista();
 
-  form.reset();
-  selectEtapa.selectedIndex = 0;
-  selectProduto.selectedIndex = 0;
-  selectRecorrencia.selectedIndex = 0;
-  atualizarDiasSemana();
-});
+    form.reset();
+    selectEtapa.selectedIndex = 0;
+    selectProduto.selectedIndex = 0;
+    selectRecorrencia.selectedIndex = 0;
+    atualizarDiasSemana();
+  });
 
 
   atualizarLista();

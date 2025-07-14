@@ -138,9 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria,
       date,
       prioridade,
-      reminderDate,
-      reminderTime,
-      lembrete,
+      lembreteData: reminderDate,
+      lembreteHora: reminderTime,
       title: `Meta: ${titulo}`
     };
 
