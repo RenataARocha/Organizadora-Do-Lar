@@ -1,22 +1,57 @@
-// lembrete.js - Modelo base para seus lembretes
-// Passe a chave do localStorage quando usar a função initLembretes
+// lembrete.js - Gerenciador universal de lembretes com notificação ✨
 
+// ✅ Solicita permissão para notificações do navegador (uma vez só)
+if ('Notification' in window && Notification.permission !== 'granted') {
+  Notification.requestPermission().then((permission) => {
+    console.log('Permissão de notificação:', permission);
+  });
+}
+
+// ✅ Função para mostrar notificação personalizada (com som e ícone)
+function mostrarNotificacao(titulo, mensagem, icone = './assets/lembrete-icon.png') {
+  if (Notification.permission === 'granted') {
+    new Notification(titulo, {
+      body: mensagem,
+      icon: icone
+    });
+
+    // 🔊 Reproduz um som fofo (adicione esse arquivo em assets!)
+    const audio = new Audio('./assets/alarme-fofinho.mp3');
+    audio.play().catch(() => {}); // ignora erros se som for bloqueado
+  }
+}
+
+// ✅ Função principal — inicializa lembretes por aba
 export function initLembretes(chaveStorage, idLista, idMensagemVazia) {
   const listaElement = document.getElementById(idLista);
   const mensagemVazia = document.getElementById(idMensagemVazia);
 
-  // Carrega lembretes do localStorage
   function carregarLembretes() {
     const json = localStorage.getItem(chaveStorage);
     return json ? JSON.parse(json) : [];
   }
 
-  // Salva lembretes no localStorage
   function salvarLembretes(lembretes) {
     localStorage.setItem(chaveStorage, JSON.stringify(lembretes));
   }
 
-  // Renderiza a lista de lembretes
+  function removerLembrete(index) {
+    const lembretes = carregarLembretes();
+    lembretes.splice(index, 1);
+    salvarLembretes(lembretes);
+    renderizarLembretes();
+  }
+
+  function adicionarEventoRemocao() {
+    const botoes = listaElement.querySelectorAll('.btn-remover');
+    botoes.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = Number(e.currentTarget.getAttribute('data-index'));
+        removerLembrete(idx);
+      });
+    });
+  }
+
   function renderizarLembretes() {
     const lembretes = carregarLembretes();
     listaElement.innerHTML = '';
@@ -32,7 +67,6 @@ export function initLembretes(chaveStorage, idLista, idMensagemVazia) {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-      // Aqui você pode customizar a exibição do lembrete conforme estrutura
       li.innerHTML = `
         <div class="flex justify-between items-center">
           <div>
@@ -51,26 +85,6 @@ export function initLembretes(chaveStorage, idLista, idMensagemVazia) {
     checarAlertas();
   }
 
-  // Adiciona evento para remover lembrete
-  function adicionarEventoRemocao() {
-    const botoes = listaElement.querySelectorAll('.btn-remover');
-    botoes.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const idx = Number(e.currentTarget.getAttribute('data-index'));
-        removerLembrete(idx);
-      });
-    });
-  }
-
-  // Remove lembrete e atualiza lista e storage
-  function removerLembrete(index) {
-    const lembretes = carregarLembretes();
-    lembretes.splice(index, 1);
-    salvarLembretes(lembretes);
-    renderizarLembretes();
-  }
-
-  // Verifica lembretes próximos e mostra alertas
   function checarAlertas() {
     const lembretes = carregarLembretes();
     const agora = new Date();
@@ -79,20 +93,22 @@ export function initLembretes(chaveStorage, idLista, idMensagemVazia) {
       if (!lembrete.lembreteData || !lembrete.lembreteHora) return;
 
       const dataHoraLembrete = new Date(`${lembrete.lembreteData}T${lembrete.lembreteHora}:00`);
-
-      // Se o lembrete for hoje e faltarem menos de 10 minutos
       const diffMs = dataHoraLembrete - agora;
+
       if (diffMs > 0 && diffMs <= 10 * 60 * 1000) {
-        alert(`⏰ Lembrete próximo: ${lembrete.title || 'Sem título'} às ${lembrete.lembreteHora}`);
+        const titulo = `⏰ Lembrete: ${lembrete.title || 'Sem título'}`;
+        const corpo = `⏳ Está marcado para às ${lembrete.lembreteHora}`;
+
+        // 🔔 Notificação real + alert tradicional
+        mostrarNotificacao(titulo, corpo, './assets/lembrete-icon.png');
+        alert(`${titulo} às ${lembrete.lembreteHora}`);
       }
     });
   }
 
-  // Inicializa o módulo
   function init() {
     renderizarLembretes();
-    // Checa lembretes a cada minuto
-    setInterval(checarAlertas, 60 * 1000);
+    setInterval(checarAlertas, 60 * 1000); // checa a cada minuto
   }
 
   init();
