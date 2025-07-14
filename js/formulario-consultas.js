@@ -1,6 +1,9 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initLembretes('consultas', 'lista-consultas', 'mensagemVazia');
+
   // 🔧 Seleciona os elementos do DOM
   const form = document.getElementById('form-consultas');
   const listaConsultas = document.getElementById('lista-consultas');

@@ -1,6 +1,8 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+  initLembretes('limpeza', 'lista-limpezas', 'mensagemVazia');
   // Referências dos elementos do DOM
   const form = document.querySelector("form");
   const listaLimpezas = document.getElementById("lista-limpezas");

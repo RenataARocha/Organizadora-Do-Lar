@@ -1,6 +1,9 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initLembretes('cronogramaCapilarEtapas', 'lista-cronogramas', 'mensagem-vazia');
+  
   const form = document.getElementById('form-cronograma');
   const listaEtapas = document.getElementById('lista-cronogramas');
   const mensagemVazia = document.getElementById('mensagem-vazia');
@@ -130,21 +133,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Controle dos checkboxes dias da semana de acordo com a recorrência
   function atualizarDiasSemana() {
-  const valor = selectRecorrencia.value;
+    const valor = selectRecorrencia.value;
 
-  if (valor === 'nenhuma') {
-    diasSemanaCheckboxes.forEach(chk => {
-      chk.checked = false;
-      chk.disabled = true;
-      chk.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
-    });
-  } else {
-    diasSemanaCheckboxes.forEach(chk => {
-      chk.disabled = false;
-      chk.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
-    });
+    if (valor === 'nenhuma') {
+      diasSemanaCheckboxes.forEach(chk => {
+        chk.checked = false;
+        chk.disabled = true;
+        chk.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
+      });
+    } else {
+      diasSemanaCheckboxes.forEach(chk => {
+        chk.disabled = false;
+        chk.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
+      });
+    }
   }
-}
 
 
   selectRecorrencia.addEventListener('change', atualizarDiasSemana);
@@ -175,10 +178,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    if (new Date(novaEtapa.data) < hoje) {
+      alert('Data da etapa não pode ser anterior a hoje.');
+      return;
+    }
+
     const etapas = carregarEtapas();
     etapas.push(novaEtapa);
     salvarEtapas(etapas);
     atualizarLista();
+
+    alert('Etapa adicionada com sucesso! 🎉');
+    selectEtapa.focus();
 
     form.reset();
     selectEtapa.selectedIndex = 0;

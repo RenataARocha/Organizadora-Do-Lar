@@ -1,7 +1,10 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
+  initLembretes('metas', 'lista-metas', 'mensagemVazia');
+
   const form = document.getElementById('form-meta');
   const listaMetas = document.getElementById('lista-metas');
   const metaInspiradora = document.getElementById('meta-inspiradora');
@@ -132,9 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria,
       date,
       prioridade,
-      lembrete,
+      reminderDate,
+      reminderTime,
+      lembrete: reminderDate && reminderTime ? `${reminderDate} às ${reminderTime}` : '',
       title: `Meta: ${titulo}`
     };
+
 
     const metas = pegarMetasStorage();
     metas.push(novaMeta);

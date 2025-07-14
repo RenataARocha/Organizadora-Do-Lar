@@ -124,28 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       ).join('');
   }
 
-  // VERIFICA ALARME PRA NÃO DISPARAR ALERT INFINITO
-  let alarmesDisparados = new Set();
-  function verificarAlarme() {
-    const agora = new Date();
-    const hoje = agora.toISOString().split('T')[0];
-    const horaMinuto = agora.toTimeString().slice(0, 5);
-
-    tarefas.forEach(tarefa => {
-      const idAlarme = `${tarefa.title}-${tarefa.date}-${tarefa.alarm}`;
-      if (
-        tarefa.date === hoje &&
-        tarefa.alarm === horaMinuto &&
-        !alarmesDisparados.has(idAlarme)
-      ) {
-        alert(`⏰ Alarme: ${tarefa.title}`);
-        alarmesDisparados.add(idAlarme);
-        tocarSom(); // sua função que toca som, mantenha ela
-      }
-    });
-  }
-  setInterval(verificarAlarme, 60000);
-
   // ENVIO DO FORMULÁRIO
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

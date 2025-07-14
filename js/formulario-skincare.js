@@ -1,6 +1,9 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+ initLembretes('skincare', 'lista-skincare', 'mensagemVazia');
+ 
   // 🌟 ELEMENTOS DO DOM
   const form = document.getElementById('form-skincare');
   const lista = document.getElementById('lista-skincare');

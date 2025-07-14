@@ -1,5 +1,9 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { initLembretes } from './lembrete.js';
+
 document.addEventListener("DOMContentLoaded", function () {
+  initLembretes('contas', 'lista-contas', 'mensagemVazia');
+  
   const form = document.getElementById("form-contas");
   const listaContas = document.getElementById("lista-contas");
   const mensagemVazia = document.getElementById("mensagemVazia");
