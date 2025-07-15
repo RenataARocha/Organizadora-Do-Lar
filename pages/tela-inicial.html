@@ -62,24 +62,39 @@
     <!-- Navegação -->
     <nav class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 mb-6 menu-principal">
       <!-- Links fixos -->
-      <a id="link-tarefa" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Adicionar Tarefa</a>
-      <a id="link-meta" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Adicionar Meta</a>
-      <a id="link-consultas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Consultas e Exames</a>
-      <a id="link-contas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Contas a Pagar</a>
-      <a id="link-compras" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Lista de Compras</a>
-      <a id="link-cardapio" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cardápio Semanal</a>
-      <a id="link-remedios" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle de Remédios</a>
-      <a id="link-financas" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Controle Financeiro</a>
-      <a id="link-limpeza" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Rotina de Limpeza</a>
-      <a id="link-skincare" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Skincare Diário</a>
-      <a id="link-cronograma" class="bg-pink-200 hover:bg-pink-300 text-center p-2 rounded cursor-pointer">Cronograma Capilar</a>
+      <a id="link-tarefa" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md transition-all duration-200 ease-in-out cursor-pointer">📝 Adicionar
+        Tarefa</a>
+      <a id="link-meta" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">🎯 Adicionar Meta</a>
+      <a id="link-consultas" class="flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">🩺 Consultas e
+        Exames</a>
+      <a id="link-contas" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">💸 Contas a
+        Pagar</a>
+      <a id="link-compras" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">🛍️ Lista de
+        Compras</a>
+      <a id="link-cardapio" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">🍽️ Cardápio
+        Semanal</a>
+      <a id="link-remedios" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">💊 Controle de
+        Remédios</a>
+      <a id="link-financas" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out ">📊 Controle
+        Financeiro</a>
+      <a id="link-limpeza" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">🧹 Rotina de
+        Limpeza</a>
+      <a id="link-skincare" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">💅 Skincare
+        Diário</a>
+      <a id="link-cronograma" class="h-12 flex items-center justify-center gap-1 bg-pink-200 hover:bg-pink-300 text-center px-3 py-1.5 rounded-xl text-sm shadow-md cursor-pointer transition-all duration-200 ease-in-out">💇‍♀️ Cronograma
+        Capilar</a>
 
       <!-- Botões SPA -->
-      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="agenda">Agenda do Dia</button>
-      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="resumo">Resumo da Semana</button>
-      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="motivacao">Quadro de Motivação</button>
-      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="conquistas">Conquistas</button>
-      <button class="bg-purple-200 hover:bg-purple-300 text-center p-2 rounded btn" data-tela="pomodoro">Timer Pomodoro</button>
+      <button class="h-12 bg-purple-200 hover:bg-purple-300 text-center px-3 py-1.5  flex items-center justify-center gap-1 rounded-xl text-sm shadow-md btn cursor-pointer transition-all duration-200 ease-in-out" data-tela="agenda">📅 Agenda do
+        Dia</button> 
+      <button class="h-12 bg-purple-200 hover:bg-purple-300 text-center px-3 py-1.5  flex items-center justify-center gap-1 rounded-xl text-sm shadow-md btn cursor-pointer transition-all duration-200 ease-in-out" data-tela="resumo">📝 Resumo da
+        Semana</button>
+      <button class="h-12 bg-purple-200 hover:bg-purple-300 text-center px-3 py-1.5  flex items-center justify-center gap-1 rounded-xl text-sm shadow-md btn cursor-pointer transition-all duration-200 ease-in-out" data-tela="motivacao">💖 Quadro de
+        Motivação</button>
+      <button class="h-12 bg-purple-200 hover:bg-purple-300 text-center px-3 py-1.5  flex items-center justify-center gap-1 rounded-xl text-sm shadow-md btn cursor-pointer transition-all duration-200 ease-in-out"
+        data-tela="conquistas">🏆 Conquistas</button>
+      <button class="h-12 bg-purple-200 hover:bg-purple-300 text-center px-3 py-1.5  flex items-center justify-center gap-1 rounded-xl text-sm shadow-md btn cursor-pointer transition-all duration-200 ease-in-out" data-tela="pomodoro">⏱️ Timer
+        Pomodoro</button>
     </nav>
 
     <!-- Telas SPA -->
@@ -129,7 +144,7 @@
   </button>
 
   <!-- JS -->
-  <script defer src="../js/tela-inicial.js"></script>
+  <script type="module" src="../js/tela-inicial.js"></script>
   <script defer src="../js/fundo-decorativo.js"></script>
 </body>
 
