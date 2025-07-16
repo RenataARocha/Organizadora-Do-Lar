@@ -1,5 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   initLembretes('cronogramaCapilarEtapas', 'lista-cronogramas', 'mensagem-vazia');
@@ -44,57 +46,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const li = document.createElement('li');
     li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+    const icone = obterIconeCategoria(etapa.etapa || 'etapa');
+
     li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all relative">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-        <span class="text-pink-500">🛠️ Etapa:</span> ${capitalize(etapa.etapa)} 
-        <span class="text-pink-500 ml-4">📦 Produto:</span> ${capitalize(etapa.produto)}
-      </p>
-
-      ${etapa.observacoes ? `
-        <p class="text-sm">
-          <span class="text-pink-500">📝 Observações:</span> ${etapa.observacoes}
+    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all relative">
+      <div class="flex-1 space-y-2 text-base font-semibold text-black">
+        <p>
+          <strong class="text-pink-500">${icone} ${capitalize(etapa.etapa)}</strong>
+          <span class="text-pink-500 ml-4">📦 Produto:</span> ${capitalize(etapa.produto)}
         </p>
-      ` : ''}
 
-      <p class="text-sm">
-        <span class="text-pink-500">📅 Data:</span> ${etapa.data}
-      </p>
+        ${etapa.observacoes ? `
+          <p class="text-sm">
+            <span class="text-pink-500">📝 Observações:</span> ${etapa.observacoes}
+          </p>
+        ` : ''}
 
-      <p class="text-sm">
-        <span class="text-pink-500">🔄 Recorrência:</span> ${capitalize(etapa.recorrencia || '-')}
-      </p>
-
-      <p class="text-sm">
-        <span class="text-pink-500">📆 Dias da Semana:</span> ${diasParaTexto(etapa.diasSelecionados)}
-      </p>
-
-      ${(etapa.reminderDate || etapa.reminderTime) ? `
         <p class="text-sm">
-          <span class="text-pink-500">🔔 Lembrete:</span> ${etapa.reminderDate || ''} ${etapa.reminderTime || ''}
+          <span class="text-pink-500">📅 Data:</span> ${etapa.data}
         </p>
-      ` : ''}
 
-      <p class="text-sm">
-        <span class="text-pink-500">⏰ Alarme:</span> ${etapa.alarme || '-'}
-      </p>
+        <p class="text-sm">
+          <span class="text-pink-500">🔄 Recorrência:</span> ${capitalize(etapa.recorrencia || '-')}
+        </p>
+
+        <p class="text-sm">
+          <span class="text-pink-500">📆 Dias da Semana:</span> ${diasParaTexto(etapa.diasSelecionados)}
+        </p>
+
+        ${(etapa.reminderDate || etapa.reminderTime) ? `
+          <p class="text-sm">
+            <span class="text-pink-500">🔔 Lembrete:</span> ${etapa.reminderDate || ''} ${etapa.reminderTime || ''}
+          </p>
+        ` : ''}
+
+        <p class="text-sm">
+          <span class="text-pink-500">⏰ Alarme:</span> ${etapa.alarme || '-'}
+        </p>
+      </div>
+
+      <button 
+        class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+        data-index="${index}" 
+        title="Remover etapa"
+        type="button"
+      >
+        Remover
+        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+          style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+          &#xf004;
+        </span>
+      </button>
     </div>
-
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover etapa"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-        &#xf004;
-      </span>
-    </button>
-  </div>
-`;
+  `;
 
     return li;
   }

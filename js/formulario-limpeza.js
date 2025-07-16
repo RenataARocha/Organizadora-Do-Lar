@@ -1,5 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener("DOMContentLoaded", () => {
   initLembretes('limpeza', 'lista-limpezas', 'mensagemVazia');
@@ -32,10 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
       li.className =
         "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
+      const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p><span class="text-pink-500">🏠 Cômodo:</span> ${tarefa.comodo}</p>
+      <p><strong class="text-pink-500">${icone} ${tarefa.comodo}</strong></p>
       <p><span class="text-pink-500">🧹 Tarefa:</span> ${tarefa.tarefa}</p>
       <p><span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}</p>
       <p><span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.date || "-"}</p>
@@ -61,10 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
       >
     </button>
   </div>
-`;
+  `;
 
       listaLimpezas.appendChild(li);
     });
+
 
     return tarefas;
   }

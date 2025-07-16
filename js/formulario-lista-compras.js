@@ -1,4 +1,6 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-compras');
@@ -17,44 +19,47 @@ document.addEventListener('DOMContentLoaded', () => {
       mensagemVazia.style.display = 'none';
 
       compras.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
-        li.dataset.index = index;
+  const li = document.createElement('li');
+  li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
+  li.dataset.index = index;
 
-        li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            <p>
-              <span class="text-pink-500">📦 Nome:</span> ${item.nome}
-            </p>
-            <p>
-              <span class="text-pink-500">📂 Categoria:</span> ${item.categoria}
-            </p>
-            <p>
-              <span class="text-pink-500">🔢 Quantidade:</span> ${item.quantidade}
-            </p>
-            <p>
-              <span class="text-pink-500">⚡ Prioridade:</span> ${item.prioridade}
-            </p>
-          </div>
+  const icone = obterIconeCategoria(item.categoria || 'compra');
 
-          <button 
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1" 
-            data-index="${index}" 
-            title="Remover item"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-              &#xf004;
-            </span>
-          </button>
-        </div>
-        `;
+  li.innerHTML = `
+    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+      <div class="flex-1 space-y-2 text-base font-semibold text-black">
+        <p>
+          <strong class="text-pink-500">${icone} ${item.nome}</strong>
+        </p>
+        <p>
+          <span class="text-pink-500">📂 Categoria:</span> ${item.categoria}
+        </p>
+        <p>
+          <span class="text-pink-500">🔢 Quantidade:</span> ${item.quantidade}
+        </p>
+        <p>
+          <span class="text-pink-500">⚡ Prioridade:</span> ${item.prioridade}
+        </p>
+      </div>
 
-        listaCompras.appendChild(li);
-      });
+      <button 
+        class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1" 
+        data-index="${index}" 
+        title="Remover item"
+        type="button"
+      >
+        Remover
+        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+          style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+          &#xf004;
+        </span>
+      </button>
+    </div>
+  `;
+
+  listaCompras.appendChild(li);
+});
+
     }
 
     mostrarDica();

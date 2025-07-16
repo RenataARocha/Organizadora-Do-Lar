@@ -1,5 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   // 🌟 ELEMENTOS DO DOM
@@ -56,10 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = document.createElement('li');
       item.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+      const icone = obterIconeCategoria(meta.categoria || 'metas');
+
       item.innerHTML = `
         <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
           <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            <p><strong class="text-pink-500">${meta.titulo}</strong></p>
+            <p><strong class="text-pink-500">${icone} ${meta.titulo}</strong></p>
             <p>${meta.descricao}</p>
             <p>
               <span class="text-pink-500">📂 Categoria:</span> ${meta.categoria}

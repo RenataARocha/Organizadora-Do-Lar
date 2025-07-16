@@ -1,4 +1,6 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener("DOMContentLoaded", () => {
   // 🌟 ELEMENTOS DO DOM
@@ -56,11 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const li = document.createElement("li");
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
+      const icone = obterIconeCategoria(remedio.tipo || 'remedios');
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">💊 Nome:</span> ${remedio.nome}
+<span class="text-pink-500">💊 Nome:</span> ${icone} ${remedio.nome}
       </p>
       <p>
         <span class="text-pink-500">⚖️ Dosagem:</span> ${remedio.dosagem}

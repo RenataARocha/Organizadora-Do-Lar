@@ -1,9 +1,11 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
   initLembretes('contas', 'lista-contas', 'mensagemVazia');
-  
+
   const form = document.getElementById("form-contas");
   const listaContas = document.getElementById("lista-contas");
   const mensagemVazia = document.getElementById("mensagemVazia");
@@ -30,12 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
         "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
       );
 
+      const icone = obterIconeCategoria(conta.nome || 'conta');
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">🏷️ Nome:</span> ${conta.nome}
-      </p>
+  <strong class="text-pink-500">${icone} ${conta.nome}</strong>
+</p>
 
       ${conta.descricao ? `
         <p>

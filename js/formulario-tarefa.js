@@ -1,3 +1,5 @@
+import { obterIconeCategoria } from './utils.js';
+
 import { abrirBanco, salvarTarefa, listarTarefas } from './banco.js';
 import { voltarParaHome } from './funcoes-globais.js';
 
@@ -46,11 +48,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     mensagemVazia.style.display = 'none';
 
+
     tarefas.forEach((tarefa, index) => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
       // Mostrar os dias da semana selecionados formatados
+      const icone = obterIconeCategoria(tarefa.topic);
+
       const diasSelecionados = (tarefa.diasSemana && tarefa.diasSemana.length > 0)
         ? tarefa.diasSemana.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ')
         : 'Nenhum selecionado';
@@ -58,9 +63,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-xl shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p><span class="text-pink-500">📌 Título:</span> ${tarefa.title}</p>
+      <p><span class="text-pink-500">📌 Título:</span> ${icone} ${tarefa.title}</p>
       <p><span class="text-pink-500">⚡ Prioridade:</span> [${tarefa.priority.toUpperCase()}] 
-         <span class="ml-2 text-pink-500">🏷️ Tópico:</span> ${tarefa.topic}</p>
+      <p><span class="text-pink-500">🏷️ Tópico:</span> ${obterIconeCategoria(tarefa.topic)} ${tarefa.topic}</p>
       <p><span class="text-pink-500">📝 Descrição:</span> ${tarefa.description || 'Sem descrição'}</p>
       <p><span class="text-pink-500">📅 Data:</span> ${tarefa.date || 'Não definida'}</p>
       <p><span class="text-pink-500">🔁 Recorrência:</span> ${tarefa.recurrence}</p>

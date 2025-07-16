@@ -1,4 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
+import { obterIconeCategoria } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cardapio');
@@ -53,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+      const icone = obterIconeCategoria('cardapio');
+
       li.innerHTML = `
       <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
         <div class="flex-1 space-y-2 text-base font-semibold text-black">
-          <p><span class="text-pink-500">📅 Data:</span> ${cardapio.data || 'Não definida'}</p>
+          <p><strong class="text-pink-500">${icone} Cardápio - ${cardapio.data || 'Não definida'}</strong></p>
           <p><span class="text-pink-500">🗓️ Dias da Semana:</span> ${cardapio.diasSemana ? cardapio.diasSemana.join(', ') : 'Nenhum selecionado'}</p>
           <p><span class="text-pink-500">☕ Café:</span> ${cardapio.cafe}</p>
           <p><span class="text-pink-500">🍽️ Almoço:</span> ${cardapio.almoco}</p>

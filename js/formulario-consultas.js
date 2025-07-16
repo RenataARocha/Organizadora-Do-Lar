@@ -1,5 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
+import { obterIconeCategoria } from './utils.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   initLembretes('consultas', 'lista-consultas', 'mensagemVazia');
@@ -45,13 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
         "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
       );
 
+      const icone = obterIconeCategoria(consulta.tipo || 'consulta');
+
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       <p>
-        <span class="text-pink-500">👩‍⚕️ Nome:</span> ${consulta.nome} 
-        <span class="text-pink-500 ml-4">(${consulta.tipo})</span>
-      </p>
+  <strong class="text-pink-500">${icone} ${consulta.nome}</strong>
+  <span class="text-black ml-2 italic">(${consulta.tipo})</span>
+</p>
+
       <p>
         <span class="text-pink-500">📋 Especialidade:</span> ${consulta.descricao || 'N/A'}
       </p>
