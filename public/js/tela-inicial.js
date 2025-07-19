@@ -97,8 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
   function mostrarTarefas(tarefas, filtro = '') {
     listaAgendaDia.innerHTML = '';
     const tarefasFiltradas = tarefas.filter(tarefa =>
-      tarefa.toLowerCase().includes(filtro.toLowerCase())
+    (tarefa.title?.toLowerCase().includes(filtro.toLowerCase()) ||
+      tarefa.description?.toLowerCase().includes(filtro.toLowerCase()))
     );
+
 
     if (tarefasFiltradas.length === 0) {
       listaAgendaDia.innerHTML = '<li class="text-gray-500">Nenhuma tarefa encontrada.</li>';

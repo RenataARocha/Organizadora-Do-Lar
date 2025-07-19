@@ -1,6 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -58,42 +59,34 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = document.createElement('li');
       item.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-      const icone = obterIconeCategoria(meta.categoria || 'metas');
 
       item.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            <p><strong class="text-pink-500">${icone} ${meta.titulo}</strong></p>
-            <p>${meta.descricao}</p>
-            <p>
-              <span class="text-pink-500">📂 Categoria:</span> ${meta.categoria}
-            </p>
-            <p>
-              <span class="text-pink-500">⏳ Prazo:</span> ${meta.date || 'Não definido'}
-            </p>
-            <p>
-              <span class="text-pink-500">⚡ Prioridade:</span> ${meta.prioridade}
-            </p>
-            ${meta.lembrete ? `<p><span class="text-pink-500">🔔 Lembrete:</span> ${meta.lembrete}</p>` : ''}
-          </div>
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+     ${formatarExibicao(meta, 'meta')}
+    </div>
+    <button 
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
+      title="Remover meta"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+        &#xf004;
+      </span>
+    </button>
+  </div>
+`;
 
-          <button 
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1"
-            data-index="${index}" 
-            title="Remover meta"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-          </button>
-        </div>
-      `;
+// Agora vamos garantir o evento de remoção do botão
 
-      const botaoRemover = item.querySelector('button');
-      botaoRemover.addEventListener('click', () => removerMeta(index));
+const botaoRemover = item.querySelector('button.btn-remover');
+botaoRemover.addEventListener('click', () => removerMeta(index));
 
-      listaMetas.appendChild(item);
+listaMetas.appendChild(item);
+
     });
   }
 
@@ -135,17 +128,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const novaMeta = {
-      id: Date.now(),
-      titulo,
-      descricao,
-      categoria,
-      date,
-      prioridade,
-      lembreteData: reminderDate,
-      lembreteHora: reminderTime,
-      title: `Meta: ${titulo}`
-    };
+    const icone = obterIconeCategoria(categoria);
+const novaMeta = {
+  id: Date.now(),
+  titulo: `${icone} ${titulo}`,
+  descricao,
+  categoria,
+  date,
+  prioridade,
+  lembreteData: reminderDate,
+  lembreteHora: reminderTime
+};
 
     const metas = pegarMetasStorage();
     metas.push(novaMeta);

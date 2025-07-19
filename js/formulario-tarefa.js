@@ -1,7 +1,9 @@
-import { obterIconeCategoria } from './utils.js';
-
 import { abrirBanco, salvarTarefa, listarTarefas } from './banco.js';
 import { voltarParaHome } from './funcoes-globais.js';
+import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   await abrirBanco();
@@ -21,8 +23,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // FUNÇÃO para ativar/desativar os checkboxes dos dias conforme a recorrência
   function ajustarDiasSemana() {
-    const tipo = selectRecurrence.value;
-    if (tipo === 'weekly' || tipo === 'custom' || tipo === 'daily') {
+    const tipoRecorrencia = selectRecurrence.value;
+    if (tipoRecorrencia === 'weekly' || tipoRecorrencia === 'custom' || tipoRecorrencia === 'daily') {
       diasSemanaInputs.forEach(input => input.disabled = false);
     } else {
       diasSemanaInputs.forEach(input => {
@@ -30,8 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.disabled = true;
       });
     }
-
   }
+
 
   // Chama no carregamento inicial
   ajustarDiasSemana();
@@ -53,29 +55,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-      // Mostrar os dias da semana selecionados formatados
-      const icone = obterIconeCategoria(tarefa.topic);
-
-      const diasSelecionados = (tarefa.diasSemana && tarefa.diasSemana.length > 0)
-        ? tarefa.diasSemana.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ')
-        : 'Nenhum selecionado';
 
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-xl shadow bg-pink-50 hover:bg-rose-100 transition-all">
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p><span class="text-pink-500">📌 Título:</span> ${icone} ${tarefa.title}</p>
-      <p><span class="text-pink-500">⚡ Prioridade:</span> [${tarefa.priority.toUpperCase()}] 
-      <p><span class="text-pink-500">🏷️ Tópico:</span> ${obterIconeCategoria(tarefa.topic)} ${tarefa.topic}</p>
-      <p><span class="text-pink-500">📝 Descrição:</span> ${tarefa.description || 'Sem descrição'}</p>
-      <p><span class="text-pink-500">📅 Data:</span> ${tarefa.date || 'Não definida'}</p>
-      <p><span class="text-pink-500">🔁 Recorrência:</span> ${tarefa.recurrence}</p>
-      <p><span class="text-pink-500">📆 Dias da semana:</span> ${diasSelecionados}</p>
-      <p><span class="text-pink-500">⏰ Alarme:</span> ${tarefa.alarm || 'Sem alarme'}</p>
+      ${formatarExibicao({  ...tarefa, 
+  categoria: tarefa.categoria || tarefa.topic || 'N/A' 
+}, 'tarefa')}
+
     </div>
 
     <button 
-      class="btn-remover relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden"
-      data-index="${index}"
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
       title="Remover tarefa"
       type="button"
     >
@@ -126,43 +118,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     listaAgenda.innerHTML = tarefasHoje.length === 0
       ? "<p>🎈 Nada marcado para hoje!</p>"
       : tarefasHoje.map(t =>
-        `<li><strong>${t.title}</strong> - ${t.description || ''} às ${t.alarm || 'sem horário'}</li>`
+        `<li class="mb-2"><pre class="whitespace-pre-wrap bg-rose-100 rounded p-2">${formatarExibicao({ ...t, tipo: 'tarefa' }, 'tarefa')}
+</pre></li>`
       ).join('');
+
   }
 
   // ENVIO DO FORMULÁRIO
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Pega dias selecionados no checkbox
-    const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked'))
-      .map(input => input.value);
+  // Pega dias selecionados no checkbox
+  const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked'))
+    .map(input => input.value);
 
-    const tarefa = {
-      title: form['task-title'].value.trim(),
-      description: form['task-description'].value.trim(),
-      topic: form['task-topic'].value,
-      priority: form['task-priority'].value,
-      date: form['task-date'].value,
-      recurrence: form['task-recurrence-type'].value,
-      diasSemana: diasSelecionados,
-      alarm: form['task-alarm'].value
-    };
+  const categoria = form['task-topic'].value;
+  const tituloSemIcone = form['task-title'].value.trim();
+  const icone = obterIconeCategoria(categoria);
 
-    if (!tarefa.title) {
-      alert('Por favor, preencha o título da tarefa!');
-      return;
-    }
+  const tarefa = {
+    titulo: `${icone} ${tituloSemIcone || 'Sem título'}`,
+    descricao: form['task-description'].value.trim(),
+    categoria: categoria,
+    prioridade: form['task-priority'].value,
+    prazo: form['task-date'].value,
+    recorrencia: form['task-recurrence-type'].value,
+    diasSemana: diasSelecionados,
+    alarm: form['task-alarm'].value
+  };
 
-    await salvarTarefa(tarefa);
-    tarefas.push(tarefa);
-    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+  if (!tituloSemIcone) {
+    alert('Por favor, preencha o título da tarefa!');
+    return;
+  }
 
-    renderizarTarefas();
-    mostrarAgendaDoDia();
-    form.reset();
-    ajustarDiasSemana(); // atualiza estado dos checkboxes depois do reset
-  });
+  console.log('Tarefa a ser salva:', tarefa);
+  await salvarTarefa(tarefa);
+  tarefas.push(tarefa);
+  localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+  renderizarTarefas();
+  mostrarAgendaDoDia();
+  form.reset();
+  ajustarDiasSemana(); // atualiza estado dos checkboxes depois do reset
+});
 
   // BOTÃO SAIR
   if (btnSair) {

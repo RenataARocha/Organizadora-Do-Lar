@@ -1,6 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -37,34 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-  <strong class="text-pink-500">${icone} ${conta.nome}</strong>
-</p>
+     ${formatarExibicao({ 
+  ...conta, 
+  titulo: `${obterIconeCategoria(conta.nome || 'conta')} ${conta.nome}` 
+}, 'conta')}
 
-      ${conta.descricao ? `
-        <p>
-          <span class="text-pink-500">📝 Descrição:</span> 
-          <span class="text-black italic">${conta.descricao}</span>
-        </p>
-      ` : ''}
-
-      <p>
-        <span class="text-pink-500">💰 Valor:</span> R$ ${Number(conta.valor).toFixed(2)}
-      </p>
-      <p>
-        <span class="text-pink-500">📅 Vencimento:</span> ${conta.vencimento}
-      </p>
-      <p>
-        <span class="text-pink-500">✅ Paga:</span> ${conta.paga === "sim" ? "Sim" : "Não"}
-      </p>
-      <p>
-        <span class="text-pink-500">🔁 Repetir:</span> ${conta.repetir}
-      </p>
-      ${(conta.lembreteData || conta.lembreteHora) ? `
-        <p>
-          <span class="text-pink-500">🔔 Lembrete:</span> ${conta.lembreteData || ''} ${conta.lembreteHora || ''}
-        </p>
-      ` : ''}
     </div>
 
     <button 

@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nome = document.getElementById('consulta-nome').value.trim();
     const descricao = document.getElementById('consulta-descricao').value.trim();
-    const tipo = document.getElementById('selectTipoConsulta').value;
+    const tipoConsulta = document.getElementById('selectTipoConsulta').value;
     const data = document.getElementById('inputDataConsulta').value;
     const horario = document.getElementById('inputHorarioConsulta').value;
     const lembreteData = document.getElementById('consulta-reminder-date').value;

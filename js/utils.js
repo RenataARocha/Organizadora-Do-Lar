@@ -1,32 +1,44 @@
-function normalizarCategoria(categoria) {
+export function normalizarCategoria(categoria) {
   return categoria
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/ç/g, 'c')
-    .trim();
+    .replace(/[\u0300-\u036f]/g, '');
 }
 
 export function obterIconeCategoria(categoria) {
   const icones = {
-    tarefa: '📝',
-    estudo: '📚',
-    trabalho: '💼',
+    // Categorias financeiras principais
+    salario: '💵',
+    freelancer: '🧑‍💻',
+    pix_recebido: '💸',
+    alimentacao: '🍽️',
+    contas: '💡',
+    transporte: '🚌',
+    lazer: '🎨',
     saude: '🩺',
-    consulta: '🩺',
+    educacao: '📚',
+    compras: '🛍️',
+    outros: '📦',
+    Receita: '💰',
+    Despesa: '🛒',
+    Alimentação: '🍽️',
+    Outros: '📦',
+    Lazer: '🎨',
+    Freelancer: '🧑‍💻',
+    receita: '💰',
+    despesa: '🛒',
+
+    // Gatilhos extras já existentes (mantive os seus!)
+    tarefa: '📝',
+    trabalho: '💼',
     remedio: '💊',
     conta: '💸',
     pix: '💸',
-    compra: '🛍️',
-    mercado: '🛒',
     limpeza: '🧹',
     skincare: '💅',
     cronograma: '💇‍♀️',
-    alimentacao: '🍽️',
-    cardapio: '🍱',
     exercicio: '🏃‍♀️',
     meditacao: '🧘‍♀️',
-    lazer: '🎨',
     leitura: '📖',
     filme: '🎬',
     serie: '📺',
@@ -38,14 +50,14 @@ export function obterIconeCategoria(categoria) {
     devocional: '🙏',
     familia: '👨‍👩‍👧',
     filho: '🧒',
-    escola: '🏫',
     pessoal: '🌸',
     profissional: '💼',
     financeira: '💰',
+    financa: '💰',
     higiene: '🧼',
-    farmacia: '💊',
+    farmacia: '🏥',
+    Farmacia: '🏥',
     pet: '🐶',
-    cozinha: '🍽️',
     cozinha: '🍳',
     banheiro: '🛁',
     sala: '🛋️',
@@ -57,21 +69,128 @@ export function obterIconeCategoria(categoria) {
     garagem: '🚗',
     corredor: '🚪',
     entrada: '🏠',
-    skincare: '💅',
+    escola: '🏠',
     cabelo: '💇‍♀️',
     esfoliacao: '🧖‍♀️',
     hidratacao: '💧',
-    limpeza: '🧼',
     tratamento: '🧪',
     maquiagem: '💄',
     tonico: '🌿',
     protetor: '🌞',
     noturno: '🌙',
-    diurno: '☀️',// já que apareceu aí, bora adicionar também 💼
+    diurno: '☀️',
+    alimento: '🛒',
+    curso: '📜',
+    autocuidado: '🛁',
+    maternidade: '👶',
+    economia: '🏦',
+    desafio: '🔥',
+    sonho: '🌈',
+    viagem: '✈️',
+    passeio: '🧳',
+    hobby: '🎲',
+    espiritual: '🕊️',
+    voluntariado: '👐',
+    objetivo: '📌',
+    foco: '🎯',
+    planner: '🗓️',
+    inspiracao: '🌟',
+
+    // Exames
+    exame_de_sangue: '💉',
+    ginecologica: '🧫',
+    exame_de_vista: '👁️',
+    consulta_dentista: '🦷',
+    ultrassom: '🖼️',
+    raio_x: '🩻',
+
+    // Alimentos detalhados
+    bebida: '🧃',
+    roupas: '👚',
+    papelaria: '📎',
+    cafe_da_manha: '🥐',
+    almoco: '🍛',
+    jantar: '🍽️',
+    sobremesa: '🍰',
+    lanche: '🥪',
+    frutas: '🍎',
+    legumes: '🥕',
+    verduras: '🥬',
+    carnes: '🍗',
+    peixe: '🐟',
+    frango: '🍖',
+    massas: '🍝',
+    arroz_feijao: '🍚',
+    sopas: '🥣',
+    congelados: '🧊',
+    marmita: '🍱',
+    saudavel: '💚',
+    especial: '⭐',
+    favorito: '❤️',
+    guloseima: '🍫',
+    padaria: '🍞',
+    cafe: '☕',
+
+    // Limpeza detalhada
+    faxina: '🧹',
+    banheiro_limpeza: '🚽',
+    cozinha_limpeza: '🍳',
+    roupas_limpeza: '👚',
+    sala_limpeza: '🛋️',
+    quarto_limpeza: '🛏️',
+    varanda_limpeza: '🌿',
+    geladeira: '🧊',
+    organizar: '📦',
+
+    // Skincare
+    hidratacao_skincare: '💧',
+    limpeza_skincare: '🫧',
+    esfoliacao_skincare: '🧼',
+    mascara: '🎭',
+    protetor_solar: '🌞',
+    tonico_skincare: '🍃',
+    rotina_skincare: '🧖‍♀️',
+    serum: '🧪',
+    creme: '🧴',
+    gel: '🫧',
+    skincare: '🪞',
+    espuma: '🫧',
+    esfoliante: "🧽",
+    oleo: "🛢️",
+
+    // Cronograma capilar
+    reconstrucao: '💪',
+    nutricao: '🥑',
+    hidratar_cabelo: '🌊',
+    pre_poo: '🫙',
+    finalizacao: '🎀',
+    cronograma_capilar: '🧴',
+
+    // Cronograma Estudo
+    revisao: '📚',
+    pratica: '🧠',
+    aula: '👩‍🏫',
+
+    // Remédios
+    antibiotico: '💊',
+    analgesico: '🩹',
+    suplemento: '🍯',
+    vitamina: '🍊',
+    colirio: '👁️',
+    inalacao: '💨',
+    xarope: '🧃',
+    horario: '⏰',
+    remedios: '💊',
+    remedio: '💊',
+    remedio_com_acento: '💊',
+    remedios_com_acento: '💊',
+    consulta: '🩺',
+    exame: '🧪',
+    retorno: '🔁',
   };
 
   if (!categoria) return '❓';
 
-  const chave = normalizarCategoria(categoria);
+  const chave = normalizarCategoria(categoria).replace(/\s+/g, '_');
   return icones[chave] || '📌';
 }

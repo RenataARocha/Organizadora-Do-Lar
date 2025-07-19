@@ -1,6 +1,6 @@
 import { voltarParaHome } from './funcoes-globais.js';
-import { obterIconeCategoria } from './utils.js';
-
+import { formatarExibicao } from './exibicao-completa.js';
+import { obterIconeCategoria, normalizarCategoria } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-compras');
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dicaCompras = document.getElementById('dica-compras');
 
   let compras = JSON.parse(localStorage.getItem('compras')) || [];
+
 
   function atualizarLista() {
     listaCompras.innerHTML = '';
@@ -19,51 +20,45 @@ document.addEventListener('DOMContentLoaded', () => {
       mensagemVazia.style.display = 'none';
 
       compras.forEach((item, index) => {
-  const li = document.createElement('li');
-  li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
-  li.dataset.index = index;
+        console.log('Categoria original:', item.categoria); // aqui dentro, item já existe
+        const icone = obterIconeCategoria(item.categoria || 'compra');
+        console.log('Ícone retornado:', icone);
 
-  const icone = obterIconeCategoria(item.categoria || 'compra');
+        const li = document.createElement('li');
+        li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
+        li.dataset.index = index;
 
-  li.innerHTML = `
-    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-      <div class="flex-1 space-y-2 text-base font-semibold text-black">
-        <p>
-          <strong class="text-pink-500">${icone} ${item.nome}</strong>
-        </p>
-        <p>
-          <span class="text-pink-500">📂 Categoria:</span> ${item.categoria}
-        </p>
-        <p>
-          <span class="text-pink-500">🔢 Quantidade:</span> ${item.quantidade}
-        </p>
-        <p>
-          <span class="text-pink-500">⚡ Prioridade:</span> ${item.prioridade}
-        </p>
-      </div>
+        const tituloComIcone = `${icone} ${item.nome || item.titulo || 'Sem título'}`;
+        
+        li.innerHTML = `
+        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+          <div class="flex-1 space-y-2 text-base font-semibold text-black">
+            ${formatarExibicao({
+          ...item,
+          titulo: `${icone} ${item.nome || item.titulo || 'Sem título'}`
+        }, 'compra')}
+          </div>
 
-      <button 
-        class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1" 
-        data-index="${index}" 
-        title="Remover item"
-        type="button"
-      >
-        Remover
-        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-          style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-          &#xf004;
-        </span>
-      </button>
-    </div>
-  `;
+          <button 
+            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+            data-index="${index}" 
+            title="Remover item"
+            type="button"
+          >
+            Remover
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+          </button>
+        </div>
+      `;
 
-  listaCompras.appendChild(li);
-});
-
+        listaCompras.appendChild(li);
+      });
     }
 
     mostrarDica();
   }
+
 
   function removerItem(index) {
     compras.splice(index, 1);
@@ -102,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     const nome = document.getElementById('item-nome').value.trim();
-    const categoria = document.getElementById('item-categoria').value;
+    const categoriaOriginal = document.getElementById('item-categoria').value;
+    const categoria = normalizarCategoria(categoriaOriginal);
     const quantidade = Number(document.getElementById('item-qtd').value) || 1;
     const prioridade = document.getElementById('item-prioridade').value;
 
@@ -112,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Verificar se o item já existe (mesmo nome e categoria)
-    const itemExistenteIndex = compras.findIndex(item => 
+    const itemExistenteIndex = compras.findIndex(item =>
       item.nome.toLowerCase() === nome.toLowerCase() &&
       item.categoria === categoria
     );
@@ -122,12 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
       compras[itemExistenteIndex].quantidade += quantidade;
     } else {
       // Se não existe, adiciona novo item
-      const novoItem = { 
-        nome, 
-        categoria, 
-        quantidade, 
-        prioridade, 
-        title: `Compra: ${nome}`
+      const novoItem = {
+        nome,
+        categoria,
+        quantidade,
+        prioridade,
+        titulo: nome // ou: titulo: nome || 'Sem título'
       };
       compras.push(novoItem);
     }

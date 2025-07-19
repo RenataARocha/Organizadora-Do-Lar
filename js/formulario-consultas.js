@@ -1,6 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,37 +48,17 @@ document.addEventListener('DOMContentLoaded', () => {
         "bg-purple-50", "hover:bg-rose-50", "cursor-pointer"
       );
 
-      const icone = obterIconeCategoria(consulta.tipo || 'consulta');
-
-
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-  <strong class="text-pink-500">${icone} ${consulta.nome}</strong>
-  <span class="text-black ml-2 italic">(${consulta.tipo})</span>
-</p>
+      ${formatarExibicao({
+        ...consulta,
+        titulo: `${obterIconeCategoria(consulta.tipo?.toLowerCase() || 'consulta')} ${consulta.nome}`,
+        hora: consulta.horario
+      },
+        consulta.tipo?.toLowerCase() || 'consulta')}
 
-      <p>
-        <span class="text-pink-500">📋 Especialidade:</span> ${consulta.descricao || 'N/A'}
-      </p>
-      <p>
-        <span class="text-pink-500">📅 Data:</span> ${consulta.data} 
-        <span class="text-pink-500 ml-2">às</span> ${consulta.horario || 'N/A'}
-      </p>
-      <p>
-        <span class="text-pink-500">📍 Local:</span> ${consulta.local || 'N/A'}
-      </p>
-      <p>
-        <span class="text-pink-500">📝 Observações:</span> ${consulta.observacoes || 'N/A'}
-      </p>
-      <p>
-        <span class="text-pink-500">🔁 Repetir:</span> ${consulta.repeticao}
-      </p>
-      <p>
-        <span class="text-pink-500">🔔 Lembrete:</span> ${consulta.lembreteData || 'N/A'} 
-        <span class="text-pink-500 ml-2">às</span> ${consulta.lembreteHora || 'N/A'}
-      </p>
+
     </div>
 
     <button 
@@ -94,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
   </div>
 `;
+
 
 
       listaConsultas.appendChild(li);
@@ -124,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nome: document.getElementById('consulta-nome').value,
       descricao: document.getElementById('consulta-descricao').value,
       tipo: document.getElementById('selectTipoConsulta').value,
-      date: document.getElementById('inputDataConsulta').value,
+      data: document.getElementById('inputDataConsulta').value,  // chave correta
       horario: document.getElementById('inputHorarioConsulta').value,
       local: document.getElementById('inputLocalConsulta').value,
       observacoes: document.getElementById('inputObservacoes').value,
@@ -132,13 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
       lembreteData: document.getElementById('consulta-reminder-date').value,
       lembreteHora: document.getElementById('consulta-reminder-time').value,
       title: `Consulta: ${document.getElementById('consulta-nome').value}`,
-
     };
 
     salvarConsulta(novaConsulta);
     form.reset();
     carregarConsultas();
   });
+
 
   // 💡 Dica de saúde aleatória
   function gerarDicaSaude() {

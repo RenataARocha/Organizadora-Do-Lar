@@ -1,5 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cardapio');
@@ -56,32 +58,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const icone = obterIconeCategoria('cardapio');
 
-      li.innerHTML = `
-      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-        <div class="flex-1 space-y-2 text-base font-semibold text-black">
-          <p><strong class="text-pink-500">${icone} Cardápio - ${cardapio.data || 'Não definida'}</strong></p>
-          <p><span class="text-pink-500">🗓️ Dias da Semana:</span> ${cardapio.diasSemana ? cardapio.diasSemana.join(', ') : 'Nenhum selecionado'}</p>
-          <p><span class="text-pink-500">☕ Café:</span> ${cardapio.cafe}</p>
-          <p><span class="text-pink-500">🍽️ Almoço:</span> ${cardapio.almoco}</p>
-          <p><span class="text-pink-500">🍪 Lanche:</span> ${cardapio.lanche}</p>
-          <p><span class="text-pink-500">🍲 Jantar:</span> ${cardapio.jantar}</p>
-          <p><span class="text-pink-500">🔁 Recorrência:</span> ${cardapio.recorrencia}</p>
-        </div>
+     li.innerHTML = `
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      ${formatarExibicao(
+  { ...cardapio, titulo: `${icone} Cardápio` },
+  'cardapio'
+)}
+    </div>
 
-        <button 
-          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-          data-index="${index}" 
-          title="Remover cardápio"
-          type="button"
-        >
-          Remover
-          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-            &#xf004;
-          </span>
-        </button>
-      </div>
-      `;
+    <button 
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
+      title="Remover cardápio"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+        &#xf004;
+      </span>
+    </button>
+  </div>
+`;
+
 
       listaCardapio.appendChild(li);
     });

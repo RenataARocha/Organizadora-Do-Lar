@@ -1,5 +1,6 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -58,44 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const li = document.createElement("li");
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
-      const icone = obterIconeCategoria(remedio.tipo || 'remedios');
+      const icone = obterIconeCategoria(remedio.categoria || 'remedio');
 
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p>
-<span class="text-pink-500">💊 Nome:</span> ${icone} ${remedio.nome}
-      </p>
-      <p>
-        <span class="text-pink-500">⚖️ Dosagem:</span> ${remedio.dosagem}
-      </p>
-      ${remedio.diasSemana && remedio.diasSemana.length > 0 ? `
-  <p><span class="text-pink-500">📅 Dias:</span> ${remedio.diasSemana.map(dia => dia.charAt(0).toUpperCase() + dia.slice(1)).join(", ")}</p>
-` : ''}
-
-      <p>
-        <span class="text-pink-500">⏳ Frequência:</span> ${remedio.frequencia}
-      </p>
-
-      ${remedio.horario ? `
-        <p><span class="text-pink-500">⏰ Horário:</span> ${remedio.horario}</p>
-      ` : ''}
-
-      ${remedio.date ? `
-        <p><span class="text-pink-500">📅 Data:</span> ${remedio.date}</p>
-      ` : ''}
-
-      ${remedio.duracao ? `
-        <p><span class="text-pink-500">📅 Duração:</span> ${remedio.duracao}</p>
-      ` : ''}
-
-      <p>
-        <span class="text-pink-500">📝 Observações:</span> ${remedio.observacoes || "Nenhuma"}
-      </p>
-
-      <p>
-        <span class="text-pink-500">⏰ Alarme:</span> <span class="${remedio.alarme ? 'text-red-600' : 'text-gray-400'}">${remedio.alarme || "Não definido"}</span>
-      </p>
+      ${formatarExibicao({
+        ...remedio,
+        titulo: `${icone} ${remedio.nome}`
+      }, 'remedio')}
     </div>
 
     <button 
@@ -110,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </button>
   </div>
 `;
+
 
       lista.appendChild(li);
     });
@@ -170,8 +143,12 @@ document.addEventListener("DOMContentLoaded", () => {
       duracao,
       observacoes,
       alarme,
-      diasSemana: diasSelecionados  // salva o array com os dias marcados
+      diasSemana: diasSelecionados,
+      tipo: "remedio",       // tipo funcional (ex: tarefa, remedio, produto)
+      categoria: "remedio"   // categoria visual usada pra puxar o ícone
     };
+
+
     const remedios = pegarRemediosStorage();
     remedios.push(remedio);
 

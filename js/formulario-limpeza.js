@@ -1,6 +1,7 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
+import { formatarExibicao } from './exibicao-completa.js';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,20 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
         "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
-
+     
+      
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      <p><strong class="text-pink-500">${icone} ${tarefa.comodo}</strong></p>
-      <p><span class="text-pink-500">🧹 Tarefa:</span> ${tarefa.tarefa}</p>
-      <p><span class="text-pink-500">🔄 Frequência:</span> ${tarefa.frequencia}</p>
-      <p><span class="text-pink-500">📅 Dia da Limpeza:</span> ${tarefa.date || "-"}</p>
-      <p><span class="text-pink-500">⏰ Horário:</span> ${tarefa.horario || "-"}</p>
-      <p><span class="text-pink-500">🔔 Lembrete:</span> 
-        <span class="text-black">${tarefa.lembreteData || "-"}</span> 
-        <span class="text-pink-500 ml-2">às</span> 
-        <span class="text-black">${tarefa.lembreteHora || "-"}</span>
-      </p>
+      ${formatarExibicao({
+        ...tarefa,
+        titulo: `${icone} ${tarefa.comodo}`
+      }, 'limpeza')}
     </div>
 
     <button
@@ -61,11 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
       <span
         class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
         style="font-family: 'Font Awesome 5 Free'; font-weight: 900;"
-        >&#xf004;</span
-      >
+      >&#xf004;</span>
     </button>
   </div>
-  `;
+`;
+
 
       listaLimpezas.appendChild(li);
     });
