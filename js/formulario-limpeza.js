@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
-     
-      
+
+
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
@@ -124,7 +124,31 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const comodo = form.querySelector("#comodo").value.trim();
-    const tarefa = form.querySelector("#tarefa").value.trim();
+    let tarefa = form.querySelector("#tarefa").value.trim();
+    const tarefaOutrosInput = document.querySelector("#tarefaOutros");
+
+    if (tarefa === "Outros" && tarefaOutrosInput) {
+      const personalizada = tarefaOutrosInput.value.trim();
+      if (!personalizada) {
+        alert("Por favor, descreva a tarefa personalizada.");
+        return;
+      }
+      tarefa = personalizada;
+    }
+
+    campoTarefaOutros.classList.add("hidden");
+
+
+    const tarefasUnicas = [...new Set(tarefas.filter(t => t !== "Outros"))];
+    tarefasUnicas.push("Outros"); // sempre por último
+
+    tarefasUnicas.forEach(tarefa => {
+      const option = document.createElement("option");
+      option.value = tarefa;
+      option.textContent = tarefa;
+      selectTarefa.appendChild(option);
+    });
+
     const frequencia = form.querySelector("#frequencia").value;
     const date = form.querySelector("#dia").value;
     const horario = form.querySelector("#inputHorarioConsulta").value;
@@ -163,7 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
     salvarLista(tarefas);
 
     form.reset();
+    selectTarefa.innerHTML = '<option value="">Selecione</option>';
     carregarLista();
+
   });
 
   listaLimpezas.addEventListener("click", (e) => {
@@ -203,4 +229,48 @@ document.addEventListener("DOMContentLoaded", () => {
   if (botaoVoltar) {
     botaoVoltar.addEventListener('click', voltarParaHome);
   }
+
+  const tarefasPorComodo = {
+    "Cozinha": ["Lavar louças", "Guardar louças", "Limpar geladeira", "Organizar armários", "Varrer", "Passar pano", "Lavar banheiro", "Faxina geral", "Outros"],
+    "Banheiro": ["Lavar banheiro", "Organizar armários", "Varrer", "Passar pano", "Faxina geral", "Outros"],
+    "Quarto": ["Faxinar quarto", "Dobrar e guardar roupas", "Organizar guarda roupa", "Limpa guarda roupa", "Varrer", "Passar pano", "Faxina geral", "Outros"],
+    "Sala": ["Limpar sofá", "Varrer", "Passar pano", "Faxina geral", "Outros"],
+    "Área de Serviço": ["Lavar roupas", "Estender roupas", "Lavar", "Varrer", "Passar pano", "Faxina geral", "Outros"],
+    "Varanda": ["Lavar varandas", "Varrer", "Passar pano", "Faxina geral", "Outros"],
+    "Área de lazer": ["Limpar piscina", "Varrer", "Lavar", "Faxina geral", "Outros"],
+    "Outros": ["Colocar lixo para fora", "Varrer", "Passar pano", "Faxina geral", "Outros"]
+  };
+
+
+  const selectComodo = document.getElementById("comodo");
+  const selectTarefa = document.getElementById("tarefa");
+  const campoTarefaOutros = document.getElementById("campoTarefaOutros");
+
+  campoTarefaOutros.classList.add("hidden"); // reseta sempre
+
+  selectTarefa.addEventListener("change", () => {
+    if (selectTarefa.value === "Outros") {
+      campoTarefaOutros.classList.remove("hidden");
+    } else {
+      campoTarefaOutros.classList.add("hidden");
+    }
+  });
+
+
+  selectComodo.addEventListener("change", () => {
+    const comodoSelecionado = selectComodo.value;
+    const tarefas = tarefasPorComodo[comodoSelecionado] || [];
+
+    // Limpa as opções anteriores
+    selectTarefa.innerHTML = '<option value="">Selecione</option>';
+
+    // Adiciona as tarefas relacionadas
+    tarefas.forEach(tarefa => {
+      const option = document.createElement("option");
+      option.value = tarefa;
+      option.textContent = tarefa;
+      selectTarefa.appendChild(option);
+    });
+  });
+
 });
