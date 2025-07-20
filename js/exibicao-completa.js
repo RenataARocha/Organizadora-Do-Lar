@@ -51,7 +51,7 @@ export function formatarExibicao(item, tipoItem) {
     recorrencia: recorrencia || 'N/A',
     lembrete: lembrete || 'N/A',
     prazo: prazo || 'N/A',
-    valor: valor ? `R$ ${parseFloat(valor).toFixed(2)}` : 'N/A',
+    valor: !isNaN(parseFloat(valor)) ? parseFloat(valor) : null,
     pago: pago !== undefined ? (pago ? 'Sim' : 'Não') : 'N/A',
     local: local || 'N/A',
     observacoes: observacoes || 'N/A',

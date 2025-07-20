@@ -3,28 +3,28 @@ import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
 document.addEventListener("DOMContentLoaded", () => {
- const dicasFinanceiras = [
-  "Anote todos os seus gastos, até os pequenos!",
-  "Economize 10% de tudo que ganhar!",
-  "Evite parcelamentos longos.",
-  "Use planilhas ou apps para ter controle.",
-  "Gaste menos do que ganha. Simples assim.",
-   "Tenha uma reserva de emergência!",
-  "Pense antes de comprar: você realmente precisa disso?",
-  "Compare preços antes de fechar a compra.",
-  "Evite pagar o mínimo do cartão de crédito!",
-  "Invista seu dinheiro para fazer ele trabalhar por você.",
-  "Corte gastos desnecessários e reinvista em você.",
-  "Tenha metas financeiras claras e mensuráveis.",
-  "Dinheiro não aceita desaforo: cuide bem dele!",
-  "Organize seu mês antes dele começar.",
-  "Dê um nome a cada real que você recebe.",
-  "Seu 'eu do futuro' vai agradecer suas escolhas de hoje!",
-  "Finanças saudáveis, mente leve!",
-  "Use o cartão de crédito com inteligência, não por impulso.",
-  "Controle é liberdade: saiba onde vai cada centavo.",
-  "Mais importante que ganhar bem é saber administrar bem."
-];
+  const dicasFinanceiras = [
+    "Anote todos os seus gastos, até os pequenos!",
+    "Economize 10% de tudo que ganhar!",
+    "Evite parcelamentos longos.",
+    "Use planilhas ou apps para ter controle.",
+    "Gaste menos do que ganha. Simples assim.",
+    "Tenha uma reserva de emergência!",
+    "Pense antes de comprar: você realmente precisa disso?",
+    "Compare preços antes de fechar a compra.",
+    "Evite pagar o mínimo do cartão de crédito!",
+    "Invista seu dinheiro para fazer ele trabalhar por você.",
+    "Corte gastos desnecessários e reinvista em você.",
+    "Tenha metas financeiras claras e mensuráveis.",
+    "Dinheiro não aceita desaforo: cuide bem dele!",
+    "Organize seu mês antes dele começar.",
+    "Dê um nome a cada real que você recebe.",
+    "Seu 'eu do futuro' vai agradecer suas escolhas de hoje!",
+    "Finanças saudáveis, mente leve!",
+    "Use o cartão de crédito com inteligência, não por impulso.",
+    "Controle é liberdade: saiba onde vai cada centavo.",
+    "Mais importante que ganhar bem é saber administrar bem."
+  ];
 
   const categorias = {
     Receita: ["Salário", "Freelancer", "Pix Recebido", "Outros"],
@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const botaoVoltar = document.getElementById("btn-voltar");
 
   let financas = JSON.parse(localStorage.getItem("financas")) || [];
+  financas = financas.filter(f => !isNaN(parseFloat(f.valor)));
+  localStorage.setItem("financas", JSON.stringify(financas));
   let graficoPizza = null;
   let ctx = null;
 
@@ -69,17 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (parseFloat(valor) <= 0) {
-      alert("O valor deve ser maior que zero!");
+    const valorNumerico = parseFloat(valor.replace(',', '.'));
+
+    if (isNaN(valorNumerico)) {
+      alert("Valor inválido! Digite um número válido com ponto ou vírgula.");
       return;
     }
+
 
     const icone = obterIconeCategoria(categoria);
 
     financas.push({
       tipoFinanceiro: tipo,
       categoria,
-      valor: parseFloat(valor.replace(',', '.')),
+      valor: valorNumerico,
       data,
       observacoes,
       titulo: `${icone} ${categoria}`
@@ -198,7 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoriasValores = {};
 
     despesas.forEach(d => {
-      categoriasValores[d.categoria] = (categoriasValores[d.categoria] || 0) + parseFloat(d.valor);
+      const valorDespesa = parseFloat(d.valor);
+      if (!isNaN(valorDespesa)) {
+        categoriasValores[d.categoria] = (categoriasValores[d.categoria] || 0) + valorDespesa;
+      }
     });
 
     if (graficoPizza) {
@@ -228,4 +236,5 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 });
