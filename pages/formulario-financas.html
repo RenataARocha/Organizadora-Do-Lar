@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Controle Financeiro</title>
 
-
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -18,15 +17,17 @@
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
     rel="stylesheet" />
 
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Manifest (PWA) -->
   <link rel="manifest" href="../pwa/manifest.json" />
-
-
 </head>
 
 <body class="bg-rose-50 font-sans text-gray-800 p-4">
   <div id="resultado"></div>
 
+  <!-- Fundos decorativos -->
   <div class="fundo-dots"></div>
   <div class="fundo-florzinha">
     <div class="florzinha"></div>
@@ -37,18 +38,18 @@
     <div class="florzinha"></div>
   </div>
 
-  <!-- DICA FINANCEIRA -->
+  <!-- Dica Financeira -->
   <div class="bg-slate-100 p-4 rounded shadow mb-4">
     <h2 class="text-lg font-bold mb-2" style="font-family: 'Dancing Script', cursive;">Dica Financeira do Dia 💰</h2>
     <p id="dica-financeira" class="text-sm text-gray-600">Carregando sugestão...</p>
   </div>
 
-  <!-- Formulário de Finanças -->
+  <!-- Formulário -->
   <form id="form-financeiro" class="mb-6 bg-white p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto font-sans">
+    <!-- tipo, categoria, valor, data, observações -->
     <div class="campo mb-6 flex flex-col">
       <label for="tipo" class="font-semibold mb-2 text-gray-700">Tipo</label>
-      <select id="tipo"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200">
+      <select id="tipo" class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700">
         <option value="Receita">Receita</option>
         <option value="Despesa">Despesa</option>
       </select>
@@ -56,8 +57,7 @@
 
     <div class="campo mb-6 flex flex-col">
       <label for="categoria" class="font-semibold mb-2 text-gray-700">Categoria</label>
-      <select id="categoria"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200">
+      <select id="categoria" class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700">
         <option value="Salário">Salário</option>
         <option value="Alimentação">Alimentação</option>
         <option value="Transporte">Transporte</option>
@@ -70,50 +70,53 @@
     <div class="campo mb-6 flex flex-col">
       <label for="valor" class="font-semibold mb-2 text-gray-700">Valor (R$)</label>
       <input type="number" id="valor" step="0.01"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label for="data" class="font-semibold mb-2 text-gray-700">Data</label>
+      <label for="financeiro-data" class="font-semibold mb-2 text-gray-700">Data</label>
       <input type="date" id="financeiro-data"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="observacoes" class="font-semibold mb-2 text-gray-700">Observações</label>
       <textarea id="observacoes" rows="2"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"></textarea>
     </div>
 
     <button type="submit"
-      class="w-full h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] cursor-pointer shadow-md transition duration-300 ease-in-out active:translate-y-1">
+      class="w-full h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] shadow-md">
       Salvar
     </button>
   </form>
 
-  <!-- LISTAGEM -->
+  <!-- Lista de Finanças -->
   <div class="relative max-w-[500px] mx-auto my-8">
-    <p id="mensagemVazia" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-          text-center text-gray-500 italic z-10 whitespace-nowrap">
+    <p id="mensagemVazia"
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-gray-500 italic z-10 whitespace-nowrap">
       Nenhuma entrada financeira adicionada ainda <span class="ml-2">🥺</span>
     </p>
 
-    <ul id="lista-finacas" class="bg-white p-4 rounded shadow-lg list-unstyled
-             max-h-80 overflow-y-auto pr-2 relative z-0">
+    <ul id="lista-finacas"
+      class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0">
       <!-- Itens aparecem aqui -->
     </ul>
   </div>
 
-  <div id="resumo-financeiro"
-    class="resumo-financeiro max-w-[500px] mx-auto p-4 rounded-lg bg-stone-50 shadow mt-6 font-sans">
+  <!-- Resumo -->
+  <div id="resumo-financeiro" class="max-w-[500px] mx-auto p-4 rounded-lg bg-stone-50 shadow mt-6 font-sans">
     <p><strong>Receita Total:</strong> R$ <span id="total-receitas">0.00</span></p>
     <p><strong>Despesa Total:</strong> R$ <span id="total-despesas">0.00</span></p>
     <p><strong>Saldo:</strong> R$ <span id="saldo">0.00</span></p>
   </div>
 
+  <!-- Gráfico de Pizza -->
+  <canvas id="grafico-pizza" class="my-8 w-full max-w-[500px] mx-auto bg-white p-4 rounded shadow"></canvas>
 
+  <!-- Botão Voltar -->
   <button id="btn-voltar"
-    class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+    class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
     ← Voltar
     <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
       style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
@@ -121,10 +124,10 @@
     </span>
   </button>
 
-
- 
+  <!-- Scripts -->
   <script type="module" src="../js/formulario-financas.js"></script>
   <script src="../js/fundo-decorativo.js"></script>
+
 </body>
 
 </html>

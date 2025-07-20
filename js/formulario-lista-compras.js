@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
           itemDiv.innerHTML = `
             <span class="font-medium text-gray-700">🛒 ${item.nome} ${item.quantidade}</span>
             <button
-              class="relative bg-pink-400 text-white py-1 px-4 rounded-lg hover:bg-pink-500 transition active:translate-y-1 btn-remover font-semibold"
+              class="relative bg-pink-400 text-white py-2 px-8 rounded-lg hover:bg-pink-500 transition active:translate-y-1 btn-remover font-semibold"
               data-index="${item.index}"
               title="Remover item"
               type="button"
