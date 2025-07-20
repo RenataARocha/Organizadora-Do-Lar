@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
         datasets: [{
           label: "Despesas por Categoria",
           data: Object.values(categoriasValores),
-          backgroundColor: ['#f87171', '#60a5fa', '#fbbf24', '#34d399', '#a78bfa', '#f472b6', '#818cf8']
+          backgroundColor: ['#f85199', '#93c5fd', '#ffff00', '##86efac', '#c4b5fd', '#f9a8d4', '#a5b4fc']
         }]
       },
       options: {
