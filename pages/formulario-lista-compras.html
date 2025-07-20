@@ -11,11 +11,8 @@
   <!-- FontAwesome -->
   <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="manifest" href="../pwa/manifest.json" />
-
 </head>
 
 <body class="bg-rose-50 font-sans text-gray-800 p-4">
@@ -31,83 +28,64 @@
     <div class="florzinha"></div>
   </div>
 
-  <!-- Dica de Compras -->
   <div class="bg-slate-100 p-4 rounded shadow mb-4">
     <h2 class="text-lg font-bold mb-2" style="font-family: 'Dancing Script', cursive;">Dica de Compras 🛒</h2>
     <p id="dica-compras" class="text-sm text-gray-600">Buscando uma dica inteligente para economizar...</p>
   </div>
 
-  <form id="form-compras"
-    class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
-
+  <form id="form-compras" class="mb-6 bg-white p-4 rounded shadow bg-[var(--fundo-form)] p-8 rounded-2xl shadow-lg max-w-[500px] mx-auto my-8 font-sans">
     <div class="campo mb-6 flex flex-col">
       <label for="item-nome" class="text-base font-semibold mb-2 text-gray-700">Nome do item</label>
-      <input type="text" id="item-nome" required
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+      <input type="text" id="item-nome" required class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="item-categoria" class="text-base font-semibold mb-2 text-gray-700">Categoria</label>
-      <select id="item-categoria"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+      <select id="item-categoria" class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option>Alimento</option>
         <option>Limpeza</option>
         <option>Higiene</option>
         <option>Remédio</option>
+        <option>Outros</option>
       </select>
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="item-qtd" class="text-base font-semibold mb-2 text-gray-700">Quantidade</label>
-      <input type="number" id="item-qtd" min="1"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+      <input type="number" id="item-qtd" min="1" value="1" class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="item-prioridade" class="text-base font-semibold mb-2 text-gray-700">Prioridade</label>
-      <select id="item-prioridade"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+      <select id="item-prioridade" class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option>Baixa</option>
         <option>Média</option>
         <option>Alta</option>
       </select>
     </div>
 
-    <button id="add-consulta" type="submit"
-      class="relative w-full max-w-[500px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+    <button id="add-consulta" type="submit" class="relative w-full max-w-[500px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
       Adicionar Item
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none" style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
         &#xf004;
       </span>
     </button>
   </form>
 
+  <div class="max-w-xl mx-auto mt-6" id="listaCompras"></div>
   <div class="relative max-w-[500px] mx-auto my-8">
-    <p id="mensagemVazia"
-      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-gray-500 italic z-10 whitespace-nowrap">
+    <p id="mensagemVazia" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-gray-500 italic z-10 whitespace-nowrap">
       Nenhuma lista adicionada ainda <span class="ml-2">🥺</span>
     </p>
-
-
-    <ul id="lista-compras"
-      class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0">
-    </ul>
+    <ul id="lista-compras" class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0"></ul>
   </div>
 
-
- <button id="btn-voltar"
-    class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
+  <button id="btn-voltar" class="relative w-full max-w-[150px] h-[47px] bg-pink-400 hover:bg-pink-500 text-white font-semibold rounded-[10px] mt-[22px] cursor-pointer shadow-md transition-all duration-300 ease-in-out overflow-hidden active:translate-y-1">
     ← Voltar
-    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none" style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
       &#xf004;
     </span>
   </button>
-
-
-
-
 
   <script type="module" src="../js/formulario-lista-compras.js"></script>
   <script src="../js/fundo-decorativo.js"></script>
