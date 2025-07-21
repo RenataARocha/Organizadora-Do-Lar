@@ -142,10 +142,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       descricao: form['task-description'].value.trim(),
       categoria: categoria,
       prioridade: form['task-priority'].value,
-      prazo: form['task-date'].value,
       recorrencia: form['task-recurrence-type'].value,
       diasSemana: diasSelecionados,
-      alarm: form['task-alarm'].value
+      data: form['task-date'].value,
+      hora: form['task-alarm'].value,
+      lembrete: form['task-reminder']?.value || 'N/A', // se tiver esse campo
+
     };
 
     if (!tituloSemIcone) {
@@ -183,4 +185,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderizarTarefas();
   mostrarSugestao();
   mostrarAgendaDoDia();
+
+  function formatarPago(valor) {
+  if (!valor) return 'N/A';
+  const v = valor.toString().toLowerCase();
+  if (v === 'sim') return 'Sim';
+  if (v === 'nao' || v === 'não') return 'Não';
+  return 'N/A';
+}
+
 });

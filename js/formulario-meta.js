@@ -80,12 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 `;
 
-// Agora vamos garantir o evento de remoção do botão
+      // Agora vamos garantir o evento de remoção do botão
 
-const botaoRemover = item.querySelector('button.btn-remover');
-botaoRemover.addEventListener('click', () => removerMeta(index));
+      const botaoRemover = item.querySelector('button.btn-remover');
+      botaoRemover.addEventListener('click', () => removerMeta(index));
 
-listaMetas.appendChild(item);
+      listaMetas.appendChild(item);
 
     });
   }
@@ -129,16 +129,17 @@ listaMetas.appendChild(item);
     }
 
     const icone = obterIconeCategoria(categoria);
-const novaMeta = {
-  id: Date.now(),
-  titulo: `${icone} ${titulo}`,
-  descricao,
-  categoria,
-  date,
-  prioridade,
-  lembreteData: reminderDate,
-  lembreteHora: reminderTime
-};
+    const novaMeta = {
+      id: Date.now(),
+      titulo: `${icone} ${titulo}`,
+      descricao,
+      data: date || null,
+      prazo: date || null, // ou crie uma segunda variável se quiser separar data e prazo
+      categoria,
+      prioridade,
+      lembrete,
+    };
+
 
     const metas = pegarMetasStorage();
     metas.push(novaMeta);

@@ -68,9 +68,21 @@ export function formatarExibicao(item, tipo = 'tarefa') {
 🔁 Recorrência: ${recorrenciaFormatada || '-'}
 📆 Dias: ${diasTexto || '-'}`;
 
+
     case 'conta':
-      return `💳 Valor: ${valor || '-'}
-📅 Vencimento: ${vencimento || '-'}`;
+      const lembrete = item.lembreteData && item.lembreteHora
+        ? `${item.lembreteData} às ${item.lembreteHora}`
+        : 'N/A';
+
+      return `
+📝 Descrição: ${item.descricao || 'N/A'}
+💰 Valor: R$ ${item.valor ? parseFloat(item.valor).toFixed(2) : '-'}
+📅 Vencimento: ${item.vencimento || 'Não definida'}
+✅ Paga: ${item.paga === 'sim' ? 'Sim' : item.paga === 'nao' ? 'Não' : 'N/A'}
+🔁 Repetir: ${item.repetir || 'N/A'}
+🔔 Lembrete: ${lembrete}
+`.trim();
+
 
 
     case 'cardapio':

@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-     ${formatarExibicao({ 
-  ...conta, 
-  titulo: `${obterIconeCategoria(conta.nome || 'conta')} ${conta.nome}` 
-}, 'conta')}
+     ${formatarExibicao({
+        ...conta,
+        titulo: `${obterIconeCategoria(conta.nome || 'conta')} ${conta.nome}`
+      }, 'conta')}
 
     </div>
 
@@ -71,26 +71,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const novaConta = {
-      nome: document.getElementById("conta-nome").value,
-      descricao: document.getElementById("conta-descricao").value,
-      valor: document.getElementById("conta-valor").value,
-      date: document.getElementById("conta-vencimento").value, // <== mudou para 'date'
-      paga: document.getElementById("conta-paga").checked ? "sim" : "nao",
-      repetir: document.getElementById("conta-repetir").value,
-      lembreteData: document.querySelector("#conta-lembrete-data").value,
-      lembreteHora: document.querySelector("#conta-lembrete-hora").value,
-      title: `Conta: ${document.getElementById("conta-nome").value}` // <== adiciona title
-    };
+  const novaConta = {
+    nome: document.getElementById("conta-nome").value,
+    descricao: document.getElementById("conta-descricao").value,
+    valor: document.getElementById("conta-valor").value,
+    vencimento: document.getElementById("conta-vencimento").value,
+    paga: document.getElementById("conta-paga").checked ? "sim" : "nao",
+    repetir: document.getElementById("conta-repetir").value,
+    lembreteData: document.querySelector("#conta-lembrete-data").value,
+    lembreteHora: document.querySelector("#conta-lembrete-hora").value,
+    title: `Conta: ${document.getElementById("conta-nome").value}`
+  };
 
+  console.log("Conta criada:", novaConta);
 
-    contas.push(novaConta);
-    salvarContas();
-    renderizarContas();
-    form.reset();
-  });
+  contas.push(novaConta);
+  salvarContas();
+  renderizarContas();
+  form.reset();
+});
+
 
   listaContas.addEventListener("click", function (e) {
     if (e.target.tagName === "BUTTON") {

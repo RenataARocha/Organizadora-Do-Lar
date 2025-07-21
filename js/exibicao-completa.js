@@ -52,6 +52,7 @@ export function formatarExibicao(item, tipoItem) {
     lembrete: lembrete || 'N/A',
     prazo: prazo || 'N/A',
     valor: !isNaN(parseFloat(valor)) ? parseFloat(valor) : null,
+    vencimento: item.vencimento || 'Não definida',
     pago: pago !== undefined ? (pago ? 'Sim' : 'Não') : 'N/A',
     local: local || 'N/A',
     observacoes: observacoes || 'N/A',
@@ -89,7 +90,6 @@ export function formatarExibicao(item, tipoItem) {
 <p><span class="text-pink-500">⏰ Alarme:</span> ${formatado.hora}</p>
 <p><span class="text-pink-500">🔁 Recorrência:</span> ${formatado.recorrencia}</p>
 <p><span class="text-pink-500">📆 Dias da semana:</span> ${formatado.diasSemana}</p>
-<p><span class="text-pink-500">🔔 Lembrete:</span> ${formatado.lembrete}</p>
       `.trim();
 
     case 'meta':
@@ -97,6 +97,7 @@ export function formatarExibicao(item, tipoItem) {
 <p><p><strong class="text-pink-500">${icone} ${formatado.titulo}</strong> <span class="italic">(Meta)</span></p>
 <p><span class="text-pink-500">📂 Categoria:</span> ${icone} ${formatado.categoria}</p>
 <p><span class="text-pink-500">📝 Descrição:</span> ${formatado.descricao}</p>
+<p><span class="text-pink-500">📅 Data:</span> ${formatado.data}</p>
 <p><span class="text-pink-500">⏳ Prazo:</span> ${formatado.prazo}</p>
 <p><span class="text-pink-500">⚡ Prioridade:</span> ${formatado.prioridade}</p>
 <p><span class="text-pink-500">🔔 Lembrete:</span> ${formatado.lembrete}</p>
@@ -118,18 +119,16 @@ export function formatarExibicao(item, tipoItem) {
 `.trim();
     }
 
-
-
     case 'conta':
       return `
-<p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(Conta)</span></p>
-<p><span class="text-pink-500">📝 Descrição:</span> ${formatado.descricao}</p>
-<p><span class="text-pink-500">💰 Valor:</span> ${formatado.valor}</p>
-<p><span class="text-pink-500">📅 Vencimento:</span> ${formatado.data}</p>
-<p><span class="text-pink-500">✅ Paga:</span> ${formatado.pago}</p>
-<p><span class="text-pink-500">🔁 Repetir:</span> ${formatado.recorrencia}</p>
-<p><span class="text-pink-500">🔔 Lembrete:</span> ${formatado.lembrete}</p>
-      `.trim();
+<p><strong class="text-pink-500">${item.title || item.nome || 'Sem título'}</strong> <span class="italic">(Conta)</span></p>
+<p><span class="text-pink-500">📝 Descrição:</span> ${item.descricao || 'N/A'}</p>
+<p><span class="text-pink-500">💰 Valor:</span> R$ ${item.valor ? parseFloat(item.valor).toFixed(2) : '-'}</p>
+<p><span class="text-pink-500">📅 Vencimento:</span> ${item.vencimento || 'Não definida'}</p>
+<p><span class="text-pink-500">🔁 Repetir:</span> ${item.repetir || 'N/A'}</p>
+<p><span class="text-pink-500">🔔 Lembrete:</span> ${item.lembreteData || 'N/A'} ${item.lembreteHora || ''}</p>
+  `.trim();
+
 
     case 'remedio':
       return `
