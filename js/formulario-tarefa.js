@@ -59,9 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao({  ...tarefa, 
-  categoria: tarefa.categoria || tarefa.topic || 'N/A' 
-}, 'tarefa')}
+      ${formatarExibicao({
+        ...tarefa,
+        categoria: tarefa.categoria || tarefa.topic || 'N/A'
+      }, 'tarefa')}
 
     </div>
 
@@ -126,42 +127,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ENVIO DO FORMULÁRIO
   form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Pega dias selecionados no checkbox
-  const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked'))
-    .map(input => input.value);
+    // Pega dias selecionados no checkbox
+    const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked'))
+      .map(input => input.value);
 
-  const categoria = form['task-topic'].value;
-  const tituloSemIcone = form['task-title'].value.trim();
-  const icone = obterIconeCategoria(categoria);
+    const categoria = form['task-topic'].value;
+    const tituloSemIcone = form['task-title'].value.trim();
+    const icone = obterIconeCategoria(categoria);
 
-  const tarefa = {
-    titulo: `${icone} ${tituloSemIcone || 'Sem título'}`,
-    descricao: form['task-description'].value.trim(),
-    categoria: categoria,
-    prioridade: form['task-priority'].value,
-    prazo: form['task-date'].value,
-    recorrencia: form['task-recurrence-type'].value,
-    diasSemana: diasSelecionados,
-    alarm: form['task-alarm'].value
-  };
+    const tarefa = {
+      titulo: `${icone} ${tituloSemIcone || 'Sem título'}`,
+      descricao: form['task-description'].value.trim(),
+      categoria: categoria,
+      prioridade: form['task-priority'].value,
+      prazo: form['task-date'].value,
+      recorrencia: form['task-recurrence-type'].value,
+      diasSemana: diasSelecionados,
+      alarm: form['task-alarm'].value
+    };
 
-  if (!tituloSemIcone) {
-    alert('Por favor, preencha o título da tarefa!');
-    return;
-  }
+    if (!tituloSemIcone) {
+      alert('Por favor, preencha o título da tarefa!');
+      return;
+    }
 
-  console.log('Tarefa a ser salva:', tarefa);
-  await salvarTarefa(tarefa);
-  tarefas.push(tarefa);
-  localStorage.setItem('tarefas', JSON.stringify(tarefas));
+    console.log('Tarefa a ser salva:', tarefa);
+    await salvarTarefa(tarefa);
+    tarefas.push(tarefa);
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-  renderizarTarefas();
-  mostrarAgendaDoDia();
-  form.reset();
-  ajustarDiasSemana(); // atualiza estado dos checkboxes depois do reset
-});
+    renderizarTarefas();
+    mostrarAgendaDoDia();
+    form.reset();
+    ajustarDiasSemana(); // atualiza estado dos checkboxes depois do reset
+  });
 
   // BOTÃO SAIR
   if (btnSair) {
