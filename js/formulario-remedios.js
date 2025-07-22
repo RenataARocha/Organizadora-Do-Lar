@@ -138,15 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
       nome,
       dosagem,
       frequencia,
-      horario,
-      date,
+      hora: horario,
+      data: date,
       duracao,
       observacoes,
       alarme,
       diasSemana: diasSelecionados,
-      tipo: "remedio",       // tipo funcional (ex: tarefa, remedio, produto)
-      categoria: "remedio"   // categoria visual usada pra puxar o ícone
+      tipo: "remedio",
+      categoria: "remedio"
     };
+
 
 
     const remedios = pegarRemediosStorage();
