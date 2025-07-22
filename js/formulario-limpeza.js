@@ -75,24 +75,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validarFormulario(dados) {
-    if (!dados.comodo) {
-      alert("Por favor, selecione um cômodo.");
-      return false;
-    }
-    if (!dados.tarefa) {
-      alert("Por favor, selecione uma tarefa.");
-      return false;
-    }
-    if (!dados.frequencia) {
-      alert("Por favor, selecione a frequência.");
-      return false;
-    }
-    if (!dados.date) {
-      alert("Por favor, selecione a data da limpeza.");
-      return false;
-    }
-    return true;
+  if (!dados.comodo) {
+    alert("Por favor, selecione um cômodo.");
+    return false;
   }
+  if (!dados.descricao) {
+    alert("Por favor, selecione uma tarefa.");
+    return false;
+  }
+  if (!dados.frequencia) {
+    alert("Por favor, selecione a frequência.");
+    return false;
+  }
+  if (!dados.data) {
+    alert("Por favor, selecione a data da limpeza.");
+    return false;
+  }
+  return true;
+}
+
 
   // Função para adicionar dias, semanas ou meses a uma data
   function adicionarTempo(dataStr, frequencia) {
@@ -138,17 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     campoTarefaOutros.classList.add("hidden");
 
-
-    const tarefasUnicas = [...new Set(tarefas.filter(t => t !== "Outros"))];
-    tarefasUnicas.push("Outros"); // sempre por último
-
-    tarefasUnicas.forEach(tarefa => {
-      const option = document.createElement("option");
-      option.value = tarefa;
-      option.textContent = tarefa;
-      selectTarefa.appendChild(option);
-    });
-
     const frequencia = form.querySelector("#frequencia").value;
     const date = form.querySelector("#dia").value;
     const horario = form.querySelector("#inputHorarioConsulta").value;
@@ -157,31 +147,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dados = {
       comodo,
-      tarefa,
+      descricao: tarefa,         // agora é 'descricao', como a função espera
       frequencia,
-      date,
-      horario,
+      data: date,                // agora é 'data', como a função espera
+      hora: horario,            // 'horario' => 'hora'
       lembreteData,
       lembreteHora,
       title: `Limpeza: ${tarefa} (${comodo})`,
     };
 
+
     if (!validarFormulario(dados)) return;
 
-    // Se não tiver data de lembrete, usa a data da limpeza
     if (!lembreteData) {
       lembreteData = date;
       dados.lembreteData = lembreteData;
     }
 
-    // Ajusta a data da próxima limpeza conforme a frequência para armazenamento
-    // Aqui você pode salvar a data atual e a próxima data calculada, caso queira exibir ou usar para futuras notificações
     dados.proximaData = adicionarTempo(date, frequencia);
-
-    // Também ajusta a data do lembrete para acompanhar a próxima limpeza
     dados.proximoLembreteData = adicionarTempo(dados.lembreteData, frequencia);
 
-    // Carrega, adiciona e salva
     const tarefas = carregarLista();
     tarefas.push(dados);
     salvarLista(tarefas);
@@ -189,8 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
     form.reset();
     selectTarefa.innerHTML = '<option value="">Selecione</option>';
     carregarLista();
-
   });
+
 
   listaLimpezas.addEventListener("click", (e) => {
     if (e.target.closest("button")) {

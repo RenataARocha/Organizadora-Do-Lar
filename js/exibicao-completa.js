@@ -192,14 +192,19 @@ ${(formatado.reminderDate || formatado.reminderTime) ? `<p class="text-sm"><span
 `.trim();
 
     case 'limpeza':
-      return `
+  const lembrete = (formatado.lembreteData && formatado.lembreteHora)
+    ? `${formatado.lembreteData} às ${formatado.lembreteHora}`
+    : 'N/A';
+
+  return `
 <p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(Limpeza)</span></p>
 <p><span class="text-pink-500">🧽 Descrição:</span> ${formatado.descricao}</p>
 <p><span class="text-pink-500">🔁 Frequência:</span> ${formatado.frequencia}</p>
 <p><span class="text-pink-500">📅 Data:</span> ${formatado.data}</p>
 <p><span class="text-pink-500">⏰ Horário:</span> ${formatado.hora}</p>
-<p><span class="text-pink-500">🔔 Lembrete:</span> ${formatado.lembrete}</p>
+<p><span class="text-pink-500">🔔 Lembrete:</span> ${lembrete}</p>
 `.trim();
+
 
     case 'cronograma':
       return `
