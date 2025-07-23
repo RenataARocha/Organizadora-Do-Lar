@@ -1,3 +1,5 @@
+console.log("🚀 Script de pendências carregado!");
+
 document.addEventListener("DOMContentLoaded", () => {
   const containerAviso = document.createElement("div");
   containerAviso.id = "aviso-pendencia";
@@ -15,18 +17,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const metas = JSON.parse(localStorage.getItem("metas")) || [];
 
     const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
     const pendenteTarefa = tarefas.some(tarefa => {
-      const prazo = new Date(tarefa.prazo);
-      return tarefa.status !== "concluida" && prazo < hoje;
+      const rawPrazo = tarefa.prazo || tarefa.data;
+      const prazo = new Date(rawPrazo);
+      prazo.setHours(0, 0, 0, 0);
+      return tarefa.status?.trim().toLowerCase() !== "concluida" && prazo < hoje;
     });
 
     const pendenteMeta = metas.some(meta => {
-      const prazo = new Date(meta.prazo);
-      return meta.status !== "concluida" && prazo < hoje;
+      const rawPrazo = meta.prazo || meta.data;
+      const prazo = new Date(rawPrazo);
+      prazo.setHours(0, 0, 0, 0);
+      return meta.status?.trim().toLowerCase() !== "concluida" && prazo < hoje;
     });
 
     if (pendenteTarefa || pendenteMeta) {
+      console.log("⚠️ Pendência detectada! Exibindo aviso.");
       containerAviso.classList.remove("hidden");
+    } else {
+      console.log("✅ Sem pendências encontradas.");
     }
   }
 });
