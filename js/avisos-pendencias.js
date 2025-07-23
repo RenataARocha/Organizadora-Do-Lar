@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   containerAviso.id = "aviso-pendencia";
   containerAviso.className = "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative m-4 hidden";
   containerAviso.innerHTML = `
-    <strong class="font-bold">⚠️ Atenção:</strong>
-    <span class="block sm:inline">Você possui tarefas ou metas pendentes!</span>
+    <strong class="font-bold">🚨 Pendência Detectada:</strong>
+    <span class="block sm:inline">Você ainda tem tarefas ou metas que passaram do prazo. Que tal dar uma olhadinha? 😉</span>
   `;
   document.body.prepend(containerAviso);
 
