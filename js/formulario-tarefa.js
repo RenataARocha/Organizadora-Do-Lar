@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // FUNÇÃO para ativar/desativar os checkboxes dos dias conforme a recorrência
   function ajustarDiasSemana() {
     const tipoRecorrencia = selectRecurrence.value;
-    if (tipoRecorrencia === 'weekly' || tipoRecorrencia === 'custom' || tipoRecorrencia === 'daily') {
+    const campoDiaDoMes = document.getElementById('campo-dia-do-mes');
+
+    if (['daily', 'weekly', 'custom', 'monthly'].includes(tipoRecorrencia)) {
+      // Agora inclui "monthly"
       diasSemanaInputs.forEach(input => input.disabled = false);
     } else {
       diasSemanaInputs.forEach(input => {
@@ -32,8 +35,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.disabled = true;
       });
     }
-  }
 
+
+    if (tipoRecorrencia === 'monthly') {
+      campoDiaDoMes?.classList.remove('hidden');
+    } else {
+      campoDiaDoMes?.classList.add('hidden');
+    }
+  }
 
   // Chama no carregamento inicial
   ajustarDiasSemana();
@@ -110,11 +119,60 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // AGENDA DO DIA — mostra tarefas da data atual
+  function tarefaEhDoDia(tarefa, hoje) {
+    const dataTarefa = new Date(tarefa.data);
+    const tipoRecorrencia = tarefa.recorrencia;
+
+    if (!tipoRecorrencia || tipoRecorrencia === "nenhuma") {
+      return (
+        dataTarefa.getDate() === hoje.getDate() &&
+        dataTarefa.getMonth() === hoje.getMonth() &&
+        dataTarefa.getFullYear() === hoje.getFullYear()
+      );
+    }
+
+    switch (tipoRecorrencia) {
+      case "diaria":
+      case "daily":
+        return true;
+
+      case "semanal":
+      case "weekly":
+        return dataTarefa.getDay() === hoje.getDay();
+
+      case "mensal":
+      case "monthly":
+        const ehMesmoDiaDoMes = dataTarefa.getDate() === hoje.getDate();
+        const diasSelecionados = tarefa.diasSemana || [];
+        const ehDiaDaSemanaMarcado = diasSelecionados.includes(hoje.getDay().toString());
+
+
+        if (diasSelecionados.length > 0) {
+          return ehDiaDaSemanaMarcado;
+        }
+
+        return ehMesmoDiaDoMes;
+
+
+      case "anual":
+      case "yearly":
+        return (
+          dataTarefa.getDate() === hoje.getDate() &&
+          dataTarefa.getMonth() === hoje.getMonth()
+        );
+
+      default:
+        return false;
+    }
+  }
+
+
   function mostrarAgendaDoDia() {
     if (!listaAgenda) return;
 
-    const hoje = new Date().toISOString().split('T')[0];
-    const tarefasHoje = tarefas.filter(t => t.date === hoje);
+    const hoje = new Date();
+
+    const tarefasHoje = tarefas.filter(tarefa => tarefaEhDoDia(tarefa, hoje));
 
     listaAgenda.innerHTML = tarefasHoje.length === 0
       ? "<p>🎈 Nada marcado para hoje!</p>"
@@ -122,8 +180,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         `<li class="mb-2"><pre class="whitespace-pre-wrap bg-rose-100 rounded p-2">${formatarExibicao({ ...t, tipo: 'tarefa' }, 'tarefa')}
 </pre></li>`
       ).join('');
-
   }
+
+
 
   // ENVIO DO FORMULÁRIO
   form.addEventListener('submit', async (e) => {
@@ -186,12 +245,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   mostrarSugestao();
   mostrarAgendaDoDia();
 
-  function formatarPago(valor) {
-  if (!valor) return 'N/A';
-  const v = valor.toString().toLowerCase();
-  if (v === 'sim') return 'Sim';
-  if (v === 'nao' || v === 'não') return 'Não';
-  return 'N/A';
-}
 
 });
