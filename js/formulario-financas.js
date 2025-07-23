@@ -3,6 +3,32 @@ import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  let limitesOrcamento = JSON.parse(localStorage.getItem("limitesOrcamento")) || {};
+
+  const categoriasDisponiveis = ["Alimentação", "Transporte", "Saúde", "Lazer", "Educação", "Contas", "Compras", "Outros"];
+  const containerOrcamento = document.getElementById("lista-orcamentos");
+  const btnSalvarOrcamento = document.getElementById("salvar-orcamento");
+
+  // Cria inputs para cada categoria
+  function carregarOrcamentos() {
+    containerOrcamento.innerHTML = "";
+    categoriasDisponiveis.forEach(cat => {
+      const valorAtual = limitesOrcamento[cat] || "";
+      const campo = document.createElement("div");
+      campo.className = "flex flex-col";
+
+      campo.innerHTML = `
+      <label class="font-medium text-gray-700 mb-1">${cat}</label>
+      <input type="number" min="0" step="0.01" data-categoria="${cat}" placeholder="R$ 0,00"
+        class="orcamento-input px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"
+        value="${valorAtual}">
+    `;
+
+      containerOrcamento.appendChild(campo);
+    });
+  }
+
   const dicasFinanceiras = [
     "Anote todos os seus gastos, até os pequenos!",
     "Economize 10% de tudo que ganhar!",
@@ -57,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarCategorias(tipoSelect.value);
   });
 
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -78,6 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // 🔥 VERIFICAÇÃO DO ORÇAMENTO
+    if (tipo === "Despesa" && limitesOrcamento[categoria]) {
+      const totalCategoria = calcularTotalPorCategoria(categoria) + valorNumerico;
+
+      if (totalCategoria > limitesOrcamento[categoria]) {
+        alert(`🚨 Atenção! Você ultrapassou o orçamento de R$ ${limitesOrcamento[categoria].toFixed(2)} para ${categoria}. Total atual com essa despesa: R$ ${totalCategoria.toFixed(2)}.`);
+      }
+    }
 
     const icone = obterIconeCategoria(categoria);
 
@@ -90,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
       titulo: `${icone} ${categoria}`
     });
 
-
     salvarFinancas();
     exibirFinancas();
     atualizarGrafico();
@@ -98,6 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
     form.reset();
     atualizarCategorias(tipo);
   });
+
+
 
   function exibirDicaFinanceira() {
     const dicaElement = document.getElementById("dica-financeira");
@@ -191,6 +227,13 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarGrafico();
   }
 
+  function calcularTotalPorCategoria(categoria) {
+    return financas
+      .filter(f => f.tipoFinanceiro === "Despesa" && f.categoria === categoria)
+      .reduce((total, f) => total + parseFloat(f.valor), 0);
+  }
+
+
   function inicializarGrafico() {
     const canvas = document.getElementById("grafico-pizza");
     if (!canvas) return;
@@ -236,5 +279,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+
+  // Salva os limites no localStorage
+  btnSalvarOrcamento.addEventListener("click", () => {
+    const inputs = document.querySelectorAll(".orcamento-input");
+    inputs.forEach(input => {
+      const categoria = input.getAttribute("data-categoria");
+      const valor = parseFloat(input.value.replace(",", ".")) || 0;
+      limitesOrcamento[categoria] = valor;
+    });
+
+    localStorage.setItem("limitesOrcamento", JSON.stringify(limitesOrcamento));
+    alert("✅ Orçamentos atualizados com sucesso!");
+  });
+
+
+  carregarOrcamentos();
 
 });
