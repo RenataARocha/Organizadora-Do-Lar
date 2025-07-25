@@ -82,6 +82,17 @@
     </div>
 
     <div class="campo mb-6 flex flex-col">
+      <label for="recorrencia" class="font-semibold mb-2 text-gray-700">Recorrência</label>
+      <select id="recorrencia"
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="Nenhuma">Nenhuma</option>
+        <option value="Semanal">Semanal</option>
+        <option value="Mensal">Mensal</option>
+        <option value="Anual">Anual</option>
+      </select>
+    </div>
+
+    <div class="campo mb-6 flex flex-col">
       <label for="observacoes" class="font-semibold mb-2 text-gray-700">Observações</label>
       <textarea id="observacoes" rows="2"
         class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>

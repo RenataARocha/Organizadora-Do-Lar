@@ -84,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const valor = document.getElementById("valor").value.trim();
     const data = document.getElementById("financeiro-data").value;
     const observacoes = document.getElementById("observacoes").value.trim();
+    const recorrencia = document.getElementById("recorrencia").value;
+
 
     if (!categoria || !valor || !data) {
       alert("Preencha todos os campos obrigatórios!");
@@ -113,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       valor: valorNumerico,
       data,
       observacoes,
+      recorrencia,
       titulo: `${icone} ${categoria}`
     });
 
@@ -143,39 +146,38 @@ document.addEventListener("DOMContentLoaded", () => {
   function exibirFinancas() {
     lista.innerHTML = "";
 
-    // Aplica os filtros antes de mostrar
+    // Captura valores dos filtros
     const tipoFiltro = filtroTipo.value;
     const categoriaFiltro = filtroCategoria.value;
+    const dataFiltro = filtroData.value;
 
-    let financasFiltradas = financas;
+    // Copia a lista original
+    let financasFiltradas = [...financas];
 
+    // Filtro por tipo (Receita ou Despesa)
     if (tipoFiltro) {
-      financasFiltradas = financasFiltradas.filter(f => f.tipoFinanceiro.toLowerCase() === tipoFiltro.toLowerCase());
+      financasFiltradas = financasFiltradas.filter(f => f.tipoFinanceiro === tipoFiltro);
     }
 
+    // Filtro por categoria
     if (categoriaFiltro) {
       financasFiltradas = financasFiltradas.filter(f => f.categoria === categoriaFiltro);
     }
 
-    if (filtroData.value) {
-      const [anoFiltro, mesFiltro] = filtroData.value.split("-").map(Number);
+    // Filtro por mês/ano
+    if (dataFiltro) {
+      const [anoFiltro, mesFiltro] = dataFiltro.split("-").map(Number);
 
       financasFiltradas = financasFiltradas.filter(f => {
-        let dataFinanca = null;
-
-        // Se estiver no formato dd/mm/yyyy
+        let dataFinanca;
         if (f.data.includes("/")) {
+          // dd/mm/yyyy -> yyyy-mm-dd
           const [dia, mes, ano] = f.data.split("/").map(Number);
           dataFinanca = new Date(ano, mes - 1, dia);
         } else {
-          // Se já estiver em yyyy-mm-dd
           const [ano, mes, dia] = f.data.split("-").map(Number);
           dataFinanca = new Date(ano, mes - 1, dia);
         }
-
-        console.log(
-          `Comparando: ${dataFinanca.getFullYear()}-${dataFinanca.getMonth() + 1} com ${anoFiltro}-${mesFiltro}`
-        );
 
         return (
           dataFinanca.getFullYear() === anoFiltro &&
@@ -184,33 +186,41 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    mensagemVazia.style.display = "none";
+    // Se não houver nada, mostra mensagem fofa
+    if (financasFiltradas.length === 0) {
+      mensagemVazia.style.display = "block";
+      return;
+    } else {
+      mensagemVazia.style.display = "none";
+    }
 
+    // Monta os itens
     financasFiltradas.forEach((financa, index) => {
       const item = document.createElement("li");
       item.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       item.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            ${formatarExibicao(financa, 'financa')}
-          </div>
-          <button
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${financas.indexOf(financa)}"
-            title="Remover entrada"
-            type="button">
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-              &#xf004;
-            </span>
-          </button>
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          ${formatarExibicao(financa, 'financa')}
         </div>
-      `;
+        <button
+          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+          data-index="${financas.indexOf(financa)}"
+          title="Remover entrada"
+          type="button">
+          Remover
+          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+            &#xf004;
+          </span>
+        </button>
+      </div>
+    `;
       lista.appendChild(item);
     });
 
+    // Botões de remover
     document.querySelectorAll('.btn-remover').forEach(botao => {
       botao.addEventListener('click', (e) => {
         const index = e.currentTarget.getAttribute('data-index');
@@ -220,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     calcularTotais();
   }
+
 
   function calcularTotais() {
     let totalReceitas = 0;
