@@ -352,4 +352,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarFiltroCategorias();
 
+
+  // Função para exportar os dados para CSV
+  function exportarCSV() {
+    if (financas.length === 0) {
+      alert("Não há dados para exportar! 🥺");
+      return;
+    }
+
+    // Cabeçalho do CSV
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Tipo,Categoria,Valor,Data,Observações\n";
+
+    // Dados
+    financas.forEach(f => {
+      csvContent += `${f.tipoFinanceiro},${f.categoria},${f.valor},${f.data},${f.observacoes || ""}\n`;
+    });
+
+    // Cria o arquivo
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Baixa o arquivo
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "financas.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Evento do botão
+  document.getElementById("btn-exportar").addEventListener("click", exportarCSV);
+
 });

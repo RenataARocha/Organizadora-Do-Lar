@@ -119,12 +119,14 @@
         <option value="">Todas as categorias</option>
       </select>
 
+
       <select id="filtro-tipo"
         class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
         <option value="">Todos os tipos</option>
         <option value="Receita">Receita</option>
         <option value="Despesa">Despesa</option>
       </select>
+
 
       <input type="month" id="filtro-data"
         class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 cursor-pointer focus:outline-none focus:border-pink-500" />
@@ -139,6 +141,7 @@
     <p><strong>Saldo:</strong> R$ <span id="saldo">0.00</span></p>
   </div>
 
+
   <!-- Gráfico de Pizza -->
   <canvas id="grafico-pizza" class="my-8 w-full max-w-[500px] mx-auto bg-white p-4 rounded shadow"></canvas>
 
@@ -150,6 +153,13 @@
       &#xf004;
     </span>
   </button>
+
+  <div class="flex justify-center mt-4">
+    <button id="btn-exportar"
+      class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-semibold w-3/5 py-4 rounded-lg shadow transition">
+      💾 Exportar Finanças (CSV)
+    </button>
+  </div>
 
 
   <!-- Scripts -->
