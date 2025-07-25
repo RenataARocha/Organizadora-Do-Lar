@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function exibirFinancas() {
-    lista.innerHTML = "";
+
+    lista.querySelectorAll("li:not(#mensagemVazia)").forEach(li => li.remove());
+
 
     // Captura valores dos filtros
     const tipoFiltro = filtroTipo.value;
@@ -184,25 +186,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Filtro por mês/ano
     if (dataFiltro) {
-      const [anoFiltro, mesFiltro] = dataFiltro.split("-").map(Number);
-
+      const dataFiltroISO = new Date(dataFiltro);
       financasFiltradas = financasFiltradas.filter(f => {
-        let dataFinanca;
-        if (f.data.includes("/")) {
-          // dd/mm/yyyy -> yyyy-mm-dd
-          const [dia, mes, ano] = f.data.split("/").map(Number);
-          dataFinanca = new Date(ano, mes - 1, dia);
-        } else {
-          const [ano, mes, dia] = f.data.split("-").map(Number);
-          dataFinanca = new Date(ano, mes - 1, dia);
-        }
-
+        const dataFinanca = new Date(normalizarParaISO(f.data));
+        // Compara apenas a data completa (ano, mês e dia)
         return (
-          dataFinanca.getFullYear() === anoFiltro &&
-          dataFinanca.getMonth() + 1 === mesFiltro
+          dataFinanca.getFullYear() === dataFiltroISO.getFullYear() &&
+          dataFinanca.getMonth() === dataFiltroISO.getMonth() &&
+          dataFinanca.getDate() === dataFiltroISO.getDate()
         );
       });
     }
+
 
     // Se não houver filtro definido, mostra só o mês atual
     if (!dataFiltro) {
@@ -219,10 +214,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Se não houver nada, mostra mensagem fofa
     if (financasFiltradas.length === 0) {
       mensagemVazia.style.display = "block";
-      return;
     } else {
       mensagemVazia.style.display = "none";
     }
+
 
     // Monta os itens
     financasFiltradas.forEach((financa, index) => {
