@@ -153,17 +153,17 @@ export function formatarExibicao(item, tipoItem) {
 
 
     case 'financa':
-      const iconeTipo = obterIconeCategoria(formatado.tipoFinanceiro);
-      const iconeCategoria = obterIconeCategoria(formatado.categoria);
+      const iconeTipo = obterIconeCategoria(item.tipoFinanceiro);
+      const iconeCategoria = obterIconeCategoria(item.categoria);
 
       return `
-    <p><strong class="text-pink-500">${iconeTipo} ${formatado.tipoFinanceiro}</strong> <span class="italic">(Finança)</span></p>
-    <p><span class="text-pink-500">📂 Categoria:</span> ${iconeCategoria} ${formatado.categoria}</p>
-    <p><span class="text-pink-500">💰 Valor:</span> R$ ${parseFloat(formatado.valor).toFixed(2)}</p>
-    <p><span class="text-pink-500">📅 Data:</span> ${formatado.data}</p>
-    <p><span class="text-pink-500">📝 Obs:</span> ${formatado.observacoes || 'N/A'}</p>
+    <p><strong class="text-pink-500">${iconeTipo} ${item.tipoFinanceiro}</strong> <span class="italic">(Finança)</span></p>
+    <p><span class="text-pink-500">📂 Categoria:</span> ${iconeCategoria} ${item.categoria}</p>
+    <p><span class="text-pink-500">💰 Valor:</span> R$ ${parseFloat(item.valor).toFixed(2)}</p>
+    <p><span class="text-pink-500">📅 Data:</span> ${item.data}</p>
+    <p><span class="text-pink-500">💳 Pagamento:</span> ${item.metodoPagamento || 'N/A'}</p>
+    <p><span class="text-pink-500">📝 Obs:</span> ${item.observacoes || 'N/A'}</p>
   `.trim();
-
 
 
     case 'etapa':
@@ -192,11 +192,11 @@ ${(formatado.reminderDate || formatado.reminderTime) ? `<p class="text-sm"><span
 `.trim();
 
     case 'limpeza':
-  const lembrete = (formatado.lembreteData && formatado.lembreteHora)
-    ? `${formatado.lembreteData} às ${formatado.lembreteHora}`
-    : 'N/A';
+      const lembrete = (formatado.lembreteData && formatado.lembreteHora)
+        ? `${formatado.lembreteData} às ${formatado.lembreteHora}`
+        : 'N/A';
 
-  return `
+      return `
 <p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(Limpeza)</span></p>
 <p><span class="text-pink-500">🧽 Descrição:</span> ${formatado.descricao}</p>
 <p><span class="text-pink-500">🔁 Frequência:</span> ${formatado.frequencia}</p>

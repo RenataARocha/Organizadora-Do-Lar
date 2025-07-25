@@ -61,7 +61,9 @@ export function formatarExibicao(item, tipo = 'tarefa') {
     case 'financa':
       return `💰 Valor: R$ ${valor ? parseFloat(valor).toFixed(2) : '-'}
 📅 Data: ${data || '-'}
+💳 Pagamento: ${item.metodoPagamento || 'N/A'}
 📝 Obs: ${observacoes || 'N/A'}`;
+
 
     case 'produto':
       return `🧴 Produto: ${produtoFormatado || '-'}

@@ -88,7 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = document.getElementById("financeiro-data").value;
     const observacoes = document.getElementById("observacoes").value.trim();
     const recorrencia = document.getElementById("recorrencia").value;
+    const metodoPagamento = document.getElementById("metodo-pagamento").value;
 
+    if (!metodoPagamento) {
+      alert("Selecione um método de pagamento!");
+      return;
+    }
 
     if (!categoria || !valor || !data) {
       alert("Preencha todos os campos obrigatórios!");
@@ -126,7 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
       observacoes,
       recorrencia,
       proximaOcorrencia,
-      titulo: `${icone} ${categoria}`
+      titulo: `${icone} ${categoria}`,
+      metodoPagamento,
+
     });
 
 
@@ -396,11 +403,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cabeçalho do CSV
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Tipo,Categoria,Valor,Data,Observações\n";
+    csvContent += "Tipo,Categoria,Valor,Data,Método de Pagamento,Observações\n";
+
 
     // Dados
     financas.forEach(f => {
-      csvContent += `${f.tipoFinanceiro},${f.categoria},${f.valor},${f.data},${f.observacoes || ""}\n`;
+      csvContent += `${f.tipoFinanceiro},${f.categoria},${f.valor},${f.data},${f.metodoPagamento},${f.observacoes || ""}\n`;
     });
 
     // Cria o arquivo
