@@ -328,13 +328,14 @@ document.addEventListener("DOMContentLoaded", () => {
       campo.innerHTML = `
       <label class="font-medium text-gray-700 mb-1">${cat}</label>
       <input type="number" min="0" step="0.01" data-categoria="${cat}" placeholder="R$ 0,00"
-        class="orcamento-input px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"
+        class="orcamento-input px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"
         value="${valorAtual}">
     `;
 
       containerOrcamento.appendChild(campo);
     });
   }
+
 
   carregarOrcamentos();
 

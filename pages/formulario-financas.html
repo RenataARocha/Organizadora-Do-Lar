@@ -49,7 +49,8 @@
     <!-- tipo, categoria, valor, data, observações -->
     <div class="campo mb-6 flex flex-col">
       <label for="tipo" class="font-semibold mb-2 text-gray-700">Tipo</label>
-      <select id="tipo" class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700">
+      <select id="tipo"
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option value="Receita">Receita</option>
         <option value="Despesa">Despesa</option>
       </select>
@@ -57,7 +58,8 @@
 
     <div class="campo mb-6 flex flex-col">
       <label for="categoria" class="font-semibold mb-2 text-gray-700">Categoria</label>
-      <select id="categoria" class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700">
+      <select id="categoria"
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
         <option value="Salário">Salário</option>
         <option value="Alimentação">Alimentação</option>
         <option value="Transporte">Transporte</option>
@@ -70,19 +72,19 @@
     <div class="campo mb-6 flex flex-col">
       <label for="valor" class="font-semibold mb-2 text-gray-700">Valor (R$)</label>
       <input type="number" id="valor" step="0.01"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="financeiro-data" class="font-semibold mb-2 text-gray-700">Data</label>
       <input type="date" id="financeiro-data"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700" />
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
       <label for="observacoes" class="font-semibold mb-2 text-gray-700">Observações</label>
       <textarea id="observacoes" rows="2"
-        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"></textarea>
+        class="w-full px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
     </div>
 
     <button type="submit"
@@ -93,9 +95,8 @@
         &#xf004;
       </span>
     </button>
-
-
   </form>
+
 
   <div id="config-orcamento" class="max-w-[500px] mx-auto mt-8 bg-white p-6 rounded-2xl shadow-lg">
     <h2 class="text-lg font-bold mb-4 text-gray-700">Defina seu orçamento por categoria 💸</h2>
@@ -170,9 +171,11 @@
 
   <div class="flex justify-center mt-4">
     <button id="btn-exportar"
-      class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-semibold w-96 py-4 rounded-lg shadow transition">
+      class="bg-pink-500 hover:bg-pink-600 text-white font-semibold w-96 py-4 rounded-lg shadow transition">
       💾 Exportar Finanças (CSV)
     </button>
+  </div>
+
   </div>
 
 
