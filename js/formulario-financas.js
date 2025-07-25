@@ -54,6 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
   financas = financas.filter(f => !isNaN(parseFloat(f.valor)));
   localStorage.setItem("financas", JSON.stringify(financas));
 
+  processarRecorrencias();
+
+
   let graficoPizza = null;
   let ctx = null;
 
@@ -109,6 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const icone = obterIconeCategoria(categoria);
 
+    const isRecorrente = recorrencia && recorrencia !== "Nenhuma";
+
+    const proximaOcorrencia = isRecorrente
+      ? calcularProximaOcorrencia(data, recorrencia)
+      : null;
+
     financas.push({
       tipoFinanceiro: tipo,
       categoria,
@@ -116,8 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
       data,
       observacoes,
       recorrencia,
+      proximaOcorrencia,
       titulo: `${icone} ${categoria}`
     });
+
 
     salvarFinancas();
     exibirFinancas();
@@ -183,6 +194,18 @@ document.addEventListener("DOMContentLoaded", () => {
           dataFinanca.getFullYear() === anoFiltro &&
           dataFinanca.getMonth() + 1 === mesFiltro
         );
+      });
+    }
+
+    // Se não houver filtro definido, mostra só o mês atual
+    if (!dataFiltro) {
+      const hoje = new Date();
+      const mesAtual = hoje.getMonth();
+      const anoAtual = hoje.getFullYear();
+
+      financasFiltradas = financasFiltradas.filter(f => {
+        const dataFinanca = new Date(normalizarParaISO(f.data));
+        return dataFinanca.getMonth() === mesAtual && dataFinanca.getFullYear() === anoAtual;
       });
     }
 
@@ -395,5 +418,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Evento do botão
   document.getElementById("btn-exportar").addEventListener("click", exportarCSV);
+
+  function normalizarParaISO(str) {
+    if (!str) return null;
+    if (str.includes("/")) {
+      const [d, m, y] = str.split("/").map(Number);
+      return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    }
+    return str;
+  }
+
+  function calcularProximaOcorrencia(dataBaseStr, periodicidade) {
+    const baseISO = normalizarParaISO(dataBaseStr);
+    const [ano, mes, dia] = baseISO.split("-").map(Number);
+    const d = new Date(ano, mes - 1, dia);
+
+    switch (periodicidade) {
+      case "Diária":
+        d.setDate(d.getDate() + 1);
+        break;
+      case "Semanal":
+        d.setDate(d.getDate() + 7);
+        break;
+      case "Quinzenal":
+        d.setDate(d.getDate() + 15);
+        break;
+      case "Mensal":
+        d.setMonth(d.getMonth() + 1);
+        break;
+      case "Anual":
+        d.setFullYear(d.getFullYear() + 1);
+        break;
+      default:
+        return null;
+    }
+
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+
+  function isPastOrToday(dateStrISO) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const d = new Date(dateStrISO);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime() <= today.getTime();
+  }
+
+  function cloneFinanca(financa, novaDataISO) {
+    return {
+      ...financa,
+      data: novaDataISO,
+      recorrente: false,
+      proximaOcorrencia: null
+    };
+  }
+
+  function processarRecorrencias() {
+    let alterou = false;
+    const limite = 200; // segurança
+    financas.forEach((f) => {
+      if (!f.recorrencia || f.recorrencia === "Nenhuma" || !f.proximaOcorrencia) return;
+
+      let count = 0;
+      while (isPastOrToday(f.proximaOcorrencia) && count < limite) {
+        const nova = cloneFinanca(f, f.proximaOcorrencia);
+        financas.push(nova);
+        f.proximaOcorrencia = calcularProximaOcorrencia(f.proximaOcorrencia, f.recorrencia);
+        alterou = true;
+        count++;
+      }
+    });
+
+    if (alterou) salvarFinancas();
+  }
 
 });
