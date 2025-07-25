@@ -10,25 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const containerOrcamento = document.getElementById("lista-orcamentos");
   const btnSalvarOrcamento = document.getElementById("salvar-orcamento");
 
-  // Cria inputs para cada categoria
-  function carregarOrcamentos() {
-    containerOrcamento.innerHTML = "";
-    categoriasDisponiveis.forEach(cat => {
-      const valorAtual = limitesOrcamento[cat] || "";
-      const campo = document.createElement("div");
-      campo.className = "flex flex-col";
-
-      campo.innerHTML = `
-      <label class="font-medium text-gray-700 mb-1">${cat}</label>
-      <input type="number" min="0" step="0.01" data-categoria="${cat}" placeholder="R$ 0,00"
-        class="orcamento-input px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"
-        value="${valorAtual}">
-    `;
-
-      containerOrcamento.appendChild(campo);
-    });
-  }
-
   const dicasFinanceiras = [
     "Anote todos os seus gastos, até os pequenos!",
     "Economize 10% de tudo que ganhar!",
@@ -64,9 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const mensagemVazia = document.getElementById("mensagemVazia");
   const botaoVoltar = document.getElementById("btn-voltar");
 
+  // NOVOS filtros
+  const filtroTipo = document.getElementById("filtro-tipo");
+  const filtroCategoria = document.getElementById("filtro-categoria");
+
   let financas = JSON.parse(localStorage.getItem("financas")) || [];
   financas = financas.filter(f => !isNaN(parseFloat(f.valor)));
   localStorage.setItem("financas", JSON.stringify(financas));
+
   let graficoPizza = null;
   let ctx = null;
 
@@ -83,6 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarCategorias(tipoSelect.value);
   });
 
+  // Escutadores dos filtros para atualizar a lista na hora
+  filtroTipo.addEventListener("change", exibirFinancas);
+  filtroCategoria.addEventListener("change", exibirFinancas);
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -105,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 🔥 VERIFICAÇÃO DO ORÇAMENTO
     if (tipo === "Despesa" && limitesOrcamento[categoria]) {
       const totalCategoria = calcularTotalPorCategoria(categoria) + valorNumerico;
 
@@ -133,8 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
     atualizarCategorias(tipo);
   });
 
-
-
   function exibirDicaFinanceira() {
     const dicaElement = document.getElementById("dica-financeira");
     const dicaAleatoria = dicasFinanceiras[Math.floor(Math.random() * dicasFinanceiras.length)];
@@ -154,14 +140,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function exibirFinancas() {
     lista.innerHTML = "";
 
-    if (financas.length === 0) {
-      mensagemVazia.style.display = "block";
+    // Aplica os filtros antes de mostrar
+    const tipoFiltro = filtroTipo.value;
+    const categoriaFiltro = filtroCategoria.value;
+
+    let financasFiltradas = financas;
+
+    if (tipoFiltro) {
+      financasFiltradas = financasFiltradas.filter(f => f.tipoFinanceiro.toLowerCase() === tipoFiltro.toLowerCase());
+    }
+
+    if (categoriaFiltro) {
+      financasFiltradas = financasFiltradas.filter(f => f.categoria === categoriaFiltro);
+    }
+
+    if (financasFiltradas.length === 0) {
+      lista.innerHTML = '<li id="mensagemVazia" class="py-4">Nenhuma entrada financeira adicionada ainda 🥺</li>';
       return;
     }
 
     mensagemVazia.style.display = "none";
 
-    financas.forEach((financa, index) => {
+    financasFiltradas.forEach((financa, index) => {
       const item = document.createElement("li");
       item.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <button
             class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}"
+            data-index="${financas.indexOf(financa)}"
             title="Remover entrada"
             type="button">
             Remover
@@ -233,7 +233,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .reduce((total, f) => total + parseFloat(f.valor), 0);
   }
 
-
   function inicializarGrafico() {
     const canvas = document.getElementById("grafico-pizza");
     if (!canvas) return;
@@ -268,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
         datasets: [{
           label: "Despesas por Categoria",
           data: Object.values(categoriasValores),
-          backgroundColor: ['#f85199', '#93c5fd', '#ffff00', '##86efac', '#c4b5fd', '#f9a8d4', '#a5b4fc']
+          backgroundColor: ['#f85199', '#93c5fd', '#ffff00', '#86efac', '#c4b5fd', '#f9a8d4', '#a5b4fc']
         }]
       },
       options: {
@@ -279,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
 
   // Salva os limites no localStorage
   btnSalvarOrcamento.addEventListener("click", () => {
@@ -295,6 +293,38 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
+  function carregarOrcamentos() {
+    containerOrcamento.innerHTML = "";
+    categoriasDisponiveis.forEach(cat => {
+      const valorAtual = limitesOrcamento[cat] || "";
+      const campo = document.createElement("div");
+      campo.className = "flex flex-col mb-2";
+
+      campo.innerHTML = `
+      <label class="font-medium text-gray-700 mb-1">${cat}</label>
+      <input type="number" min="0" step="0.01" data-categoria="${cat}" placeholder="R$ 0,00"
+        class="orcamento-input px-3 py-2 border-2 border-pink-300 rounded-lg bg-stone-50 text-gray-700"
+        value="${valorAtual}">
+    `;
+
+      containerOrcamento.appendChild(campo);
+    });
+  }
+
   carregarOrcamentos();
+
+
+  function carregarFiltroCategorias() {
+    filtroCategoria.innerHTML = '<option value="">Todas as categorias</option>';
+    const todasCategorias = [...new Set([...categorias.Receita, ...categorias.Despesa])];
+    todasCategorias.forEach(cat => {
+      const option = document.createElement('option');
+      option.value = cat;
+      option.textContent = cat;
+      filtroCategoria.appendChild(option);
+    });
+  }
+
+  carregarFiltroCategorias();
 
 });

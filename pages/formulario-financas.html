@@ -104,18 +104,32 @@
     </button>
   </div>
 
-
   <!-- Lista de Finanças -->
   <div class="relative max-w-[500px] mx-auto my-8">
-    <p id="mensagemVazia"
-      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-gray-500 italic z-10 whitespace-nowrap">
-      Nenhuma entrada financeira adicionada ainda <span class="ml-2">🥺</span>
-    </p>
-
     <ul id="lista-finacas"
-      class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0">
-      <!-- Itens aparecem aqui -->
+      class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0 text-center text-gray-500 italic">
+      <li id="mensagemVazia">Nenhuma entrada financeira adicionada ainda 🥺</li>
     </ul>
+
+
+    <div id="filtros" class="flex flex-wrap gap-4 items-center justify-start p-4">
+
+      <select id="filtro-categoria"
+        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
+        <option value="">Todas as categorias</option>
+      </select>
+
+      <select id="filtro-tipo"
+        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
+        <option value="">Todos os tipos</option>
+        <option value="receita">Receita</option>
+        <option value="despesa">Despesa</option>
+      </select>
+
+      <input type="month" id="filtro-data"
+        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 cursor-pointer focus:outline-none focus:border-pink-500" />
+    </div>
+
   </div>
 
   <!-- Resumo -->
