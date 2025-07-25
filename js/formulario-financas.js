@@ -347,7 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   carregarOrcamentos();
 
 
