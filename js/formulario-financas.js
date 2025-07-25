@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // NOVOS filtros
   const filtroTipo = document.getElementById("filtro-tipo");
   const filtroCategoria = document.getElementById("filtro-categoria");
+  const filtroData = document.getElementById("filtro-data");
 
   let financas = JSON.parse(localStorage.getItem("financas")) || [];
   financas = financas.filter(f => !isNaN(parseFloat(f.valor)));
@@ -72,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Escutadores dos filtros para atualizar a lista na hora
   filtroTipo.addEventListener("change", exibirFinancas);
   filtroCategoria.addEventListener("change", exibirFinancas);
+  filtroData.addEventListener("change", exibirFinancas);
+
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -154,9 +157,31 @@ document.addEventListener("DOMContentLoaded", () => {
       financasFiltradas = financasFiltradas.filter(f => f.categoria === categoriaFiltro);
     }
 
-    if (financasFiltradas.length === 0) {
-      lista.innerHTML = '<li id="mensagemVazia" class="py-4">Nenhuma entrada financeira adicionada ainda 🥺</li>';
-      return;
+    if (filtroData.value) {
+      const [anoFiltro, mesFiltro] = filtroData.value.split("-").map(Number);
+
+      financasFiltradas = financasFiltradas.filter(f => {
+        let dataFinanca = null;
+
+        // Se estiver no formato dd/mm/yyyy
+        if (f.data.includes("/")) {
+          const [dia, mes, ano] = f.data.split("/").map(Number);
+          dataFinanca = new Date(ano, mes - 1, dia);
+        } else {
+          // Se já estiver em yyyy-mm-dd
+          const [ano, mes, dia] = f.data.split("-").map(Number);
+          dataFinanca = new Date(ano, mes - 1, dia);
+        }
+
+        console.log(
+          `Comparando: ${dataFinanca.getFullYear()}-${dataFinanca.getMonth() + 1} com ${anoFiltro}-${mesFiltro}`
+        );
+
+        return (
+          dataFinanca.getFullYear() === anoFiltro &&
+          dataFinanca.getMonth() + 1 === mesFiltro
+        );
+      });
     }
 
     mensagemVazia.style.display = "none";
