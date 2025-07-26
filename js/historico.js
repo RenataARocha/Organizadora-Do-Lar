@@ -99,8 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const categorias = Object.keys(limitesOrcamento);
         if (categorias.length === 0) {
-            // Se não tem limites, pode esconder ou não mostrar o gráfico
-            return;
+            limitesOrcamento = {
+                "Exemplo": 0
+            };
         }
 
         const gastos = categorias.map(cat => calcularTotalPorCategoriaMesAtual(cat));
