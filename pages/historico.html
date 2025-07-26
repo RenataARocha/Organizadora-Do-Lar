@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Histórico Financeiro</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/71beec3c88.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet" />
+
+    <!-- Seu manifesto PWA, se usar -->
+    <link rel="manifest" href="../pwa/manifest.json" />
+</head>
+
+<body class="bg-rose-50 font-sans text-gray-800 p-4">
+
+    <header class="max-w-[600px] mx-auto mb-6">
+        <h1 class="text-3xl font-bold text-pink-600 text-center mb-4" style="font-family: 'Dancing Script', cursive;">
+            Histórico Mensal
+        </h1>
+    </header>
+
+    <section id="aba-historico" class="max-w-[600px] mx-auto bg-white rounded-xl shadow-md p-6">
+
+        <!-- Resumo Mensal -->
+        <div id="resumo-mensal" class="space-y-4 mb-8">
+            <div class="p-4 bg-pink-50 rounded-lg shadow flex justify-between items-center">
+                <span class="font-semibold text-gray-700">Receitas:</span>
+                <span id="total-receitas" class="text-green-700 font-bold">R$ 0,00</span>
+            </div>
+            <div class="p-4 bg-pink-50 rounded-lg shadow flex justify-between items-center">
+                <span class="font-semibold text-gray-700">Despesas:</span>
+                <span id="total-despesas" class="text-red-700 font-bold">R$ 0,00</span>
+            </div>
+            <div class="p-4 bg-pink-50 rounded-lg shadow flex justify-between items-center">
+                <span class="font-semibold text-gray-700">Saldo:</span>
+                <span id="saldo" class="text-gray-900 font-bold">R$ 0,00</span>
+            </div>
+        </div>
+
+        <!-- Gráfico de Comparação -->
+        <canvas id="grafico-orcamento" class="w-full h-64 bg-white rounded-lg shadow mb-6"></canvas>
+
+        <!-- Badge de Conquista -->
+        <div id="badge-conquista" class="text-center text-2xl font-semibold mt-6 text-green-600"></div>
+
+    </section>
+
+    <!-- Botão Voltar -->
+    <button id="btn-voltar"
+        class="fixed bottom-6 right-6 z-50 bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-3 rounded-full shadow-lg transition-all duration-300 ease-in-out active:scale-95 flex items-center gap-2">
+        ← Voltar
+        <span class="text-white opacity-40" style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+            &#xf004;
+        </span>
+    </button>
+
+    <!-- Seus scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../js/historico.js"></script>
+    <script src="../js/fundo-decorativo.js"></script>
+    <script src="../js/avisos-pendencias.js"></script>
+
+
+</body>
+
+</html>
