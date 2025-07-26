@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  // 🚪 Modo Convidado
+  localStorage.setItem("usuarioLogado", "convidado@app.com");
+  window.location.href = "pages/tela-inicial.html";
+
   // 👤 Redireciona automaticamente se já estiver logado
   const usuarioLogado = localStorage.getItem("usuarioLogado");
   if (usuarioLogado) {
