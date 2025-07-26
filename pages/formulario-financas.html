@@ -147,30 +147,31 @@
   <!-- Lista de Finanças -->
   <div class="relative max-w-[500px] mx-auto my-8">
     <ul id="lista-finacas"
-      class="bg-white p-4 rounded shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0 text-center text-gray-500 italic">
+      class="bg-white p-4 mb-4 shadow-lg list-unstyled max-h-80 overflow-y-auto pr-2 relative z-0 text-center text-gray-500 italic">
       <li id="mensagemVazia">Nenhuma entrada financeira adicionada ainda 🥺</li>
     </ul>
 
 
-    <div id="filtros" class="flex flex-wrap gap-4 items-center justify-start p-4">
+    <div id="filtros"
+      class="max-w-[500px] mx-auto flex flex-wrap gap-4 items-center justify-between p-4 bg-white rounded-lg shadow">
 
       <select id="filtro-categoria"
-        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
+        class="flex-1 min-w-[140px] border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
         <option value="">Todas as categorias</option>
       </select>
 
-
       <select id="filtro-tipo"
-        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
+        class="flex-1 min-w-[140px] border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:border-pink-500 relative">
         <option value="">Todos os tipos</option>
         <option value="Receita">Receita</option>
         <option value="Despesa">Despesa</option>
       </select>
 
-
       <input type="date" id="filtro-data"
-        class="border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 cursor-pointer focus:outline-none focus:border-pink-500" />
+        class="flex-1 min-w-[140px] border-2 border-pink-400 rounded-lg bg-stone-50 text-gray-700 px-4 py-2 cursor-pointer focus:outline-none focus:border-pink-500" />
+
     </div>
+
 
   </div>
 
