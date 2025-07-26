@@ -183,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-
   // 🔐 Segurança
   // if (!localStorage.getItem("usuarioLogado")) {
   // alert("Você precisa estar logado para acessar essa página.");

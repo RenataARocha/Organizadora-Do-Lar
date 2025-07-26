@@ -119,4 +119,5 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
     if (btnInstalar) btnInstalar.style.display = "none";
   }
+
 });
