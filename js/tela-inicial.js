@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
     "link-cardapio": "formulario-cardapio.html",
     "link-remedios": "formulario-remedios.html",
     "link-financas": "formulario-financas.html",
+    "link-historico": "historico.html",
     "link-limpeza": "formulario-limpeza.html",
     "link-skincare": "formulario-skincare.html",
     "link-cronograma": "formulario-cronograma-capilar.html"
