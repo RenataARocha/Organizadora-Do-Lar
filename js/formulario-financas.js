@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let graficoPizza = null;
   let ctx = null;
+  let graficoLinhaMensal = null;
+  let ctxLinhaMensal = null;
+
 
   if (botaoVoltar) {
     botaoVoltar.addEventListener("click", voltarParaHome);
@@ -68,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarCategorias(tipoSelect.value);
   exibirFinancas();
   inicializarGrafico();
+  inicializarGraficoLinhaMensal();
+  atualizarGraficoLinhaMensal();
 
   tipoSelect.addEventListener("change", () => {
     atualizarCategorias(tipoSelect.value);
@@ -150,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dicaAleatoria = dicasFinanceiras[Math.floor(Math.random() * dicasFinanceiras.length)];
     dicaElement.textContent = dicaAleatoria;
   }
+
 
   function atualizarCategorias(tipoSelecionado) {
     categoriaSelect.innerHTML = "";
@@ -286,6 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
     salvarFinancas();
     exibirFinancas();
     atualizarGrafico();
+    atualizarGraficoLinhaMensal();
   }
 
   function calcularTotalPorCategoria(categoria) {
@@ -339,6 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 
   // Salva os limites no localStorage
   btnSalvarOrcamento.addEventListener("click", () => {
@@ -495,5 +503,101 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (alterou) salvarFinancas();
   }
+
+  // ---- GRÁFICO DE LINHA (Receitas x Despesas por mês) ----
+
+  function chaveAnoMes(date) {
+    const d = new Date(normalizarParaISO(date));
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, "0");
+    return `${ano}-${mes}`; // ex: 2025-07
+  }
+
+  function agruparPorMes(financas) {
+    const mapa = {};
+    financas.forEach(f => {
+      const chave = chaveAnoMes(f.data);
+      if (!mapa[chave]) {
+        mapa[chave] = { receitas: 0, despesas: 0 };
+      }
+      const valor = parseFloat(f.valor) || 0;
+      if (f.tipoFinanceiro === "Receita") {
+        mapa[chave].receitas += valor;
+      } else if (f.tipoFinanceiro === "Despesa") {
+        mapa[chave].despesas += valor;
+      }
+    });
+    return mapa;
+  }
+
+  function gerarSeriesMensais(financas) {
+    const mapa = agruparPorMes(financas);
+
+    // Ordena por chave (ano-mes)
+    const chavesOrdenadas = Object.keys(mapa).sort();
+
+    const labels = chavesOrdenadas.map(k => {
+      const [ano, mes] = k.split("-");
+      // Formata tipo "Jul/2025"
+      const data = new Date(Number(ano), Number(mes) - 1, 1);
+      return data.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
+    });
+
+    const receitas = chavesOrdenadas.map(k => mapa[k].receitas);
+    const despesas = chavesOrdenadas.map(k => mapa[k].despesas);
+
+    return { labels, receitas, despesas };
+  }
+
+  function inicializarGraficoLinhaMensal() {
+    const canvas = document.getElementById("grafico-linha-mensal");
+    if (!canvas) return;
+    ctxLinhaMensal = canvas.getContext("2d");
+    atualizarGraficoLinhaMensal();
+  }
+
+  inicializarGraficoLinhaMensal();
+
+  function atualizarGraficoLinhaMensal() {
+    if (!ctxLinhaMensal) return;
+
+    const { labels, receitas, despesas } = gerarSeriesMensais(financas);
+
+    if (graficoLinhaMensal) {
+      graficoLinhaMensal.destroy();
+    }
+
+    graficoLinhaMensal = new Chart(ctxLinhaMensal, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Receitas",
+            data: receitas,
+            borderWidth: 2,
+            tension: 0.2
+          },
+          {
+            label: "Despesas",
+            data: despesas,
+            borderWidth: 2,
+            tension: 0.2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true }
+        },
+        plugins: {
+          legend: { position: "bottom" }
+        }
+      }
+    });
+  }
+
 
 });
