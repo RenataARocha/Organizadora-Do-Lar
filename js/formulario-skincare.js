@@ -3,7 +3,6 @@ import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   initLembretes('skincare', 'lista-skincare', 'mensagemVazia');
 
@@ -26,45 +25,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (skincare.length === 0) {
       mensagemVazia.classList.remove('hidden');
       return;
+    } else {
+      mensagemVazia.classList.add('hidden');
     }
-
-    mensagemVazia.classList.add('hidden');
 
     skincare.forEach((etapa, index) => {
       const li = document.createElement('li');
       li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
-      // Transforma os diasSelecionados em texto bonito para mostrar
       const categoria = etapa.tipo || 'skincare';
       const icone = obterIconeCategoria(categoria, 'skincare');
-
 
       const diasTexto = etapa.diasSelecionados && etapa.diasSelecionados.length > 0
         ? etapa.diasSelecionados.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ')
         : '-';
 
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao({
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          ${formatarExibicao({
         ...etapa,
         titulo: `${icone} ${etapa.nome}`,
         diasTexto
       }, 'etapa')}
-    </div>
-
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover etapa"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-    </button>
-  </div>
-`;
+        </div>
+        <button 
+          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+          data-index="${index}" 
+          title="Remover etapa"
+          type="button"
+        >
+          Remover
+          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+        </button>
+      </div>
+    `;
       lista.appendChild(li);
     });
 
@@ -94,14 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const valor = selectRecorrencia.value;
 
     if (valor === 'nenhuma') {
-      // Desabilita e desmarca todos os dias da semana
       diasSemanaCheckboxes.forEach(checkbox => {
         checkbox.checked = false;
         checkbox.disabled = true;
         checkbox.parentElement.classList.add('opacity-50', 'cursor-not-allowed');
       });
     } else {
-      // Habilita os checkboxes para permitir seleção
       diasSemanaCheckboxes.forEach(checkbox => {
         checkbox.disabled = false;
         checkbox.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -112,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Atualiza os dias da semana ao mudar a recorrência
   if (selectRecorrencia) {
     selectRecorrencia.addEventListener('change', atualizarDiasSemana);
-    atualizarDiasSemana(); // chama no carregamento da página
+    atualizarDiasSemana();
   }
 
   // ✅ FORMULÁRIO - ADICIONAR ETAPA
@@ -125,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = document.getElementById('consulta-data').value;
     const recorrencia = selectRecorrencia.value;
 
-    // Pega os dias selecionados num array
     const diasSelecionados = Array.from(diasSemanaCheckboxes)
       .filter(chk => chk.checked)
       .map(chk => chk.value);
@@ -154,47 +147,42 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: `Skincare: ${nome || 'Sem título'}`
     };
 
-
     skincare.push(novaEtapa);
     salvarSkincare();
-
     form.reset();
-
-    // Atualiza os dias da semana **somente se a recorrência atual exigir**
-    if (selectRecorrencia.value === 'nenhuma' || selectRecorrencia.value === 'diaria') {
-      atualizarDiasSemana();
-    } else {
-      // Se for semanal, quinzenal, mensal: habilita os checkboxes
-      diasSemanaCheckboxes.forEach(checkbox => {
-        checkbox.disabled = false;
-        checkbox.parentElement.classList.remove('opacity-50', 'cursor-not-allowed');
-      });
-    }
-
+    atualizarDiasSemana();
     renderizarSkincare();
   });
 
-  // Botão voltar
   if (botaoVoltar) {
     botaoVoltar.addEventListener('click', voltarParaHome);
   }
 
-  // Inicializa renderização
   renderizarSkincare();
 });
 
-// 💡 DICAS INSPIRADORAS DE SKINCARE (fica aqui fora)
+// 💡 DICAS INSPIRADORAS DE SKINCARE
 const dicasSkincare = [
-  "Cuidar da pele é um ato de amor próprio 💆‍♀️",
-  "Não esqueça do protetor solar, mesmo em dias nublados ☁️☀️",
-  "Hidrate a pele diariamente para manter o viço e saúde 💧",
-  "Limpe o rosto antes de dormir para evitar cravos e espinhas 🧼",
-  "Evite produtos com álcool em excesso para não ressecar a pele ❌",
-  "Beba bastante água para manter a pele hidratada 💦",
-  "Esfolie a pele 1-2x por semana para renovar as células 🧽",
-  "Durma bem para que a pele se regenere durante a noite 😴",
-  "Use produtos adequados pro seu tipo de pele 🧴",
-  "Evite tocar no rosto com mãos sujas 🖐️"
+  "Evite exposição excessiva ao sol entre 10h e 16h 🌞",
+  "Use chapéu e óculos escuros para proteção extra 🧢🕶️",
+  "Inclua alimentos ricos em antioxidantes na dieta 🥦🍓",
+  "Evite dormir maquiada para prevenir irritações e cravos 💄🚫",
+  "Massageie o rosto ao aplicar o hidratante para melhorar a circulação ✋",
+  "Troque fronhas e toalhas com frequência para evitar bactérias 🛏️🧴",
+  "Evite banhos muito quentes para não ressecar a pele 🚿🔥",
+  "Invista em um bom tônico facial para equilibrar o pH da pele 🧴",
+  "Faça limpeza facial profissional periodicamente 🧖‍♀️",
+  "Cuide da pele do pescoço e colo, que também envelhecem 👸",
+  "Proteja os lábios com hidratante labial e filtro solar 💋",
+  "Use produtos naturais, sempre que possível, para evitar alergias 🌿",
+  "Evite estresse excessivo, pois ele afeta diretamente a pele 😌",
+  "Inclua exercícios físicos na rotina para melhorar a circulação sanguínea 🏃‍♀️",
+  "Beba chá verde, ótimo para a saúde da pele e antioxidante 🍵",
+  "Consulte um dermatologista regularmente para cuidar da sua pele com segurança 🩺",
+  "Evite fumar, pois prejudica a elasticidade e coloração da pele 🚭",
+  "Aposte em máscaras faciais hidratantes ou purificantes semanalmente 🧖‍♀️",
+  "Proteja a pele das agressões ambientais, como poluição e vento 🌬️🌫️",
+  "Mantenha uma rotina constante, a pele agradece a disciplina! 💪"
 ];
 
 function mostrarDica() {

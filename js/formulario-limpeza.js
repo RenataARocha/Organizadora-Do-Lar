@@ -3,10 +3,9 @@ import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
-
 document.addEventListener("DOMContentLoaded", () => {
   initLembretes('limpeza', 'lista-limpezas', 'mensagemVazia');
-  // Referências dos elementos do DOM
+
   const form = document.querySelector("form");
   const listaLimpezas = document.getElementById("lista-limpezas");
   const mensagemVazia = document.getElementById("mensagemVazia");
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const tarefas = JSON.parse(tarefasJSON);
-
     if (tarefas.length === 0) {
       listaLimpezas.innerHTML = "";
       mensagemVazia.style.display = "block";
@@ -32,41 +30,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tarefas.forEach((tarefa, index) => {
       const li = document.createElement("li");
-      li.className =
-        "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
+      li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
-
-
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao({
+        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+          <div class="flex-1 space-y-2 text-base font-semibold text-black">
+            ${formatarExibicao({
         ...tarefa,
         titulo: `${icone} ${tarefa.comodo}`
       }, 'limpeza')}
-    </div>
-
-    <button
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}"
-      title="Remover tarefa"
-      type="button"
-    >
-      Remover
-      <span
-        class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;"
-      >&#xf004;</span>
-    </button>
-  </div>
-`;
-
-
+          </div>
+          <button
+            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+            data-index="${index}"
+            title="Remover tarefa"
+            type="button"
+          >
+            Remover
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+          </button>
+        </div>
+      `;
       listaLimpezas.appendChild(li);
     });
-
-
     return tarefas;
   }
 
@@ -75,50 +63,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validarFormulario(dados) {
-  if (!dados.comodo) {
-    alert("Por favor, selecione um cômodo.");
-    return false;
+    if (!dados.comodo) {
+      alert("Por favor, selecione um cômodo.");
+      return false;
+    }
+    if (!dados.descricao) {
+      alert("Por favor, selecione uma tarefa.");
+      return false;
+    }
+    if (!dados.frequencia) {
+      alert("Por favor, selecione a frequência.");
+      return false;
+    }
+    if (!dados.data) {
+      alert("Por favor, selecione a data da limpeza.");
+      return false;
+    }
+    return true;
   }
-  if (!dados.descricao) {
-    alert("Por favor, selecione uma tarefa.");
-    return false;
-  }
-  if (!dados.frequencia) {
-    alert("Por favor, selecione a frequência.");
-    return false;
-  }
-  if (!dados.data) {
-    alert("Por favor, selecione a data da limpeza.");
-    return false;
-  }
-  return true;
-}
-
 
   // Função para adicionar dias, semanas ou meses a uma data
   function adicionarTempo(dataStr, frequencia) {
     const data = new Date(dataStr);
-
     switch (frequencia.toLowerCase()) {
-      case "diária":
-        data.setDate(data.getDate() + 1);
-        break;
-      case "semanal":
-        data.setDate(data.getDate() + 7);
-        break;
-      case "quinzenal":
-        data.setDate(data.getDate() + 15);
-        break;
-      case "mensal":
-        data.setMonth(data.getMonth() + 1);
-        break;
-      default:
-        // Não altera a data se frequência inválida
-        break;
+      case "diária": data.setDate(data.getDate() + 1); break;
+      case "semanal": data.setDate(data.getDate() + 7); break;
+      case "quinzenal": data.setDate(data.getDate() + 15); break;
+      case "mensal": data.setMonth(data.getMonth() + 1); break;
+      case "anual": data.setFullYear(data.getFullYear() + 1); break;
     }
-
-    // Formata para YYYY-MM-DD para inputs de data
     return data.toISOString().slice(0, 10);
+  }
+
+  // Função para atualizar recorrências automaticamente
+  function atualizarRecorrencias() {
+    const tarefas = carregarLista();
+    let alterou = false;
+    const hoje = new Date().toISOString().slice(0, 10);
+
+    tarefas.forEach(tarefa => {
+      if (tarefa.frequencia && tarefa.frequencia.toLowerCase() !== "nenhuma") {
+        if (tarefa.data <= hoje) {
+          tarefa.data = adicionarTempo(tarefa.data, tarefa.frequencia);
+          if (tarefa.lembreteData && tarefa.lembreteData <= hoje) {
+            tarefa.lembreteData = adicionarTempo(tarefa.lembreteData, tarefa.frequencia);
+          }
+          alterou = true;
+        }
+      }
+    });
+
+    if (alterou) salvarLista(tarefas);
   }
 
   form.addEventListener("submit", (e) => {
@@ -147,15 +142,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dados = {
       comodo,
-      descricao: tarefa,         // agora é 'descricao', como a função espera
+      descricao: tarefa,
       frequencia,
-      data: date,                // agora é 'data', como a função espera
-      hora: horario,            // 'horario' => 'hora'
+      data: date,
+      hora: horario,
       lembreteData,
       lembreteHora,
       title: `Limpeza: ${tarefa} (${comodo})`,
     };
-
 
     if (!validarFormulario(dados)) return;
 
@@ -176,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarLista();
   });
 
-
   listaLimpezas.addEventListener("click", (e) => {
     if (e.target.closest("button")) {
       const btn = e.target.closest("button");
@@ -188,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  atualizarRecorrencias(); // Atualiza datas das tarefas recorrentes
   carregarLista();
 
   // Dicas de limpeza aleatórias
@@ -202,6 +196,16 @@ document.addEventListener("DOMContentLoaded", () => {
     "Para tirar manchas de carpetes, use vinagre diluído em água.",
     "Lave panos e esponjas com frequência para evitar bactérias.",
     "Abra as janelas para renovar o ar enquanto limpa.",
+    "Polvilhe bicarbonato no tapete, deixe 10 minutos e aspire para tirar odores.",
+    "Use uma meia velha na mão para tirar pó de persianas e grades.",
+    "Mistura de vinagre + detergente é perfeita para limpar box de banheiro.",
+    "Passe um pano com amaciante diluído nos móveis para afastar pó e deixar perfume.",
+    "Deixe o micro-ondas com cheiro bom fervendo água e limão por 3 minutos.",
+    "Bicarbonato no fundo da lixeira evita mau cheiro.",
+    "Use rodo com um pano úmido para alcançar embaixo dos móveis sem arrastar.",
+    "Limpe controle remoto e maçanetas com álcool 70% para desinfetar.",
+    "Mantenha o guarda-roupa arejado e coloque sachês contra mofo.",
+    "Troque panos de prato diariamente para evitar bactérias."
   ];
 
   const dicaElemento = document.getElementById("dica-limpeza");
@@ -226,7 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "Outros": ["Colocar lixo para fora", "Varrer", "Passar pano", "Faxina geral", "Outros"]
   };
 
-
   const selectComodo = document.getElementById("comodo");
   const selectTarefa = document.getElementById("tarefa");
   const campoTarefaOutros = document.getElementById("campoTarefaOutros");
@@ -241,15 +244,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   selectComodo.addEventListener("change", () => {
     const comodoSelecionado = selectComodo.value;
     const tarefas = tarefasPorComodo[comodoSelecionado] || [];
 
-    // Limpa as opções anteriores
     selectTarefa.innerHTML = '<option value="">Selecione</option>';
-
-    // Adiciona as tarefas relacionadas
     tarefas.forEach(tarefa => {
       const option = document.createElement("option");
       option.value = tarefa;

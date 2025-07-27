@@ -2,7 +2,6 @@ import { voltarParaHome } from './funcoes-globais.js';
 import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-cardapio');
   const listaCardapio = document.getElementById('lista-cardapio');
@@ -41,6 +40,54 @@ document.addEventListener('DOMContentLoaded', () => {
     dicaNutritiva.textContent = dicas[random];
   }
 
+  // Função para adicionar tempo conforme recorrência
+  function adicionarTempo(dataStr, recorrencia) {
+    const data = new Date(dataStr);
+    switch (recorrencia.toLowerCase()) {
+      case 'diária': data.setDate(data.getDate() + 1); break;
+      case 'semanal': data.setDate(data.getDate() + 7); break;
+      case 'quinzenal': data.setDate(data.getDate() + 15); break;
+      case 'mensal': data.setMonth(data.getMonth() + 1); break;
+      case 'anual': data.setFullYear(data.getFullYear() + 1); break;
+      default: break;
+    }
+    return data.toISOString().slice(0, 10);
+  }
+
+  // Atualiza datas dos cardápios com recorrência
+  function atualizarRecorrencias() {
+    const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
+    const hoje = new Date().toISOString().slice(0, 10);
+    let alterou = false;
+
+    cardapios.forEach(cardapio => {
+      if (cardapio.recorrencia && cardapio.recorrencia.toLowerCase() !== 'nenhuma') {
+        // Para recorrência semanal, checar dias da semana
+        if (cardapio.recorrencia.toLowerCase() === 'semanal') {
+          // Se a data já passou, avançar para o próximo dia da semana selecionado
+          while (cardapio.data <= hoje) {
+            cardapio.data = adicionarTempo(cardapio.data, 'diária');
+            // Se o novo dia estiver entre os diasSemana selecionados, sai do loop
+            const diaSemanaAtual = new Date(cardapio.data).toLocaleDateString('pt-BR', { weekday: 'long' }).toLowerCase();
+            if (cardapio.diasSemana?.map(d => d.toLowerCase()).includes(diaSemanaAtual)) {
+              break;
+            }
+          }
+        } else {
+          // Para outras recorrências simples, só avança a data enquanto ela for menor ou igual a hoje
+          while (cardapio.data <= hoje) {
+            cardapio.data = adicionarTempo(cardapio.data, cardapio.recorrencia);
+          }
+        }
+        alterou = true;
+      }
+    });
+
+    if (alterou) {
+      localStorage.setItem('cardapios', JSON.stringify(cardapios));
+    }
+  }
+
   function carregarCardapios() {
     const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
 
@@ -58,13 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const icone = obterIconeCategoria('cardapio');
 
-     li.innerHTML = `
+      li.innerHTML = `
   <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
     <div class="flex-1 space-y-2 text-base font-semibold text-black">
       ${formatarExibicao(
-  { ...cardapio, titulo: `${icone} Cardápio` },
-  'cardapio'
-)}
+        { ...cardapio, titulo: `${icone} Cardápio` },
+        'cardapio'
+      )}
+      <p class="text-sm text-gray-600">Data: ${cardapio.data}</p>
+      ${cardapio.recorrencia && cardapio.recorrencia.toLowerCase() !== 'nenhuma' ? `<p class="text-sm text-pink-500 font-semibold">Recorrência: ${cardapio.recorrencia}</p>` : ''}
     </div>
 
     <button 
@@ -81,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
   </div>
 `;
-
 
       listaCardapio.appendChild(li);
     });
@@ -112,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (recorrencia === 'weekly' && diasSelecionados.length === 0) {
+    if (recorrencia.toLowerCase() === 'semanal' && diasSelecionados.length === 0) {
       alert('Selecione pelo menos um dia da semana para recorrência semanal.');
       return;
     }
@@ -129,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     salvarCardapio(dados);
+    atualizarRecorrencias(); // atualiza datas já existentes no armazenamento
     carregarCardapios();
 
     form.reset();
@@ -145,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   mostrarDica();
+  atualizarRecorrencias();
   carregarCardapios();
 
   const botaoVoltar = document.getElementById('btn-voltar');

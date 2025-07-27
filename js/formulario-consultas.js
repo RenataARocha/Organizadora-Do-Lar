@@ -3,11 +3,9 @@ import { initLembretes } from './lembrete.js';
 import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   initLembretes('consultas', 'lista-consultas', 'mensagemVazia');
 
-  // 🔧 Seleciona os elementos do DOM
   const form = document.getElementById('form-consultas');
   const listaConsultas = document.getElementById('lista-consultas');
   const mensagemVazia = document.getElementById('mensagemVazia');
@@ -18,20 +16,55 @@ document.addEventListener('DOMContentLoaded', () => {
     botaoVoltar.addEventListener('click', voltarParaHome);
   }
 
+  atualizarRecorrencias();
   carregarConsultas();
   gerarDicaSaude();
 
-  // 💾 Função para salvar no localStorage
+  // Adiciona dias, semanas, etc.
+  function adicionarTempo(dataStr, recorrencia) {
+    const data = new Date(dataStr);
+    switch (recorrencia.toLowerCase()) {
+      case "diária": data.setDate(data.getDate() + 1); break;
+      case "semanal": data.setDate(data.getDate() + 7); break;
+      case "quinzenal": data.setDate(data.getDate() + 15); break;
+      case "mensal": data.setMonth(data.getMonth() + 1); break;
+      case "anual": data.setFullYear(data.getFullYear() + 1); break;
+      default: break;
+    }
+    return data.toISOString().slice(0, 10);
+  }
+
+  // Atualiza datas recorrentes automaticamente
+  function atualizarRecorrencias() {
+    const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
+    const hoje = new Date().toISOString().slice(0, 10);
+    let alterou = false;
+
+    consultas.forEach(consulta => {
+      if (consulta.repeticao && consulta.repeticao.toLowerCase() !== "nenhuma") {
+        if (consulta.data <= hoje) {
+          consulta.data = adicionarTempo(consulta.data, consulta.repeticao);
+          if (consulta.lembreteData && consulta.lembreteData <= hoje) {
+            consulta.lembreteData = adicionarTempo(consulta.lembreteData, consulta.repeticao);
+          }
+          alterou = true;
+        }
+      }
+    });
+
+    if (alterou) {
+      localStorage.setItem('consultas', JSON.stringify(consultas));
+    }
+  }
+
   function salvarConsulta(consulta) {
     const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
     consultas.push(consulta);
     localStorage.setItem('consultas', JSON.stringify(consultas));
   }
 
-  // 📄 Função para carregar e exibir as consultas salvas
   function carregarConsultas() {
     const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
-
     listaConsultas.innerHTML = '';
 
     if (consultas.length === 0) {
@@ -55,10 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ...consulta,
         titulo: `${obterIconeCategoria(consulta.tipo?.toLowerCase() || 'consulta')} ${consulta.nome}`,
         hora: consulta.horario
-      },
-        consulta.tipo?.toLowerCase() || 'consulta')}
-
-
+      }, consulta.tipo?.toLowerCase() || 'consulta')}
     </div>
 
     <button 
@@ -75,13 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
   </div>
 `;
-
-
-
       listaConsultas.appendChild(li);
     });
 
-    // 🗑️ Adiciona os eventos para os botões de remover
     document.querySelectorAll('.btn-remover').forEach(button => {
       button.addEventListener('click', (e) => {
         const index = e.currentTarget.dataset.index;
@@ -90,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ❌ Função para remover consulta
   function removerConsulta(index) {
     const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
     consultas.splice(index, 1);
@@ -98,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarConsultas();
   }
 
-  // 📬 Submissão do formulário
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -106,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nome: document.getElementById('consulta-nome').value,
       descricao: document.getElementById('consulta-descricao').value,
       tipo: document.getElementById('selectTipoConsulta').value,
-      data: document.getElementById('inputDataConsulta').value,  // chave correta
+      data: document.getElementById('inputDataConsulta').value,
       horario: document.getElementById('inputHorarioConsulta').value,
       local: document.getElementById('inputLocalConsulta').value,
       observacoes: document.getElementById('inputObservacoes').value,
@@ -121,8 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarConsultas();
   });
 
-
-  // 💡 Dica de saúde aleatória
   function gerarDicaSaude() {
     const dicas = [
       "Beba bastante água durante o dia!",
@@ -147,8 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
       "Evite comer muito tarde para ter uma boa noite de sono.",
     ];
 
-    const indiceAleatorio = Math.floor(Math.random() * dicas.length);
-    dicaSaude.textContent = dicas[indiceAleatorio];
+    dicaSaude.textContent = dicas[Math.floor(Math.random() * dicas.length)];
   }
 });
-
