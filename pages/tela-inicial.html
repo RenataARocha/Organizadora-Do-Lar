@@ -21,8 +21,7 @@
   <link rel="manifest" href="../pwa/manifest.json" />
 
   <!-- Pikaday -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
-  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <!-- Tailwind Config Extra -->
   <script>
@@ -167,10 +166,11 @@
   </section>
 
   <!-- Input de calendário -->
-  <div class="flex justify-center items-center">
-    <input type="text" id="datepicker" placeholder="Escolha uma data"
-      class="border border-pink-300 rounded px-3 py-2 mt-8 mb-5 text-pink-600 w-full max-w-sm" />
+  <div class="flex justify-center items-center mt-8 mb-5">
+    <input type="text" id="calendario-financas"
+      class="border border-pink-300 rounded px-3 py-2 text-pink-600 w-full max-w-sm focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-300" />
   </div>
+
 
   <!-- Botão Sair -->
   <button id="btn-sair"
@@ -181,6 +181,7 @@
   <!-- JS -->
   <script type="module" src="../js/tela-inicial.js"></script>
   <script defer src="../js/fundo-decorativo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 
 </html>
