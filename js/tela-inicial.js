@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const listaAgenda = document.getElementById('lista-agenda-dia');
-  const datepickerInput = document.getElementById('datepicker');
+  const datepickerInput = document.getElementById('calendario-financas');
 
   function atualizarLista() {
     const data = datepickerInput.value;
@@ -199,23 +199,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 📅 Pikaday
-  const calendario = new Pikaday({
-    field: datepickerInput,
-    format: 'YYYY-MM-DD',
-    i18n: {
-      previousMonth: 'Mês anterior',
-      nextMonth: 'Próximo mês',
-      months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-      weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+  flatpickr("#calendario-financas", {
+    dateFormat: "Y-m-d",
+    disableMobile: true,
+    onChange: function (selectedDates, dateStr) {
+      atualizarLista();
     },
-    firstDay: 1,
-    onDraw: () => setTimeout(() => {
-      destacarDiasComTarefas();
-      estilizarCalendario();
-    }, 10),
-    onSelect: () => atualizarLista()
+    onDayCreate: (dObj, dStr, fp, dayElem) => {
+      const dataFormatada = dayElem.dateObj.toISOString().split("T")[0]; // yyyy-mm-dd
+      const existeTarefa = carregarTarefas().some(t => t.date === dataFormatada);
+      if (existeTarefa) {
+        dayElem.classList.add("bg-pink-300", "rounded-full", "text-white", "font-bold");
+      }
+    }
   });
 
   // ⏰ Inicializa o dia atual
