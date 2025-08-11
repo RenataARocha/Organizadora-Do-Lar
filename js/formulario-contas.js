@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="flex-1 space-y-2 text-base font-semibold text-black">
             ${formatarExibicao({
         ...conta,
-        titulo: `${obterIconeCategoria(conta.nome || 'conta')} ${conta.nome}`
+        titulo: `${obterIconeCategoria(conta.categoria || 'contas')} ${conta.nome}`
       }, 'conta')}
           </div>
 
@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
 
     const novaConta = {
+      categoria: 'contas',  // aqui coloque uma categoria padrão ou pegue do form se tiver
       nome: document.getElementById("conta-nome").value,
       descricao: document.getElementById("conta-descricao").value,
       valor: document.getElementById("conta-valor").value,
@@ -104,10 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
       repetir: document.getElementById("conta-repetir").value,
       lembreteData: document.querySelector("#conta-lembrete-data").value,
       lembreteHora: document.querySelector("#conta-lembrete-hora").value,
-      hora: document.querySelector("#conta-lembrete-hora").value, // 👈 acrescenta isso
+      hora: document.querySelector("#conta-lembrete-hora").value,
       title: `Conta: ${document.getElementById("conta-nome").value}`
     };
-
 
     contas.push(novaConta);
     salvarContas();

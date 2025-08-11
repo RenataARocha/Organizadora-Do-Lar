@@ -121,7 +121,7 @@ export function formatarExibicao(item, tipoItem) {
 
     case 'conta':
       return `
-<p><strong class="text-pink-500">${item.title || item.nome || 'Sem título'}</strong> <span class="italic">(Conta)</span></p>
+<p><strong class="text-pink-500">${item.titulo || item.nome || 'Sem título'}</strong> <span class="italic">(Conta)</span></p>
 <p><span class="text-pink-500">📝 Descrição:</span> ${item.descricao || 'N/A'}</p>
 <p><span class="text-pink-500">💰 Valor:</span> R$ ${item.valor ? parseFloat(item.valor).toFixed(2) : '-'}</p>
 <p><span class="text-pink-500">📅 Vencimento:</span> ${item.vencimento || 'Não definida'}</p>
