@@ -8,7 +8,8 @@
 
 ## 🎥 Demonstração
 
-https://github.com/user-attachments/assets/5fe0e8bc-7e0f-43c8-8b24-4989b4f907ad
+https://github.com/user-attachments/assets/cf9e3bdf-9531-4020-bfd2-7dba6130306c
+
 
 ---
 ## 🚧 Status do Projeto
