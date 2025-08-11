@@ -191,31 +191,51 @@ ${(formatado.reminderDate || formatado.reminderTime) ? `<p class="text-sm"><span
 <p class="text-sm"><span class="text-pink-500">⏰ Alarme:</span> ${formatado.alarme}</p>
 `.trim();
 
-    case 'limpeza':
+    case 'limpeza': {
+      const formatado = {
+        icone: obterIconeCategoria(item.comodo || 'entrada'),
+        comodo: item.comodo || 'Cômodo não informado',
+        titulo: 'Limpeza',
+        descricao: item.descricao || 'Tarefa não informada',
+        frequencia: item.frequencia || 'Nenhuma',
+        data: item.data || 'N/A',  // Adicione formatação de data se necessário, ex: new Date(item.data).toLocaleDateString('pt-BR')
+        hora: item.hora || 'N/A',
+        lembreteData: item.lembreteData || item.data || 'N/A',  // Adicione formatação se necessário
+        lembreteHora: item.lembreteHora || 'N/A'
+      };
+
       const lembrete = (formatado.lembreteData && formatado.lembreteHora)
         ? `${formatado.lembreteData} às ${formatado.lembreteHora}`
         : 'N/A';
 
       return `
-<p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(Limpeza)</span></p>
-<p><span class="text-pink-500">🧽 Descrição:</span> ${formatado.descricao}</p>
-<p><span class="text-pink-500">🔁 Frequência:</span> ${formatado.frequencia}</p>
-<p><span class="text-pink-500">📅 Data:</span> ${formatado.data}</p>
-<p><span class="text-pink-500">⏰ Horário:</span> ${formatado.hora}</p>
-<p><span class="text-pink-500">🔔 Lembrete:</span> ${lembrete}</p>
-`.trim();
+    <p><strong class="text-pink-500">${formatado.icone} ${formatado.comodo} (${formatado.titulo})</strong></p>
+    <p>🧽 <strong>Descrição:</strong> ${formatado.descricao}</p>
+    <p>🔁 Frequência: ${formatado.frequencia}</p>
+    <p>📅 Data: ${formatado.data}</p>
+    <p>⏰ Horário: ${formatado.hora}</p>
+    <p>🔔 Lembrete: ${lembrete}</p>
+  `.trim();
+    }
 
+    case 'cronograma': {
+      const partes = [];
+      if (item.descricao) partes.push(item.descricao);
+      if (item.etapa) partes.push(item.etapa);
+      if (item.horario) partes.push(item.horario);
 
-    case 'cronograma':
+      const detalhes = partes.length > 0 ? partes.join(' — ') : 'Sem detalhes';
+
       return `
 <p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(Cronograma)</span></p>
-<p><span class="text-pink-500">📦 Produto:</span> ${formatado.produto}</p>
-<p><span class="text-pink-500">📝 Observações:</span> ${formatado.observacoes}</p>
+<p><span class="text-pink-500">Detalhes:</span> ${detalhes}</p>
 <p><span class="text-pink-500">📅 Data:</span> ${formatado.data}</p>
 <p><span class="text-pink-500">🔄 Recorrência:</span> ${formatado.recorrencia}</p>
 <p><span class="text-pink-500">📆 Dias da Semana:</span> ${formatado.diasSemana}</p>
 <p><span class="text-pink-500">⏰ Alarme:</span> ${formatado.alarme}</p>
-`.trim();
+  `.trim();
+    }
+
 
     case 'cardapio':
       return `
@@ -229,6 +249,7 @@ ${(formatado.reminderDate || formatado.reminderTime) ? `<p class="text-sm"><span
 `.trim();
 
     default:
-      return `<p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(${tipo})</span></p>`;
+      const tipoFormatado = tipoItem.charAt(0).toUpperCase() + tipoItem.slice(1);
+      return `<p><strong class="text-pink-500">${formatado.titulo}</strong> <span class="italic">(${tipoFormatado})</span></p>`;
   }
 }

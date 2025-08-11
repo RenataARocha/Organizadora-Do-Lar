@@ -17,7 +17,7 @@ function mostrarNotificacao(titulo, mensagem, icone = './assets/lembrete-icon.pn
 
     // 🔊 Reproduz um som fofo (adicione esse arquivo em assets!)
     const audio = new Audio('./assets/alarme-fofinho.mp3');
-    audio.play().catch(() => {}); // ignora erros se som for bloqueado
+    audio.play().catch(() => { }); // ignora erros se som for bloqueado
   }
 }
 

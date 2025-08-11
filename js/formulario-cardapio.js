@@ -173,8 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
       lanche,
       jantar,
       recorrencia,
-      title: `🍽️ Cardápio`
+      title: `🍽️ Cardápio`,
+      titulo: `Cardápio` // 👈 ISSO AQUI É A CHAVE!
     };
+
 
     salvarCardapio(dados);
     atualizarRecorrencias(); // atualiza datas já existentes no armazenamento

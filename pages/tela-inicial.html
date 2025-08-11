@@ -133,10 +133,13 @@
 
     <!-- Telas SPA -->
     <section id="agenda" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
-      <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Dancing Script', cursive;">Agenda do Dia</h2>
+      <h2 class="text-2xl font-semibold mb-4 font-['Dancing_Script']">Agenda do Dia</h2>
       <p class="text-black mb-4">Veja abaixo suas tarefas marcadas para o dia de hoje.</p>
-      <ul id="lista-agenda-dia" class="space-y-2 text-black"></ul>
+      <ul id="lista-agenda-dia" class="space-y-2 text-black overflow-y-auto cursor-pointer max-h-52 pr-1" style="
+    scrollbar-width: thin;
+    scrollbar-color: #f472b6 #ffe6f0;"></ul>
     </section>
+
 
     <section id="resumo" class="hidden p-4 bg-white text-pink-400 border rounded shadow tela-oculta">
       <h2 class="text-2xl font-semibold mb-2" style="font-family: 'Dancing Script', cursive;">Resumo da Semana</h2>
@@ -167,7 +170,7 @@
 
   <!-- Input de calendário -->
   <div class="flex justify-center items-center mt-8 mb-5">
-    <input type="text" id="calendario-financas"
+    <input type="text" id="calendario-inicial"
       class="border border-pink-300 rounded px-3 py-2 text-pink-600 w-full max-w-sm focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-300" />
   </div>
 
@@ -182,6 +185,7 @@
   <script type="module" src="../js/tela-inicial.js"></script>
   <script defer src="../js/fundo-decorativo.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../js/services/mostrarAgendaDoDia.js" type="module"></script>
 </body>
 
 </html>

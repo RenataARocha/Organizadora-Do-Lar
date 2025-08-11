@@ -104,8 +104,10 @@ document.addEventListener("DOMContentLoaded", function () {
       repetir: document.getElementById("conta-repetir").value,
       lembreteData: document.querySelector("#conta-lembrete-data").value,
       lembreteHora: document.querySelector("#conta-lembrete-hora").value,
+      hora: document.querySelector("#conta-lembrete-hora").value, // 👈 acrescenta isso
       title: `Conta: ${document.getElementById("conta-nome").value}`
     };
+
 
     contas.push(novaConta);
     salvarContas();

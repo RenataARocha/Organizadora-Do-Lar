@@ -191,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const novaEtapa = {
       etapa: selectEtapa.value.trim(),
+      titulo: `${obterIconeCategoria(selectEtapa.value.trim())} ${capitalize(selectEtapa.value.trim())}`,
       observacoes: textareaObs.value.trim(),
       produto: selectProduto.value,
       data: inputData.value,
@@ -198,9 +199,11 @@ document.addEventListener('DOMContentLoaded', () => {
       diasSelecionados: Array.from(diasSemanaCheckboxes).filter(chk => chk.checked).map(chk => chk.value),
       lembreteData: inputReminderDate.value,
       lembreteHora: inputReminderTime.value,
+      hora: inputReminderTime.value,
       alarme: inputAlarme.value,
-      title: `Etapa: ${selectEtapa.value.trim()}`
+      title: `Cronograma: ${selectEtapa.value.trim()}`
     };
+
 
     if (!novaEtapa.etapa) {
       alert('Por favor, selecione a etapa do cronograma.');

@@ -51,21 +51,39 @@
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
+
+
     <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Frequência</label>
-      <input type="text" placeholder="Ex: 1x ao dia" id="remedio-frequencia"
+      <label>Frequência</label>
+      <select id="remedio-frequencia"
+        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200">
+        <option value="1">1x ao dia</option>
+        <option value="2">2x ao dia</option>
+        <option value="3">3x ao dia</option>
+        <option value="4">4x ao dia</option>
+      </select>
+    </div>
+
+
+    <div class="campo mb-6 flex flex-col" id="horarios-container">
+      <label class="text-base font-semibold mb-2 text-gray-700">Horários</label>
+
+      <div class="flex gap-2 mb-2">
+        <input type="time" name="remedio-horarios"
+          class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
+        <button type="button" id="adicionar-horario" class="text-pink-600 font-bold text-xl">+</button>
+      </div>
+    </div>
+
+
+    <div class="campo mb-6 flex flex-col">
+      <label class="text-base font-semibold mb-2 text-gray-700">Data de início</label>
+      <input type="date" id="remedio-data"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>
 
     <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Horário</label>
-      <input type="time" id="remedio-horario"
-        class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
-    </div>
-
-    <!-- NOVO CAMPO DATA -->
-    <div class="campo mb-6 flex flex-col">
-      <label class="text-base font-semibold mb-2 text-gray-700">Data do Remédio</label>
+      <label class="text-base font-semibold mb-2 text-gray-700">Data de término</label>
       <input type="date" id="remedio-data"
         class="w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200" />
     </div>

@@ -109,6 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarDiasSemana();
   }
 
+  function capitalize(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+
   // ✅ FORMULÁRIO - ADICIONAR ETAPA
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -144,8 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
       lembreteData,
       lembreteHora,
       alarme,
-      titulo: `Skincare: ${nome || 'Sem título'}`
+      titulo: `${obterIconeCategoria('Skincare')} ${capitalize(nome)}`
     };
+
 
     skincare.push(novaEtapa);
     salvarSkincare();

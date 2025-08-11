@@ -1,4 +1,10 @@
+import { getAllItems } from '../services/getAllItems.js';
+
 document.addEventListener('DOMContentLoaded', function () {
+  function carregarTarefas(dataISO) {
+    return JSON.parse(localStorage.getItem(`tarefas-${dataISO}`)) || [];
+  }
+
   // 🌼 Frase do dia (com provérbios e mensagens de encorajamento)
   const frases = [
     "Você é mais forte do que imagina 🌸",
@@ -88,10 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const mes = String(date.getMonth() + 1).padStart(2, '0');
     const dia = String(date.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
-  }
-
-  function carregarTarefas(dataISO) {
-    return JSON.parse(localStorage.getItem(`tarefas-${dataISO}`)) || [];
   }
 
   function mostrarTarefas(tarefas, filtro = '') {

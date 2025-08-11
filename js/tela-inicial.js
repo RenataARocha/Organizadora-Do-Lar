@@ -1,4 +1,9 @@
+import { mostrarAgendaDoDia, atualizarAgendaDoDia } from './services/mostrarAgendaDoDia.js';
+import { getAllItems } from './services/getAllItems.js';
+
+
 document.addEventListener('DOMContentLoaded', function () {
+  mostrarAgendaDoDia();
   // 🌼 Frase do dia
   const frases = [
     "Você é mais forte do que imagina 🌸",
@@ -34,68 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const elFrase = document.getElementById("frase-do-dia");
   if (elFrase) elFrase.textContent = frase;
 
-  // 🗂️ Carrega todas as tarefas/eventos de todas as categorias
-  function carregarTarefas() {
-    const prefixos = ['tarefas', 'contas', 'remedios', 'consultas', 'compras', 'cardapio', 'financas', 'limpeza', 'skincare', 'cronograma'];
-    const chaves = Object.keys(localStorage).filter(k =>
-      prefixos.some(prefix => k === prefix || k.startsWith(prefix + '-'))
-    );
-
-    let todasTarefas = [];
-    chaves.forEach(chave => {
-      try {
-        const itens = JSON.parse(localStorage.getItem(chave)) || [];
-        if (Array.isArray(itens)) {
-          todasTarefas = todasTarefas.concat(itens);
-        }
-      } catch {
-        // Ignora JSON inválido
-      }
-    });
-    return todasTarefas;
-  }
-
-  function destacarDiasComTarefas() {
-    const tarefas = carregarTarefas();
-    const datas = {};
-
-    tarefas.forEach(t => {
-      if (t.date) {
-        if (!datas[t.date]) datas[t.date] = [];
-        datas[t.date].push(t.title || 'Evento');
-      }
-    });
-
-    document.querySelectorAll('.pika-single td').forEach(td => {
-      const ano = td.getAttribute('data-pika-year');
-      const mes = td.getAttribute('data-pika-month');
-      const dia = td.getAttribute('data-pika-day');
-
-      if (ano && mes && dia) {
-        const dataISO = `${ano}-${String(+mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-        if (datas[dataISO]) {
-          td.classList.add('relative', 'group');
-
-          const bolinha = document.createElement('div');
-          bolinha.className = 'absolute bottom-1 right-1 w-2 h-2 bg-pink-500 rounded-full';
-
-          const tooltip = document.createElement('div');
-          tooltip.textContent = datas[dataISO].join(', ');
-          tooltip.className = `
-            absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1
-            bg-pink-600 text-white text-xs rounded-lg shadow-md
-            opacity-0 group-hover:opacity-100 transition-opacity duration-200
-            pointer-events-none whitespace-nowrap
-          `.trim();
-
-          td.appendChild(bolinha);
-          td.appendChild(tooltip);
-
-          td.classList.add('bg-pink-200', 'rounded-full', 'text-black', 'font-semibold');
-        }
-      }
-    });
-  }
 
   function estilizarCalendario() {
     document.querySelectorAll('.pika-single').forEach(cal => {
@@ -111,58 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  const listaAgenda = document.getElementById('lista-agenda-dia');
-  const datepickerInput = document.getElementById('calendario-financas');
 
-  function atualizarLista() {
-    const data = datepickerInput.value;
-    const tarefas = carregarTarefas().filter(t => t.date === data);
-
-    listaAgenda.innerHTML = '';
-    if (tarefas.length === 0) {
-      listaAgenda.innerHTML = '<li class="text-gray-500">Nenhuma tarefa encontrada.</li>';
-    } else {
-      tarefas.forEach(tarefa => {
-        const li = document.createElement('li');
-        li.className = 'flex justify-between items-center bg-pink-50 p-2 rounded shadow mb-2';
-
-        const span = document.createElement('span');
-        span.textContent = tarefa.title;
-
-        const btn = document.createElement('button');
-        btn.innerHTML = '<i class="fas fa-trash text-red-500"></i>';
-        btn.addEventListener('click', () => {
-          const prefixos = ['tarefas', 'contas', 'remedios', 'consultas', 'compras', 'cardapio', 'financas', 'limpeza', 'skincare', 'cronograma'];
-
-          prefixos.forEach(prefixo => {
-            let itens = JSON.parse(localStorage.getItem(prefixo)) || [];
-            let novaLista = itens.filter(t => !(t.date === tarefa.date && t.title === tarefa.title));
-            if (novaLista.length !== itens.length) {
-              localStorage.setItem(prefixo, JSON.stringify(novaLista));
-            }
-
-            Object.keys(localStorage).forEach(chave => {
-              if (chave.startsWith(prefixo + '-')) {
-                let itensData = JSON.parse(localStorage.getItem(chave)) || [];
-                let novaListaData = itensData.filter(t => !(t.date === tarefa.date && t.title === tarefa.title));
-                if (novaListaData.length !== itensData.length) {
-                  localStorage.setItem(chave, JSON.stringify(novaListaData));
-                }
-              }
-            });
-          });
-
-          atualizarLista();
-          destacarDiasComTarefas();
-          estilizarCalendario();
-        });
-
-        li.appendChild(span);
-        li.appendChild(btn);
-        listaAgenda.appendChild(li);
-      });
-    }
-  }
+  const datepickerInput = document.getElementById('calendario-inicial');
 
   // 🎯 Alternância entre telas
   const botoes = document.querySelectorAll('.menu-principal .btn');
@@ -199,26 +92,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  flatpickr("#calendario-financas", {
+  flatpickr("#calendario-inicial", {
     dateFormat: "Y-m-d",
     disableMobile: true,
     onChange: function (selectedDates, dateStr) {
-      atualizarLista();
+      atualizarAgendaDoDia(dateStr);
     },
     onDayCreate: (dObj, dStr, fp, dayElem) => {
-      const dataFormatada = dayElem.dateObj.toISOString().split("T")[0]; // yyyy-mm-dd
-      const existeTarefa = carregarTarefas().some(t => t.date === dataFormatada);
+      const dataFormatada = dayElem.dateObj.toISOString().split("T")[0];
+      const existeTarefa = getAllItems().some(t => t.data === dataFormatada || t.prazo === dataFormatada);
       if (existeTarefa) {
         dayElem.classList.add("bg-pink-300", "rounded-full", "text-white", "font-bold");
       }
     }
   });
+  estilizarCalendario();
 
   // ⏰ Inicializa o dia atual
   const hoje = new Date();
   const hojeFormatado = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+  atualizarAgendaDoDia(hojeFormatado); // já com a data de hoje
   datepickerInput.value = hojeFormatado;
-  atualizarLista();
+
+
 
   // 🔗 Links para formulários
   const base = window.location.hostname.includes("github.io") ? "/Organizadora-Do-Lar/pages/" : "./";

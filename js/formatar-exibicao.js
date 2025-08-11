@@ -1,100 +1,84 @@
-import { obterIconeCategoria } from './utils.js';
+// 👉 Corrigir tipos antigos
+function corrigirTipoItem(item) {
+  if (!item.tipo && item.titulo) {
+    const t = item.titulo.toLowerCase();
+    if (t.includes('bolet') || t.includes('escola')) item.tipo = 'conta';
+    else if (t.includes('skincare')) item.tipo = 'skincare';
+    else if (t.includes('cronograma') || t.includes('cardápio')) item.tipo = 'cronograma';
+    else if (t.includes('anhanguera')) item.tipo = 'instituicao';
+    else if (t.includes('limpeza')) item.tipo = 'limpeza';
+    else if (t.includes('consulta')) item.tipo = 'consulta';
+  }
 
-// 👉 Só o título com ícone e tipo (ex: Arroz (Compra))
-export function formatarTitulo(item, tipo = 'tarefa') {
-  const { titulo = '', nome = '', produto = '', title = '' } = item;
-  const textoBase = titulo || nome || produto || title || 'Sem título';
-  const tipoCapitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-  return `${textoBase} (${tipoCapitalizado})`;
+
+  // Corrigir prefixos bagunçados (limpa o tipo)
+  if (item.tipo?.startsWith('conta-')) item.tipo = 'conta';
+  if (item.tipo?.startsWith('skincare-')) item.tipo = 'skincare';
 }
 
-// 👉 Exibição detalhada com emojis (e tipo passado corretamente!)
-export function formatarExibicao(item, tipo = 'tarefa') {
-  const {
-    categoria = '',
-    prioridade = '',
-    prazo = '',
-    descricao = '',
-    quantidade = '',
-    preco = '',
-    dosagem = '',
-    horario = '',
-    frequencia = '',
-    objetivo = '',
-    tarefa = '',
-    valor = '',
-    vencimento = '',
-    tipo: especialidade = '',
-    data = '',
-    refeicoes = [],
-    diasTexto = '',
-    produtoFormatado = '',
-    recorrenciaFormatada = '',
-    observacoes = ''
-  } = item;
+function limparPrefixo(titulo) {
+  return titulo.replace(/^(💸 Conta: |💊 Remédio: |📅 Cronograma: |🧹 Limpeza: |✨ Skincare: |🎯 Meta: |🩺 Consulta: |✅ Tarefa: |🛒 Compra: |📌 )/, '').trim();
+}
 
-  const icone = obterIconeCategoria(categoria);
+// 👉 Só o título com ícone e tipo
+export function formatarTitulo(item, tipo = 'tarefa') {
+  corrigirTipoItem(item); // mantém isso, importante!
 
-  // Garantir que tipo está definido e em lowercase
-  const tipoTratado = (tipo || 'tarefa').toLowerCase();
 
-  switch (tipoTratado) {
-    case 'compra':
-      return `📂 Categoria: ${icone} ${categoria}
-🔢 Quantidade: ${quantidade || '-'}
-💰 Preço: ${preco || '-'}
-⚡ Prioridade: ${prioridade || '-'}`;
+  let tituloOriginal = item.titulo || item.title || item.nome || item.produto || '';
+  let tituloLimpo = limparPrefixo(tituloOriginal || '');
 
-    case 'remedio':
-      return `💊 Dosagem: ${dosagem || '-'}
-⏰ Horário: ${horario || '-'}
-📆 Frequência: ${frequencia || '-'}`;
 
+  // Determina o tipo limpo (lowercase e sem prefixos bagunçados)
+  let tipoLimpo = (item.tipo || tipo).toLowerCase();
+  if (tipoLimpo.startsWith('conta-')) tipoLimpo = 'conta';
+  if (tipoLimpo.startsWith('skincare-')) tipoLimpo = 'skincare';
+  // adiciona outros prefixos se precisar
+
+  const textoBase = tituloLimpo || item.nome || item.produto || item.title || 'Sem título';
+
+  let prefixo = '';
+
+  switch (tipoLimpo) {
     case 'meta':
-      return `🎯 Objetivo: ${objetivo || '-'}
-📅 Prazo: ${prazo || '-'}`;
-
-    case 'limpeza':
-      return `🧽 Tarefa: ${tarefa || '-'}
-📅 Frequência: ${frequencia || '-'}`;
-
-    case 'financa':
-      return `💰 Valor: R$ ${valor ? parseFloat(valor).toFixed(2) : '-'}
-📅 Data: ${data || '-'}
-💳 Pagamento: ${item.metodoPagamento || 'N/A'}
-📝 Obs: ${observacoes || 'N/A'}`;
-
-
-    case 'produto':
-      return `🧴 Produto: ${produtoFormatado || '-'}
-🔁 Recorrência: ${recorrenciaFormatada || '-'}
-📆 Dias: ${diasTexto || '-'}`;
-
-
+      prefixo = '🎯 Meta: ';
+      break;
     case 'conta':
-      const lembrete = item.lembreteData && item.lembreteHora
-        ? `${item.lembreteData} às ${item.lembreteHora}`
-        : 'N/A';
-
-      return `
-📝 Descrição: ${item.descricao || 'N/A'}
-💰 Valor: R$ ${item.valor ? parseFloat(item.valor).toFixed(2) : '-'}
-📅 Vencimento: ${item.vencimento || 'Não definida'}
-✅ Paga: ${item.paga === 'sim' ? 'Sim' : item.paga === 'nao' ? 'Não' : 'N/A'}
-🔁 Repetir: ${item.repetir || 'N/A'}
-🔔 Lembrete: ${lembrete}
-`.trim();
-
-
-
-    case 'cardapio':
-      return `📅 Data: ${data || '-'}
-🍽️ Refeições: ${refeicoes.length > 0 ? refeicoes.join(', ') : '-'}`;
-
+      prefixo = '💸 Conta: ';
+      break;
+    case 'remedio':
+      prefixo = '💊 Remédio: ';
+      break;
+    case 'compra':
+      prefixo = '🛒 Compra: ';
+      break;
+    case 'cronograma':
+      prefixo = '📅 Cronograma: ';
+      break;
+    case 'instituicao':
+      prefixo = '📌 ';
+      break;
+    case 'limpeza':
+      prefixo = '🧹 Limpeza: ';
+      break;
+    case 'skincare':
+      prefixo = '✨ Skincare: ';
+      break;
+    case 'consulta':
+      prefixo = '🩺 Consulta: ';
+      break;
     default:
-      return `📂 Categoria: ${icone} ${categoria}
-⏳ Prazo: ${prazo || '-'}
-⚡ Prioridade: ${prioridade || '-'}
-📝 Descrição: ${descricao || '-'}`;
+      prefixo = '✅ Tarefa: ';
   }
+
+  // Remove emoji e espaços do prefixo pra comparar só o texto
+  const prefixoTexto = prefixo.replace(/^[^\w\s]+ */, '').toLowerCase();
+  const tituloLimpoMinusculo = tituloLimpo.toLowerCase();
+
+  // Se o título já começa com o texto do prefixo, não repete o prefixo
+  if (tituloLimpoMinusculo.startsWith(prefixoTexto)) {
+    prefixo = '';
+  }
+
+  return `${prefixo}${textoBase}`;
 }

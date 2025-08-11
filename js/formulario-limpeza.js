@@ -29,30 +29,31 @@ document.addEventListener("DOMContentLoaded", () => {
     listaLimpezas.innerHTML = "";
 
     tarefas.forEach((tarefa, index) => {
+      console.log(tarefa);
       const li = document.createElement("li");
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
       li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            ${formatarExibicao({
+  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+    <div class="flex-1 space-y-2 text-base font-semibold text-black">
+      ${formatarExibicao({
         ...tarefa,
-        titulo: `${icone} ${tarefa.comodo}`
+        // O `titulo` não é mais necessário aqui, a função `formatarExibicao` vai cuidar disso
       }, 'limpeza')}
-          </div>
-          <button
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}"
-            title="Remover tarefa"
-            type="button"
-          >
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-          </button>
-        </div>
-      `;
+    </div>
+    <button
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}"
+      title="Remover tarefa"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+    </button>
+  </div>
+`;
       listaLimpezas.appendChild(li);
     });
     return tarefas;
@@ -119,8 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const comodo = form.querySelector("#comodo").value.trim();
-    let tarefa = form.querySelector("#tarefa").value.trim();
+    const comodo = form.querySelector("#comodo").value.trim() || 'Cômodo não informado';
+    let tarefa = form.querySelector("#tarefa").value.trim() || 'Tarefa não informada';
     const tarefaOutrosInput = document.querySelector("#tarefaOutros");
 
     if (tarefa === "Outros" && tarefaOutrosInput) {
@@ -148,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hora: horario,
       lembreteData,
       lembreteHora,
-      title: `Limpeza: ${tarefa} (${comodo})`,
+      titulo: `${comodo} — ${tarefa}`, // AQUI!
     };
 
     if (!validarFormulario(dados)) return;

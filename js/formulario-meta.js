@@ -128,18 +128,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const hora = document.getElementById('meta-reminder-time').value; // pega o valor do input hora
     const icone = obterIconeCategoria(categoria);
+
     const novaMeta = {
       id: Date.now(),
-      titulo: `${icone} ${titulo}`,
+      tipo: 'meta',
+      icone,
+      titulo,
       descricao,
       data: date || null,
-      prazo: date || null, // ou crie uma segunda variável se quiser separar data e prazo
+      prazo: date || null,
+      hora, // <-- aqui!
       categoria,
       prioridade,
       lembrete,
     };
-
 
     const metas = pegarMetasStorage();
     metas.push(novaMeta);
