@@ -209,12 +209,13 @@ ${(formatado.reminderDate || formatado.reminderTime) ? `<p class="text-sm"><span
         : 'N/A';
 
       return `
-    <p><strong class="text-pink-500">${formatado.icone} ${formatado.comodo} (${formatado.titulo})</strong></p>
-    <p>🧽 <strong>Descrição:</strong> ${formatado.descricao}</p>
-    <p>🔁 Frequência: ${formatado.frequencia}</p>
-    <p>📅 Data: ${formatado.data}</p>
-    <p>⏰ Horário: ${formatado.hora}</p>
-    <p>🔔 Lembrete: ${lembrete}</p>
+      <p>
+  <span class="text-pink-500 font-bold">${formatado.icone} ${formatado.comodo}</span><span class="text-black italic font-medium"> (${formatado.titulo})</span></p>
+    <p>🧽 <span class="text-pink-500 ">Descrição:</span> <span class="text-black">${formatado.descricao}</span></p>
+    <p>🔁 <span class="text-pink-500 ">Frequência:</span> <span class="text-black">${formatado.frequencia}</span></p>
+    <p>📅 <span class="text-pink-500 ">Data:</span> <span class="text-black">${formatado.data}</span></p>
+    <p>⏰ <span class="text-pink-500 ">Horário:</span> <span class="text-black">${formatado.hora}</span></p>
+    <p>🔔 <span class="text-pink-500 ">Lembrete:</span> <span class="text-black">${lembrete}</span></p>
   `.trim();
     }
 

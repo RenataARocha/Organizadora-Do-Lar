@@ -69,21 +69,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Agora, monte manualmente o HTML completo do remédio com os horários agrupados no lugar certo
       li.innerHTML = `
-    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-      <div class="flex-1 space-y-2 text-base font-semibold text-black">
+<div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+  <div class="flex-1 space-y-2 text-base font-semibold">
 
-        <div>${tituloFormatado}</div>
+<div><span class="text-pink-500">${icone} (Remédio <span class="text-black font-medium italic">(${remedio.nome})</span></div>
+    <div><span class="text-pink-500">⚖️ Dosagem:</span> <span class="text-black">${remedio.dosagem}</span></div>
+    <div><span class="text-pink-500">📆 Dias:</span> <span class="text-black">${remedio.diasSemana.join(", ")}</span></div>
+    <div><span class="text-pink-500">🔁 Frequência:</span> <span class="text-black">${remedio.frequencia}</span></div>
+    <div><span class="text-pink-500">⏰ Horário:</span> <span class="text-black">${horariosTexto}</span></div> 
+    <div><span class="text-pink-500">📅 Data:</span> <span class="text-black">${remedio.data}</span></div>
+    <div><span class="text-pink-500">⏳ Duração:</span> <span class="text-black">${remedio.duracao}</span></div>
+    <div><span class="text-pink-500">📝 Observações:</span> <span class="text-black">${remedio.observacoes || "–"}</span></div>
+    <div><span class="text-pink-500">🔔 Alarme:</span> <span class="text-black">${remedio.alarme || "–"}</span></div>
 
-        <div>⚖️ Dosagem: ${remedio.dosagem}</div>
-        <div>📆 Dias: ${remedio.diasSemana.join(", ")}</div>
-        <div>🔁 Frequência: ${remedio.frequencia}</div>
-        <div>⏰ Horário: ${horariosTexto}</div> <!-- aqui mostramos todos os horários junto -->
-        <div>📅 Data: ${remedio.data}</div>
-        <div>⏳ Duração: ${remedio.duracao}</div>
-        <div>📝 Observações: ${remedio.observacoes || "–"}</div>
-        <div>🔔 Alarme: ${remedio.alarme || "–"}</div>
-
-      </div>
+  </div>
 
       <button 
         class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
