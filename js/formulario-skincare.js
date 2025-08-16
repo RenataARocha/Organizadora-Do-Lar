@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lista.appendChild(li);
     });
 
+    adicionarEventosRemocao();
     adicionarEventosEdicao();
   }
 

@@ -62,25 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cardapios.forEach(cardapio => {
       if (cardapio.recorrencia && cardapio.recorrencia.toLowerCase() !== 'nenhuma') {
-        // Para recorrência semanal, checar dias da semana
+        let iteracoes = 0; // segurança para evitar loop infinito
+        const maxIteracoes = 365; // nunca passa de 1 ano
         if (cardapio.recorrencia.toLowerCase() === 'semanal') {
-          // Se a data já passou, avançar para o próximo dia da semana selecionado
-          while (cardapio.data <= hoje) {
+          while (cardapio.data <= hoje && iteracoes < maxIteracoes) {
             cardapio.data = adicionarTempo(cardapio.data, 'diária');
-            // Se o novo dia estiver entre os diasSemana selecionados, sai do loop
             const diaSemanaAtual = new Date(cardapio.data).toLocaleDateString('pt-BR', { weekday: 'long' }).toLowerCase();
             if (cardapio.diasSemana?.map(d => d.toLowerCase()).includes(diaSemanaAtual)) {
               break;
             }
+            iteracoes++;
           }
         } else {
-          // Para outras recorrências simples, só avança a data enquanto ela for menor ou igual a hoje
-          while (cardapio.data <= hoje) {
+          while (cardapio.data <= hoje && iteracoes < maxIteracoes) {
             cardapio.data = adicionarTempo(cardapio.data, cardapio.recorrencia);
+            iteracoes++;
           }
         }
         alterou = true;
       }
+
     });
 
     if (alterou) {
