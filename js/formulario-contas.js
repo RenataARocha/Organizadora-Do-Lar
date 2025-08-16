@@ -50,30 +50,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function renderizarContas() {
-    const itens = listaContas.querySelectorAll("li");
-    itens.forEach(item => item.remove());
+  const itens = listaContas.querySelectorAll("li");
+  itens.forEach(item => item.remove());
 
-    if (contas.length === 0) {
-      mensagemVazia.style.display = "block";
-      return;
-    }
+  if (contas.length === 0) {
+    mensagemVazia.style.display = "block";
+    return;
+  }
 
-    mensagemVazia.style.display = "none";
+  mensagemVazia.style.display = "none";
 
-    contas.forEach((conta, index) => {
-      const li = document.createElement("li");
-      li.classList.add("mb-4", "p-3", "rounded-lg", "shadow",
-        "bg-purple-50", "hover:bg-rose-50", "cursor-pointer");
+  contas.forEach((conta, index) => {
+    const li = document.createElement("li");
+    li.classList.add("mb-4", "p-3", "rounded-lg", "shadow",
+      "bg-purple-50", "hover:bg-rose-50", "cursor-pointer");
 
-      li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            ${formatarExibicao({
-        ...conta,
-        titulo: `${obterIconeCategoria(conta.categoria || 'contas')} ${conta.nome}`
-      }, 'conta')}
-          </div>
+    li.innerHTML = `
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          ${formatarExibicao({
+      ...conta,
+      titulo: `${obterIconeCategoria(conta.categoria || 'contas')} ${conta.nome}`
+    }, 'conta')}
+        </div>
 
+        <div class="flex flex-col items-end">
           <button 
             class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
             data-index="${index}" 
@@ -87,42 +88,83 @@ document.addEventListener("DOMContentLoaded", function () {
             </span>
           </button>
         </div>
-      `;
-      listaContas.appendChild(li);
-    });
-  }
+      </div>
+    `;
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+    // Criando botão Editar
+    const botaoEditar = document.createElement('button');
+    botaoEditar.className = 'relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1';
+    botaoEditar.innerHTML = `Editar
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+      </span>`;
+    botaoEditar.dataset.index = index;
+    botaoEditar.type = 'button';
+    botaoEditar.title = 'Editar conta';
+    botaoEditar.addEventListener('click', () => editarConta(index));
 
-    const novaConta = {
-      categoria: 'contas',  // aqui coloque uma categoria padrão ou pegue do form se tiver
-      nome: document.getElementById("conta-nome").value,
-      descricao: document.getElementById("conta-descricao").value,
-      valor: document.getElementById("conta-valor").value,
-      vencimento: document.getElementById("conta-vencimento").value,
-      paga: document.getElementById("conta-paga").checked ? "sim" : "nao",
-      repetir: document.getElementById("conta-repetir").value,
-      lembreteData: document.querySelector("#conta-lembrete-data").value,
-      lembreteHora: document.querySelector("#conta-lembrete-hora").value,
-      hora: document.querySelector("#conta-lembrete-hora").value,
-      title: `Conta: ${document.getElementById("conta-nome").value}`
-    };
+    li.querySelector('div.flex-col').appendChild(botaoEditar);
 
-    contas.push(novaConta);
-    salvarContas();
-    renderizarContas();
-    form.reset();
-  });
-
-  listaContas.addEventListener("click", function (e) {
-    if (e.target.tagName === "BUTTON") {
-      const index = e.target.getAttribute("data-index");
+    // Evento Remover
+    li.querySelector('.btn-remover').addEventListener('click', () => {
       contas.splice(index, 1);
       salvarContas();
       renderizarContas();
-    }
+    });
+
+    listaContas.appendChild(li);
   });
+}
+
+// Função para preencher o form na hora de editar
+function editarConta(index) {
+  const conta = contas[index];
+  if (!conta) return;
+
+  document.getElementById("conta-nome").value = conta.nome;
+  document.getElementById("conta-descricao").value = conta.descricao;
+  document.getElementById("conta-valor").value = conta.valor;
+  document.getElementById("conta-vencimento").value = conta.vencimento;
+  document.getElementById("conta-paga").checked = conta.paga === "sim";
+  document.getElementById("conta-repetir").value = conta.repetir;
+  document.getElementById("conta-lembrete-data").value = conta.lembreteData || '';
+  document.getElementById("conta-lembrete-hora").value = conta.lembreteHora || '';
+
+  form.dataset.editIndex = index;
+}
+
+// E no submit do form, substitua a parte que adiciona a conta:
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const novaConta = {
+    categoria: 'contas',
+    nome: document.getElementById("conta-nome").value,
+    descricao: document.getElementById("conta-descricao").value,
+    valor: document.getElementById("conta-valor").value,
+    vencimento: document.getElementById("conta-vencimento").value,
+    paga: document.getElementById("conta-paga").checked ? "sim" : "nao",
+    repetir: document.getElementById("conta-repetir").value,
+    lembreteData: document.querySelector("#conta-lembrete-data").value,
+    lembreteHora: document.querySelector("#conta-lembrete-hora").value,
+    hora: document.querySelector("#conta-lembrete-hora").value,
+    title: `Conta: ${document.getElementById("conta-nome").value}`
+  };
+
+  const editIndex = form.dataset.editIndex;
+
+  if (editIndex !== undefined) {
+    contas[editIndex] = novaConta;
+    delete form.dataset.editIndex;
+  } else {
+    contas.push(novaConta);
+  }
+
+  salvarContas();
+  renderizarContas();
+  form.reset();
+});
+
 
   function gerarDicaFinanceira() {
     const dicas = [

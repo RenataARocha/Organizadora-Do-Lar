@@ -58,10 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return d.getTime() <= today.getTime();
   }
 
-  function cloneTarefa(tarefa, novaDataISO) {
-    return { ...tarefa, data: novaDataISO, proximaOcorrencia: null };
-  }
-
   function processarRecorrencias() {
     let alterou = false;
     tarefas.forEach((t) => {
@@ -70,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       while (isPastOrToday(t.data)) {
         const novaData = calcularProximaOcorrencia(t.data, t.recorrencia);
         if (!novaData) break;
-        t.data = novaData;  // atualiza a data da tarefa original
+        t.data = novaData; 
         alterou = true;
       }
     });
@@ -113,27 +109,62 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     mensagemVazia.style.display = 'none';
 
-    tarefas.forEach((tarefa, index) => {
-      const li = document.createElement('li');
-      li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
-      li.innerHTML = `
-        <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-          <div class="flex-1 space-y-2 text-base font-semibold text-black">
-            ${formatarExibicao({ ...tarefa, categoria: tarefa.categoria || tarefa.topic || 'N/A' }, 'tarefa')}
-          </div>
-          <button 
-            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-            data-index="${index}" title="Remover tarefa" type="button">
-            Remover
-            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
-            </span>
-          </button>
-        </div>
-      `;
-      listaTarefas.appendChild(li);
-    });
+   tarefas.forEach((tarefa, index) => {
+  const li = document.createElement('li');
+  li.className = 'mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer';
 
+  li.innerHTML = `
+    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+      <div class="flex-1 space-y-2 text-base font-semibold text-black">
+        ${formatarExibicao({ ...tarefa, categoria: tarefa.categoria || tarefa.topic || 'N/A' }, 'tarefa')}
+      </div>
+    </div>
+  `;
+
+  // Cria div para os botões, empilhando verticalmente
+  const botoesDiv = document.createElement('div');
+  botoesDiv.className = 'flex flex-col gap-1 mt-1';
+
+  // Botão remover
+  const botaoRemover = document.createElement('button');
+  botaoRemover.className = 'relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden';
+  botaoRemover.innerHTML = `Remover
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+    </span>`;
+  botaoRemover.setAttribute('data-index', index);
+  botaoRemover.addEventListener('click', (e) => {
+    const idx = e.currentTarget.getAttribute('data-index');
+    tarefas.splice(idx, 1);
+    salvarLocal();
+    renderizarTarefas();
+    mostrarAgendaDoDia();
+  });
+
+  // Botão editar
+  const botaoEditar = document.createElement('button');
+  botaoEditar.className = 'relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden';
+  botaoEditar.innerHTML = `Editar
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+    </span>`;
+  botaoEditar.setAttribute('data-index', index);
+  botaoEditar.addEventListener('click', () => {
+    abrirFormularioComItem(tarefas[index]);
+  });
+
+  // Adiciona os botões na div
+  botoesDiv.appendChild(botaoRemover);
+  botoesDiv.appendChild(botaoEditar);
+
+  // Adiciona a div de botões no li
+  li.querySelector('div').appendChild(botoesDiv);
+
+  listaTarefas.appendChild(li);
+});
+
+
+    // Mantém o evento de remover
     document.querySelectorAll('.btn-remover').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const idx = e.currentTarget.getAttribute('data-index');
@@ -246,45 +277,83 @@ document.addEventListener('DOMContentLoaded', async () => {
     sugestaoTarefa.textContent = sugestoes[Math.floor(Math.random() * sugestoes.length)];
   }
 
+  function abrirFormularioComItem(tarefa) {
+  // Preenche o formulário com os dados da tarefa
+  form['task-title'].value = tarefa.titulo.replace(/^.\s/, ''); // remove o ícone
+  form['task-description'].value = tarefa.descricao;
+  form['task-topic'].value = tarefa.categoria;
+  form['task-priority'].value = tarefa.prioridade;
+  form['task-recurrence-type'].value = tarefa.recorrencia;
+  form['task-date'].value = tarefa.data;
+  form['task-alarm'].value = tarefa.hora;
+  
+  // Ajusta dias da semana
+  ajustarDiasSemana();
+  if (tarefa.diasSemana && tarefa.diasSemana.length > 0) {
+    form.querySelectorAll('input[name="dias-semana"]').forEach(input => {
+      input.checked = tarefa.diasSemana.includes(input.value);
+    });
+  }
+
+  // Guarda o index para atualizar ao salvar
+  form.dataset.editIndex = tarefas.indexOf(tarefa);
+
+  // Abre a tela do formulário (caso esteja oculta)
+  form.parentElement.classList.remove('hidden');
+}
+
   // --- FORMULÁRIO ---
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const diasSelecionados = Array.from(form.querySelectorAll('input[name="dias-semana"]:checked')).map(input => input.value);
-    const categoria = form['task-topic'].value;
-    const tituloSemIcone = form['task-title'].value.trim();
-    const icone = obterIconeCategoria(categoria);
+ form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    if (!tituloSemIcone) {
-      alert('Por favor, preencha o título da tarefa!');
-      return;
-    }
+  const diasSelecionados = Array.from(
+    form.querySelectorAll('input[name="dias-semana"]:checked')
+  ).map(input => input.value);
 
-    const tarefa = {
-      titulo: `${icone} ${tituloSemIcone || 'Sem título'}`,
-      descricao: form['task-description'].value.trim(),
-      categoria,
-      prioridade: form['task-priority'].value,
-      recorrencia: form['task-recurrence-type'].value,
-      diasSemana: diasSelecionados,
-      data: form['task-date'].value,
-      hora: form['task-alarm'].value,
-      lembrete: form['task-reminder']?.value || 'N/A',
-    };
+  const categoria = form['task-topic'].value;
+  const tituloSemIcone = form['task-title'].value.trim();
+  const icone = obterIconeCategoria(categoria);
+  const editIndex = form.dataset.editIndex;
 
-    const isRecorrente = tarefa.recorrencia && tarefa.recorrencia !== "Nenhuma";
-    tarefa.proximaOcorrencia = isRecorrente
-      ? calcularProximaOcorrencia(tarefa.data, tarefa.recorrencia)
-      : null;
+  if (!tituloSemIcone) {
+    alert('Por favor, preencha o título da tarefa!');
+    return;
+  }
 
-    console.log('Tarefa a ser salva:', tarefa);
-    await salvarTarefa(tarefa);
-    tarefas.push(tarefa);
-    salvarLocal();
-    renderizarTarefas();
-    mostrarAgendaDoDia();
-    form.reset();
-    ajustarDiasSemana();
-  });
+  const novaTarefa = {
+    titulo: `${icone} ${tituloSemIcone || 'Sem título'}`,
+    descricao: form['task-description'].value.trim(),
+    categoria,
+    prioridade: form['task-priority'].value,
+    recorrencia: form['task-recurrence-type'].value,
+    diasSemana: diasSelecionados,
+    data: form['task-date'].value,
+    hora: form['task-alarm'].value,
+    lembrete: form['task-reminder']?.value || 'N/A',
+  };
+
+  const isRecorrente = novaTarefa.recorrencia && novaTarefa.recorrencia !== "Nenhuma";
+  novaTarefa.proximaOcorrencia = isRecorrente
+    ? calcularProximaOcorrencia(novaTarefa.data, novaTarefa.recorrencia)
+    : null;
+
+  if (editIndex !== undefined) {
+    // Atualiza a tarefa existente
+    tarefas[editIndex] = novaTarefa;
+    delete form.dataset.editIndex; // limpa o flag
+  } else {
+    // Adiciona nova tarefa
+    tarefas.push(novaTarefa);
+  }
+
+  await salvarTarefa(novaTarefa);
+  salvarLocal();
+  renderizarTarefas();
+  mostrarAgendaDoDia();
+  form.reset();
+  ajustarDiasSemana();
+});
+
 
   // --- BOTÕES ---
   if (btnSair) {

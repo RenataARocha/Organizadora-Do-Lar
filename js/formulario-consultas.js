@@ -72,6 +72,34 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    document.querySelectorAll('.btn-editar').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const index = e.currentTarget.dataset.index;
+        editarConsulta(index);
+      });
+    });
+
+    function editarConsulta(index) {
+      const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
+      const consulta = consultas[index];
+
+      if (!consulta) return;
+
+      document.getElementById('consulta-nome').value = consulta.nome;
+      document.getElementById('consulta-descricao').value = consulta.descricao;
+      document.getElementById('selectTipoConsulta').value = consulta.tipo;
+      document.getElementById('inputDataConsulta').value = consulta.data;
+      document.getElementById('inputHorarioConsulta').value = consulta.horario;
+      document.getElementById('inputLocalConsulta').value = consulta.local;
+      document.getElementById('inputObservacoes').value = consulta.observacoes;
+      document.getElementById('consulta-repeticao').value = consulta.repeticao;
+      document.getElementById('consulta-reminder-date').value = consulta.lembreteData || '';
+      document.getElementById('consulta-reminder-time').value = consulta.lembreteHora || '';
+
+      // Guardar o índice pra atualizar na hora do submit
+      form.dataset.editIndex = index;
+    }
+
     mensagemVazia.style.display = 'none';
 
     consultas.forEach((consulta, index) => {
@@ -82,31 +110,51 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao({
+    <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+      <div class="flex-1 space-y-2 text-base font-semibold text-black">
+        ${formatarExibicao({
         ...consulta,
         titulo: `${obterIconeCategoria(consulta.tipo?.toLowerCase() || 'consulta')} ${consulta.nome}`,
         hora: consulta.horario
       }, consulta.tipo?.toLowerCase() || 'consulta')}
+      </div>
+      <div class="flex flex-col items-end">
+        <button 
+          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+          data-index="${index}" 
+          title="Remover consulta"
+          type="button"
+        >
+          Remover
+          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+            &#xf004;
+          </span>
+        </button>
+      </div>
     </div>
+  `;
 
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover consulta"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-        &#xf004;
-      </span>
-    </button>
-  </div>
-`;
+      // Adiciona botão Editar dinamicamente com coração
+      const botaoEditar = document.createElement('button');
+      botaoEditar.className = 'relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1';
+      botaoEditar.innerHTML = `Editar
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+    </span>`;
+      botaoEditar.dataset.index = index;
+      botaoEditar.type = 'button';
+      botaoEditar.title = 'Editar consulta';
+      botaoEditar.addEventListener('click', () => editarConsulta(index));
+
+      li.querySelector('div.flex-col').appendChild(botaoEditar);
+
+      // Evento Remover
+      li.querySelector('.btn-remover').addEventListener('click', () => removerConsulta(index));
+
       listaConsultas.appendChild(li);
     });
+
 
     document.querySelectorAll('.btn-remover').forEach(button => {
       button.addEventListener('click', (e) => {
@@ -140,10 +188,21 @@ document.addEventListener('DOMContentLoaded', () => {
       title: `Consulta: ${document.getElementById('consulta-nome').value}`,
     };
 
-    salvarConsulta(novaConsulta);
+    const editIndex = form.dataset.editIndex;
+
+    if (editIndex !== undefined) {
+      const consultas = JSON.parse(localStorage.getItem('consultas')) || [];
+      consultas[editIndex] = novaConsulta;
+      localStorage.setItem('consultas', JSON.stringify(consultas));
+      delete form.dataset.editIndex;
+    } else {
+      salvarConsulta(novaConsulta);
+    }
+
     form.reset();
     carregarConsultas();
   });
+
 
   function gerarDicaSaude() {
     const dicas = [

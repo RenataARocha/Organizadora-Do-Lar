@@ -1,6 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { initLembretes } from './lembrete.js';
-import { obterIconeCategoria } from './utils.js';
 import { formatarExibicao } from './exibicao-completa.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,51 +11,108 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function carregarLista() {
     const tarefasJSON = localStorage.getItem("limpeza");
+    listaLimpezas.innerHTML = ""; 
+
     if (!tarefasJSON) {
-      listaLimpezas.innerHTML = "";
       mensagemVazia.style.display = "block";
       return [];
     }
 
     const tarefas = JSON.parse(tarefasJSON);
     if (tarefas.length === 0) {
-      listaLimpezas.innerHTML = "";
       mensagemVazia.style.display = "block";
       return [];
     }
 
     mensagemVazia.style.display = "none";
-    listaLimpezas.innerHTML = "";
 
     tarefas.forEach((tarefa, index) => {
-      console.log(tarefa);
       const li = document.createElement("li");
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
-      const icone = obterIconeCategoria(tarefa.comodo || 'entrada');
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao({
-        ...tarefa,
-        // O `titulo` não é mais necessário aqui, a função `formatarExibicao` vai cuidar disso
-      }, 'limpeza')}
-    </div>
-    <button
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}"
-      title="Remover tarefa"
-      type="button"
-    >
-      Remover
-      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-    </button>
-  </div>
-`;
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          ${formatarExibicao(tarefa, 'limpeza')}
+        </div>
+        <div class="flex flex-col items-end gap-2">
+          <button
+  class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden"
+  data-index="${index}"
+  title="Remover tarefa"
+  type="button"
+>
+  Remover
+  <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+    style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+  </span>
+</button>
+          <button
+            class="relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden btn-editar"
+            data-index="${index}"
+            title="Editar tarefa"
+            type="button"
+          >
+            Editar
+           <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+    </span>
+          </button>
+        </div>
+      </div>
+    `;
       listaLimpezas.appendChild(li);
     });
+
+    adicionarEventosRemocao();
+    adicionarEventosEdicao();
     return tarefas;
+  }
+
+
+  function adicionarEventosRemocao() {
+    document.querySelectorAll(".btn-remover").forEach(botao => {
+      botao.addEventListener("click", (e) => {
+        const index = Number(e.currentTarget.dataset.index);
+        const tarefas = carregarLista();
+        tarefas.splice(index, 1);
+        salvarLista(tarefas);
+        carregarLista();
+      });
+    });
+  }
+
+  function adicionarEventosEdicao() {
+    document.querySelectorAll(".btn-editar").forEach(botao => {
+      botao.addEventListener("click", (e) => {
+        const index = Number(e.currentTarget.dataset.index);
+        const tarefas = JSON.parse(localStorage.getItem("limpeza")) || [];
+        const tarefa = tarefas[index];
+        if (!tarefa) return;
+
+        // Preenche os campos do formulário com os valores atuais
+        selectComodo.value = tarefa.comodo;
+        selectComodo.dispatchEvent(new Event('change'));
+        selectTarefa.value = tarefa.descricao;
+        if (tarefa.descricao === "Outros") {
+          campoTarefaOutros.classList.remove("hidden");
+          document.getElementById("tarefaOutros").value = tarefa.descricaoPersonalizada || "";
+        } else {
+          campoTarefaOutros.classList.add("hidden");
+        }
+        form.querySelector("#frequencia").value = tarefa.frequencia;
+        form.querySelector("#dia").value = tarefa.data;
+        form.querySelector("#inputHorarioConsulta").value = tarefa.hora;
+        form.querySelector("#lembrete-data").value = tarefa.lembreteData || "";
+        form.querySelector("#lembrete-hora").value = tarefa.lembreteHora || "";
+
+        // Indica que estamos editando
+        form.dataset.editIndex = index;
+        form.dataset.editing = "true";
+        form.querySelector('button[type="submit"]').textContent = "Atualizar Tarefa";
+        mensagemVazia.style.display = "none";
+      });
+    });
   }
 
   function salvarLista(tarefas) {
@@ -83,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  // Função para adicionar dias, semanas ou meses a uma data
   function adicionarTempo(dataStr, frequencia) {
     const data = new Date(dataStr);
     switch (frequencia.toLowerCase()) {
@@ -96,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return data.toISOString().slice(0, 10);
   }
 
-  // Função para atualizar recorrências automaticamente
   function atualizarRecorrencias() {
     const tarefas = carregarLista();
     let alterou = false;
@@ -120,72 +174,51 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const comodo = form.querySelector("#comodo").value.trim() || 'Cômodo não informado';
-    let tarefa = form.querySelector("#tarefa").value.trim() || 'Tarefa não informada';
-    const tarefaOutrosInput = document.querySelector("#tarefaOutros");
-
-    if (tarefa === "Outros" && tarefaOutrosInput) {
-      const personalizada = tarefaOutrosInput.value.trim();
-      if (!personalizada) {
-        alert("Por favor, descreva a tarefa personalizada.");
-        return;
-      }
-      tarefa = personalizada;
+    const comodo = selectComodo.value.trim() || 'Cômodo não informado';
+    let descricao = selectTarefa.value.trim() || 'Tarefa não informada';
+    if (descricao === "Outros") {
+      const personalizada = document.getElementById("tarefaOutros").value.trim();
+      if (!personalizada) { alert("Por favor, descreva a tarefa personalizada."); return; }
+      descricao = personalizada;
     }
-
-    campoTarefaOutros.classList.add("hidden");
-
-    const frequencia = form.querySelector("#frequencia").value;
-    const date = form.querySelector("#dia").value;
-    const horario = form.querySelector("#inputHorarioConsulta").value;
-    let lembreteData = form.querySelector("#lembrete-data").value;
-    const lembreteHora = form.querySelector("#lembrete-hora").value;
 
     const dados = {
       comodo,
-      descricao: tarefa,
-      frequencia,
-      data: date,
-      hora: horario,
-      lembreteData,
-      lembreteHora,
-      titulo: `${comodo} — ${tarefa}`, // AQUI!
+      descricao,
+      frequencia: form.querySelector("#frequencia").value,
+      data: form.querySelector("#dia").value,
+      hora: form.querySelector("#inputHorarioConsulta").value,
+      lembreteData: form.querySelector("#lembrete-data").value || form.querySelector("#dia").value,
+      lembreteHora: form.querySelector("#lembrete-hora").value,
+      titulo: `${comodo} — ${descricao}`,
     };
 
     if (!validarFormulario(dados)) return;
 
-    if (!lembreteData) {
-      lembreteData = date;
-      dados.lembreteData = lembreteData;
+    const tarefas = JSON.parse(localStorage.getItem("limpeza")) || [];
+
+    if (form.dataset.editIndex !== undefined) {
+      const idx = parseInt(form.dataset.editIndex, 10);
+      tarefas[idx] = dados;
+      delete form.dataset.editIndex;
+      delete form.dataset.editing;
+      form.querySelector('button[type="submit"]').textContent = "Adicionar Tarefa";
+    } else {
+      tarefas.push(dados);
     }
 
-    dados.proximaData = adicionarTempo(date, frequencia);
-    dados.proximoLembreteData = adicionarTempo(dados.lembreteData, frequencia);
-
-    const tarefas = carregarLista();
-    tarefas.push(dados);
     salvarLista(tarefas);
-
     form.reset();
     selectTarefa.innerHTML = '<option value="">Selecione</option>';
+    campoTarefaOutros.classList.add("hidden");
+
     carregarLista();
   });
 
-  listaLimpezas.addEventListener("click", (e) => {
-    if (e.target.closest("button")) {
-      const btn = e.target.closest("button");
-      const index = Number(btn.getAttribute("data-index"));
-      let tarefas = carregarLista();
-      tarefas.splice(index, 1);
-      salvarLista(tarefas);
-      carregarLista();
-    }
-  });
 
-  atualizarRecorrencias(); // Atualiza datas das tarefas recorrentes
+  atualizarRecorrencias();
   carregarLista();
 
-  // Dicas de limpeza aleatórias
   const dicasLimpeza = [
     "Use vinagre branco com bicarbonato para desinfetar o banheiro.",
     "Separe 15 minutinhos por dia pra dar aquela geral em um cômodo.",
@@ -235,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectTarefa = document.getElementById("tarefa");
   const campoTarefaOutros = document.getElementById("campoTarefaOutros");
 
-  campoTarefaOutros.classList.add("hidden"); // reseta sempre
+  campoTarefaOutros.classList.add("hidden");
 
   selectTarefa.addEventListener("change", () => {
     if (selectTarefa.value === "Outros") {
@@ -257,5 +290,4 @@ document.addEventListener("DOMContentLoaded", () => {
       selectTarefa.appendChild(option);
     });
   });
-
 });

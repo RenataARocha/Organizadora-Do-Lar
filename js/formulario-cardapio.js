@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function carregarCardapios() {
     const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
-
     listaCardapio.innerHTML = '';
     if (cardapios.length === 0) {
       mensagemVazia.style.display = 'block';
@@ -106,33 +105,66 @@ document.addEventListener('DOMContentLoaded', () => {
       const icone = obterIconeCategoria('cardapio');
 
       li.innerHTML = `
-  <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
-    <div class="flex-1 space-y-2 text-base font-semibold text-black">
-      ${formatarExibicao(
-        { ...cardapio, titulo: `${icone} Cardápio` },
-        'cardapio'
-      )}
-      <p class="text-sm text-gray-600">Data: ${cardapio.data}</p>
-      ${cardapio.recorrencia && cardapio.recorrencia.toLowerCase() !== 'nenhuma' ? `<p class="text-sm text-pink-500 font-semibold">Recorrência: ${cardapio.recorrencia}</p>` : ''}
-    </div>
+      <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
+        <div class="flex-1 space-y-2 text-base font-semibold text-black">
+          ${formatarExibicao({ ...cardapio, titulo: `${icone} Cardápio` }, 'cardapio')}
+          <p class="text-sm text-gray-600">Data: ${cardapio.data}</p>
+          ${cardapio.recorrencia && cardapio.recorrencia.toLowerCase() !== 'nenhuma' ? `<p class="text-sm text-pink-500 font-semibold">Recorrência: ${cardapio.recorrencia}</p>` : ''}
+        </div>
 
-    <button 
-      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-      data-index="${index}" 
-      title="Remover cardápio"
-      type="button"
-    >
-      Remover
+        <div class="flex flex-col items-end">
+          <button 
+            class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+            data-index="${index}" 
+            title="Remover cardápio"
+            type="button"
+          >
+            Remover
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+              style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
+              &#xf004;
+            </span>
+          </button>
+        </div>
+      </div>
+    `;
+
+      // Botão Editar
+      const botaoEditar = document.createElement('button');
+      botaoEditar.className = 'relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1';
+      botaoEditar.innerHTML = `Editar
       <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">
-        &#xf004;
-      </span>
-    </button>
-  </div>
-`;
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+      </span>`;
+      botaoEditar.dataset.index = index;
+      botaoEditar.type = 'button';
+      botaoEditar.title = 'Editar cardápio';
+      botaoEditar.addEventListener('click', () => editarCardapio(index));
+
+      li.querySelector('div.flex-col').appendChild(botaoEditar);
 
       listaCardapio.appendChild(li);
     });
+  }
+
+  function editarCardapio(index) {
+    const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
+    const cardapio = cardapios[index];
+    if (!cardapio) return;
+
+    document.getElementById('task-date').value = cardapio.data;
+    document.getElementById('cafe').value = cardapio.cafe;
+    document.getElementById('almoco').value = cardapio.almoco;
+    document.getElementById('lanche').value = cardapio.lanche;
+    document.getElementById('jantar').value = cardapio.jantar;
+    document.getElementById('task-recurrence').value = cardapio.recorrencia || '';
+
+    // Marcar os dias da semana selecionados
+    document.querySelectorAll('input[name="dias-semana"]').forEach(checkbox => {
+      checkbox.checked = cardapio.diasSemana?.includes(checkbox.value) || false;
+    });
+
+    form.dataset.editIndex = index;
   }
 
   function salvarCardapio(dados) {
@@ -144,46 +176,37 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // pegar os dias da semana selecionados (checkboxes)
     const diasSelecionados = Array.from(document.querySelectorAll('input[name="dias-semana"]:checked'))
       .map(checkbox => checkbox.value);
 
-    const data = document.getElementById('task-date').value;
-    const cafe = document.getElementById('cafe').value.trim();
-    const almoco = document.getElementById('almoco').value.trim();
-    const lanche = document.getElementById('lanche').value.trim();
-    const jantar = document.getElementById('jantar').value.trim();
-    const recorrencia = document.getElementById('task-recurrence').value;
-
-    if (!cafe && !almoco && !lanche && !jantar) {
-      alert('Por favor, preencha pelo menos uma refeição.');
-      return;
-    }
-
-    if (recorrencia.toLowerCase() === 'semanal' && diasSelecionados.length === 0) {
-      alert('Selecione pelo menos um dia da semana para recorrência semanal.');
-      return;
-    }
-
     const dados = {
-      data,
+      data: document.getElementById('task-date').value,
       diasSemana: diasSelecionados,
-      cafe,
-      almoco,
-      lanche,
-      jantar,
-      recorrencia,
+      cafe: document.getElementById('cafe').value.trim(),
+      almoco: document.getElementById('almoco').value.trim(),
+      lanche: document.getElementById('lanche').value.trim(),
+      jantar: document.getElementById('jantar').value.trim(),
+      recorrencia: document.getElementById('task-recurrence').value,
       title: `🍽️ Cardápio`,
-      titulo: `Cardápio` // 👈 ISSO AQUI É A CHAVE!
+      titulo: `Cardápio`
     };
 
+    const editIndex = form.dataset.editIndex;
+    const cardapios = JSON.parse(localStorage.getItem('cardapios')) || [];
 
-    salvarCardapio(dados);
-    atualizarRecorrencias(); // atualiza datas já existentes no armazenamento
+    if (editIndex !== undefined) {
+      cardapios[editIndex] = dados;
+      delete form.dataset.editIndex;
+    } else {
+      cardapios.push(dados);
+    }
+
+    localStorage.setItem('cardapios', JSON.stringify(cardapios));
+    atualizarRecorrencias();
     carregarCardapios();
-
     form.reset();
   });
+
 
   listaCardapio.addEventListener('click', (e) => {
     if (e.target.closest('.btn-remover')) {

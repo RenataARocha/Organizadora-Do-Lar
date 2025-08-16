@@ -49,22 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
         diasTexto
       }, 'etapa')}
         </div>
-        <button 
-          class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-          data-index="${index}" 
-          title="Remover etapa"
-          type="button"
-        >
-          Remover
-          <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-            style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-        </button>
+        <div class="flex flex-col items-end gap-2">
+          <button
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden"
+      data-index="${index}"
+      title="Remover tarefa"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+      </span>
+    </button>
+    <button
+                class="relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden btn-editar"
+                data-index="${index}"
+                title="Editar tarefa"
+                type="button"
+              >
+                Editar
+              <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+          style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;
+        </span>
+              </button>
+        </div>
       </div>
     `;
+
       lista.appendChild(li);
     });
 
-    adicionarEventosRemocao();
+    adicionarEventosEdicao();
   }
 
   // ❌ EVENTO DE REMOÇÃO
@@ -79,6 +94,42 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  function adicionarEventosEdicao() {
+    const botoesEditar = document.querySelectorAll('.btn-editar');
+    botoesEditar.forEach(botao => {
+      botao.addEventListener('click', (e) => {
+        const index = Number(e.currentTarget.dataset.index);
+        const etapa = skincare[index];
+        if (!etapa) return;
+
+        // Preenche o formulário com os valores atuais
+        document.getElementById('consulta-etapa').value = etapa.nome;
+        document.getElementById('consulta-observacoes').value = etapa.descricao || '';
+        document.getElementById('consulta-tipo-produto').value = etapa.tipo;
+        document.getElementById('consulta-data').value = etapa.data;
+        selectRecorrencia.value = etapa.recorrencia;
+        atualizarDiasSemana();
+
+        // Marca os checkboxes dos dias selecionados
+        diasSemanaCheckboxes.forEach(chk => {
+          chk.checked = etapa.diasSelecionados?.includes(chk.value) || false;
+        });
+
+        document.getElementById('consulta-horario').value = etapa.horario || '';
+        document.getElementById('consulta-lembrete-data').value = etapa.lembreteData || '';
+        document.getElementById('consulta-lembrete-hora').value = etapa.lembreteHora || '';
+        document.getElementById('consulta-alarme').value = etapa.alarme || '';
+
+        form.dataset.editIndex = index;
+        form.dataset.editing = "true";
+        form.querySelector('button[type="submit"]').textContent = "Atualizar Etapa";
+        mensagemVazia.classList.add('hidden');
+      });
+    });
+  }
+  adicionarEventosEdicao();
+
 
   // 💾 SALVA NO LOCALSTORAGE
   function salvarSkincare() {
@@ -152,9 +203,16 @@ document.addEventListener('DOMContentLoaded', () => {
       alarme,
       titulo: `${obterIconeCategoria('Skincare')} ${capitalize(nome)}`
     };
+    if (form.dataset.editIndex !== undefined) {
+      const idx = parseInt(form.dataset.editIndex, 10);
+      skincare[idx] = novaEtapa; // substitui a etapa existente
+      delete form.dataset.editIndex;
+      delete form.dataset.editing;
+      form.querySelector('button[type="submit"]').textContent = "Adicionar Etapa";
+    } else {
+      skincare.push(novaEtapa);
+    }
 
-
-    skincare.push(novaEtapa);
     salvarSkincare();
     form.reset();
     atualizarDiasSemana();

@@ -1,7 +1,5 @@
 import { voltarParaHome } from './funcoes-globais.js';
 import { obterIconeCategoria } from './utils.js';
-import { formatarExibicao } from './exibicao-completa.js';
-
 
 document.addEventListener("DOMContentLoaded", () => {
   // 🌟 ELEMENTOS DO DOM
@@ -60,19 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
       li.className = "mb-3 p-3 rounded-lg shadow bg-purple-50 hover:bg-rose-50 cursor-pointer";
 
       const icone = obterIconeCategoria(remedio.categoria || 'remedio');
-
-      // Aqui você vai juntar os horários para exibir no lugar do campo "Horário"
       const horariosTexto = remedio.horarios ? remedio.horarios.join(", ") : "–";
 
-      // Monta o título (ícone + nome)
-      const tituloFormatado = `${icone} ${remedio.nome}`;
-
-      // Agora, monte manualmente o HTML completo do remédio com os horários agrupados no lugar certo
       li.innerHTML = `
 <div class="flex justify-between items-start gap-4 p-4 rounded-lg shadow bg-pink-50 hover:bg-rose-100 transition-all">
   <div class="flex-1 space-y-2 text-base font-semibold">
-
-<div><span class="text-pink-500">${icone} (Remédio <span class="text-black font-medium italic">(${remedio.nome})</span></div>
+    <div><span class="text-pink-500">${icone} (Remédio <span class="text-black font-medium italic">(${remedio.nome})</span></div>
     <div><span class="text-pink-500">⚖️ Dosagem:</span> <span class="text-black">${remedio.dosagem}</span></div>
     <div><span class="text-pink-500">📆 Dias:</span> <span class="text-black">${remedio.diasSemana.join(", ")}</span></div>
     <div><span class="text-pink-500">🔁 Frequência:</span> <span class="text-black">${remedio.frequencia}</span></div>
@@ -81,28 +72,93 @@ document.addEventListener("DOMContentLoaded", () => {
     <div><span class="text-pink-500">⏳ Duração:</span> <span class="text-black">${remedio.duracao}</span></div>
     <div><span class="text-pink-500">📝 Observações:</span> <span class="text-black">${remedio.observacoes || "–"}</span></div>
     <div><span class="text-pink-500">🔔 Alarme:</span> <span class="text-black">${remedio.alarme || "–"}</span></div>
-
   </div>
 
-      <button 
-        class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
-        data-index="${index}" 
-        title="Remover remédio"
-        type="button"
-      >
-        Remover
-        <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
-          style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
-      </button>
-    </div>
-  `;
+  <div class="flex flex-col items-end">
+    <button 
+      class="relative bg-pink-400 text-white h-fit py-2 pr-10 pl-4 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 btn-remover font-semibold overflow-hidden mt-1"
+      data-index="${index}" 
+      title="Remover remédio"
+      type="button"
+    >
+      Remover
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+        style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>
+    </button>
+  </div>
+</div>
+`;
+
+      // 🔹 BOTÃO EDITAR
+      const botaoEditar = document.createElement("button");
+      botaoEditar.className = "relative bg-pink-400 text-white h-fit py-2 pr-12 pl-7 rounded-lg hover:bg-pink-500 transition-all duration-300 ease-in-out active:translate-y-1 font-semibold overflow-hidden mt-1";
+      botaoEditar.innerHTML = `Editar
+    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-white opacity-30 pointer-events-none"
+      style="font-family: 'Font Awesome 5 Free'; font-weight: 900;">&#xf004;</span>`;
+      botaoEditar.dataset.index = index;
+      botaoEditar.type = "button";
+      botaoEditar.title = "Editar remédio";
+      botaoEditar.addEventListener("click", () => editarRemedio(index));
+
+      li.querySelector("div.flex-col").appendChild(botaoEditar);
 
       lista.appendChild(li);
     });
 
-
     adicionarEventosRemocao();
   }
+
+  function editarRemedio(index) {
+    const remedios = pegarRemediosStorage();
+    const remedio = remedios[index];
+    if (!remedio) return;
+
+    // Preenche o formulário com os dados existentes
+    document.getElementById("remedio-nome").value = remedio.nome;
+    document.getElementById("remedio-dosagem").value = remedio.dosagem;
+    document.getElementById("remedio-frequencia").value = remedio.frequencia;
+    document.getElementById("remedio-data").value = remedio.data;
+    document.getElementById("remedio-duracao").value = remedio.duracao;
+    document.getElementById("remedio-observacoes").value = remedio.observacoes || "";
+    document.getElementById("task-alarm").value = remedio.alarme || "";
+
+    // Remove inputs de horários extras e recria conforme o array
+    const horariosContainer = document.getElementById("horarios-container");
+    horariosContainer.innerHTML = "";
+    remedio.horarios.forEach(h => {
+      const div = document.createElement("div");
+      div.className = "flex gap-2 mb-2";
+
+      const input = document.createElement("input");
+      input.type = "time";
+      input.name = "remedio-horarios";
+      input.className = "w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200";
+      input.value = h;
+
+      const botaoRemover = document.createElement("button");
+      botaoRemover.type = "button";
+      botaoRemover.textContent = "–";
+      botaoRemover.className = "text-red-600 font-bold text-xl";
+      botaoRemover.addEventListener("click", () => div.remove());
+
+      div.appendChild(input);
+      div.appendChild(botaoRemover);
+      horariosContainer.appendChild(div);
+    });
+
+    // Dias da semana
+    document.querySelectorAll('input[name="dias-semana"]').forEach(cb => {
+      cb.checked = remedio.diasSemana.includes(cb.value);
+    });
+
+    // Guarda o índice do remédio sendo editado
+    form.dataset.editIndex = index;
+
+    // Muda o texto do botão para "Atualizar Remédio"
+    const botaoSubmit = form.querySelector('button[type="submit"]');
+    botaoSubmit.textContent = "Atualizar Remédio"; // ou "Adicionar Remédio"
+  }
+
 
   // ❌ REMOÇÃO
   function adicionarEventosRemocao() {
@@ -125,22 +181,19 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // outros campos...
     const nome = document.getElementById("remedio-nome").value.trim();
     const dosagem = document.getElementById("remedio-dosagem").value.trim();
     const frequencia = document.getElementById("remedio-frequencia").value.trim();
-    // NÃO pegar só um horário, mas todos os horários:
     const horariosInputs = document.querySelectorAll('input[name="remedio-horarios"]');
     const horarios = Array.from(horariosInputs)
       .map(input => input.value.trim())
-      .filter(h => h !== ""); // só horários preenchidos
+      .filter(h => h !== "");
 
     const date = document.getElementById("remedio-data").value.trim();
     const duracao = document.getElementById("remedio-duracao").value.trim();
     const observacoes = document.getElementById("remedio-observacoes").value.trim();
     const alarme = form.querySelector("#task-alarm")?.value || "";
 
-    // dias da semana
     const checkboxes = document.querySelectorAll('input[name="dias-semana"]:checked');
     const diasSelecionados = Array.from(checkboxes).map(cb => cb.value);
 
@@ -158,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nome,
       dosagem,
       frequencia,
-      horarios, // array de horários aqui
+      horarios,
       data: date,
       duracao,
       observacoes,
@@ -169,7 +222,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const remedios = pegarRemediosStorage();
-    remedios.push(remedio);
+
+    if (form.dataset.editIndex !== undefined) {
+      // 🔹 EDIÇÃO
+      const index = parseInt(form.dataset.editIndex, 10);
+      remedios[index] = remedio;
+      delete form.dataset.editIndex;
+      const botaoSubmit = form.querySelector('button[type="submit"]');
+      botaoSubmit.textContent = "Atualizar Remédio"; // ou "Adicionar Remédio"
+    } else {
+      // 🔹 NOVO REMÉDIO
+      remedios.push(remedio);
+    }
 
     salvarRemediosStorage(remedios);
     form.reset();
@@ -193,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const botaoAdicionarHorario = document.getElementById("adicionar-horario");
 
   botaoAdicionarHorario.addEventListener("click", () => {
-    // Criar um novo div com input time
     const novoHorarioDiv = document.createElement("div");
     novoHorarioDiv.className = "flex gap-2 mb-2";
 
@@ -202,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
     novoInput.name = "remedio-horarios";
     novoInput.className = "w-full max-w-[500px] mt-2 mb-2 px-3 py-3 border-2 border-pink-300 rounded-lg bg-stone-50 text-base text-gray-700 transition duration-300 ease-in-out focus:border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-200";
 
-    // Botão remover para o input extra (opcional, pra remover um horário)
     const botaoRemover = document.createElement("button");
     botaoRemover.type = "button";
     botaoRemover.textContent = "–";
@@ -215,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
     novoHorarioDiv.appendChild(novoInput);
     novoHorarioDiv.appendChild(botaoRemover);
 
-    // Inserir antes do botão "+"
     horariosContainer.appendChild(novoHorarioDiv);
   });
 
