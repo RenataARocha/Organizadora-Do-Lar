@@ -1,6 +1,6 @@
 import { mostrarAgendaDoDia, atualizarAgendaDoDia } from './services/mostrarAgendaDoDia.js';
 import { getAllItems } from './services/getAllItems.js';
-
+import { atualizarResumoSemana } from './services/mostrarResumoSemana.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   mostrarAgendaDoDia();
@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  document.querySelector('button[data-tela="resumo"]').addEventListener('click', () => {
+    atualizarResumoSemana(new Date()); // data de hoje como referência
+  });
 
   const datepickerInput = document.getElementById('calendario-inicial');
 
@@ -93,32 +96,32 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   flatpickr("#calendario-inicial", {
-  dateFormat: "Y-m-d",
-  disableMobile: true,
-  onChange: function (selectedDates, dateStr) {
-    // Atualiza a agenda do dia
-    atualizarAgendaDoDia(dateStr);
+    dateFormat: "Y-m-d",
+    disableMobile: true,
+    onChange: function (selectedDates, dateStr) {
+      // Atualiza a agenda do dia
+      atualizarAgendaDoDia(dateStr);
 
-    // Abre a aba da agenda automaticamente
-    const telaAgenda = document.getElementById("agenda");
-    if (telaAgenda && telaAgenda.classList.contains("hidden")) {
-      // Fecha outras telas
-      document.querySelectorAll(".tela-oculta").forEach(t => t.classList.add("hidden"));
-      // Abre a agenda
-      telaAgenda.classList.remove("hidden");
-    }
-  },
+      // Abre a aba da agenda automaticamente
+      const telaAgenda = document.getElementById("agenda");
+      if (telaAgenda && telaAgenda.classList.contains("hidden")) {
+        // Fecha outras telas
+        document.querySelectorAll(".tela-oculta").forEach(t => t.classList.add("hidden"));
+        // Abre a agenda
+        telaAgenda.classList.remove("hidden");
+      }
+    },
 
-  onDayCreate: (dObj, dStr, fp, dayElem) => {
-    const dataFormatada = dayElem.dateObj.toISOString().split("T")[0];
-    const existeTarefa = getAllItems().some(
-      t => t.data === dataFormatada || t.prazo === dataFormatada
-    );
-    if (existeTarefa) {
-      dayElem.classList.add("bg-pink-300", "rounded-full", "text-white", "font-bold");
+    onDayCreate: (dObj, dStr, fp, dayElem) => {
+      const dataFormatada = dayElem.dateObj.toISOString().split("T")[0];
+      const existeTarefa = getAllItems().some(
+        t => t.data === dataFormatada || t.prazo === dataFormatada
+      );
+      if (existeTarefa) {
+        dayElem.classList.add("bg-pink-300", "rounded-full", "text-white", "font-bold");
+      }
     }
-  }
-});
+  });
   estilizarCalendario();
 
   // ⏰ Inicializa o dia atual
